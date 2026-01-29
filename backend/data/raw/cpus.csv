@@ -1,0 +1,11 @@
+name,brand,socket,tdp_watts,max_tdp_watts,cores,threads,base_clock,boost_clock,memory_type,pcie_version,integrated_graphics,price_usd,release_date
+Ryzen 9 9900X,AMD,AM5,120,162,12,24,4.4,5.6,DDR5,5.0,false,499,2024-08-08
+Ryzen 7 9700X,AMD,AM5,65,88,8,16,3.8,5.5,DDR5,5.0,false,359,2024-08-08
+Ryzen 5 9600X,AMD,AM5,65,88,6,12,3.9,5.4,DDR5,5.0,false,279,2024-08-08
+Ryzen 9 7950X,AMD,AM5,170,230,16,32,4.5,5.7,DDR5,5.0,false,549,2022-09-27
+Ryzen 7 7800X3D,AMD,AM5,120,162,8,16,4.2,5.0,DDR5,5.0,false,449,2023-04-06
+Core i9-14900K,Intel,LGA1700,125,253,24,32,3.2,6.0,"DDR4,DDR5",5.0,true,549,2023-10-17
+Core i7-14700K,Intel,LGA1700,125,253,20,28,3.4,5.6,"DDR4,DDR5",5.0,true,409,2023-10-17
+Core i5-14600K,Intel,LGA1700,125,181,14,20,3.5,5.3,"DDR4,DDR5",5.0,true,319,2023-10-17
+Core Ultra 9 285K,Intel,LGA1851,125,250,24,24,3.7,5.7,DDR5,5.0,true,589,2024-10-24
+Core Ultra 7 265K,Intel,LGA1851,125,250,20,20,3.9,5.5,DDR5,5.0,true,394,2024-10-24

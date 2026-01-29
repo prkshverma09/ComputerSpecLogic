@@ -1,0 +1,276 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom scrollbar styling */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted-foreground));
+  }
+}
+
+/* Compatibility status indicators */
+@layer components {
+  .status-compatible {
+    @apply bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800;
+  }
+
+  .status-warning {
+    @apply bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-800;
+  }
+
+  .status-incompatible {
+    @apply bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800;
+  }
+
+  .status-unknown {
+    @apply bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700;
+  }
+}
+
+/* Component card hover effects */
+@layer components {
+  .component-card {
+    @apply transition-all duration-200;
+  }
+
+  .component-card:hover {
+    @apply shadow-lg -translate-y-1;
+  }
+
+  .component-card.selected {
+    @apply ring-2 ring-primary;
+  }
+
+  .component-card.incompatible {
+    @apply opacity-60;
+  }
+}
+
+/* Power meter gradients */
+@layer utilities {
+  .power-gradient-safe {
+    background: linear-gradient(
+      90deg,
+      hsl(142, 76%, 36%) 0%,
+      hsl(142, 76%, 36%) 100%
+    );
+  }
+
+  .power-gradient-warning {
+    background: linear-gradient(
+      90deg,
+      hsl(142, 76%, 36%) 0%,
+      hsl(38, 92%, 50%) 100%
+    );
+  }
+
+  .power-gradient-danger {
+    background: linear-gradient(
+      90deg,
+      hsl(38, 92%, 50%) 0%,
+      hsl(0, 84%, 60%) 100%
+    );
+  }
+}
+
+/* Algolia InstantSearch customization */
+.ais-SearchBox-input {
+  @apply w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+}
+
+.ais-SearchBox-submit,
+.ais-SearchBox-reset {
+  @apply hidden;
+}
+
+.ais-Hits-list {
+  @apply grid gap-4;
+}
+
+.ais-RefinementList-label {
+  @apply flex items-center gap-2 cursor-pointer;
+}
+
+.ais-RefinementList-checkbox {
+  @apply h-4 w-4 rounded border-gray-300;
+}
+
+.ais-Pagination-list {
+  @apply flex items-center gap-1;
+}
+
+.ais-Pagination-link {
+  @apply px-3 py-1 rounded-md text-sm hover:bg-muted;
+}
+
+.ais-Pagination-link--selected {
+  @apply bg-primary text-primary-foreground hover:bg-primary/90;
+}
+
+/* Animation for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--muted-foreground) / 0.1) 50%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* Algolia Chat Widget Styling */
+.ais-Chat {
+  @apply h-full flex flex-col;
+}
+
+.ais-Chat-container {
+  @apply h-full flex flex-col;
+}
+
+.ais-Chat-header {
+  @apply hidden; /* Using custom header */
+}
+
+.ais-Chat-messages {
+  @apply flex-1 overflow-hidden;
+}
+
+.ais-Chat-messages-content {
+  @apply p-3;
+}
+
+.ais-Chat-messages-scroll {
+  @apply h-full overflow-y-auto;
+}
+
+.ais-Chat-message {
+  @apply max-w-[85%] rounded-lg p-3 text-sm mb-3;
+}
+
+.ais-Chat-message--user {
+  @apply bg-primary text-primary-foreground ml-auto;
+}
+
+.ais-Chat-message--assistant {
+  @apply bg-muted;
+}
+
+.ais-Chat-prompt {
+  @apply p-3 border-t flex items-end gap-2;
+}
+
+.ais-Chat-prompt-textarea {
+  @apply flex-1 min-h-[40px] max-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none;
+}
+
+.ais-Chat-prompt-submit {
+  @apply bg-primary text-primary-foreground rounded-md px-3 py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-50 shrink-0;
+}
+
+.ais-Chat-toggleButton {
+  @apply hidden; /* Using custom toggle */
+}
+
+/* Chat scrollbar */
+.ais-Chat-messages-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ais-Chat-messages-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ais-Chat-messages-scroll::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 3px;
+}
+
+.ais-Chat-messages-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground) / 0.5);
+}

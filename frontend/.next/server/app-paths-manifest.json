@@ -1,0 +1,6 @@
+{
+  "/export/page": "app/export/page.js",
+  "/api/build/export/route": "app/api/build/export/route.js",
+  "/build/page": "app/build/page.js",
+  "/page": "app/page.js"
+}

@@ -1,0 +1,9 @@
+name,brand,memory_type,speed_mhz,capacity_gb,modules,cas_latency,voltage,rgb,price_usd
+Trident Z5 RGB DDR5-6000,G.Skill,DDR5,6000,16,2,30,1.35,true,189
+Trident Z5 DDR5-6400,G.Skill,DDR5,6400,16,2,32,1.4,false,219
+Vengeance DDR5-5600,Corsair,DDR5,5600,16,2,36,1.25,false,119
+Vengeance RGB DDR5-6000,Corsair,DDR5,6000,16,2,30,1.35,true,169
+FURY Beast DDR5-5200,Kingston,DDR5,5200,16,2,40,1.25,false,99
+FURY Beast DDR4-3600,Kingston,DDR4,3600,16,2,18,1.35,false,69
+Vengeance LPX DDR4-3200,Corsair,DDR4,3200,16,2,16,1.35,false,59
+Trident Z RGB DDR4-3600,G.Skill,DDR4,3600,16,2,16,1.35,true,89

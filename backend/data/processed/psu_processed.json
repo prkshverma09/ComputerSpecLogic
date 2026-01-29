@@ -1,0 +1,218 @@
+[
+  {
+    "objectID":"psu-corsair-rm1000x",
+    "component_type":"PSU",
+    "brand":"Corsair",
+    "model":"RM1000x",
+    "wattage":1000,
+    "efficiency_rating":"80+ Gold",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":189.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "80plus-gold",
+      "psu-1000w",
+      "full-modular",
+      "atx"
+    ]
+  },
+  {
+    "objectID":"psu-corsair-rm850x",
+    "component_type":"PSU",
+    "brand":"Corsair",
+    "model":"RM850x",
+    "wattage":850,
+    "efficiency_rating":"80+ Gold",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":149.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "80plus-gold",
+      "atx",
+      "full-modular",
+      "psu-850w"
+    ]
+  },
+  {
+    "objectID":"psu-corsair-rm750x",
+    "component_type":"PSU",
+    "brand":"Corsair",
+    "model":"RM750x",
+    "wattage":750,
+    "efficiency_rating":"80+ Gold",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":129.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "psu-750w",
+      "atx",
+      "full-modular",
+      "80plus-gold"
+    ]
+  },
+  {
+    "objectID":"psu-seasonic-focus-gx-1000",
+    "component_type":"PSU",
+    "brand":"Seasonic",
+    "model":"FOCUS GX-1000",
+    "wattage":1000,
+    "efficiency_rating":"80+ Gold",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":179.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "80plus-gold",
+      "psu-1000w",
+      "full-modular",
+      "atx"
+    ]
+  },
+  {
+    "objectID":"psu-seasonic-focus-gx-850",
+    "component_type":"PSU",
+    "brand":"Seasonic",
+    "model":"FOCUS GX-850",
+    "wattage":850,
+    "efficiency_rating":"80+ Gold",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":139.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "80plus-gold",
+      "atx",
+      "full-modular",
+      "psu-850w"
+    ]
+  },
+  {
+    "objectID":"psu-seasonic-focus-gx-750",
+    "component_type":"PSU",
+    "brand":"Seasonic",
+    "model":"FOCUS GX-750",
+    "wattage":750,
+    "efficiency_rating":"80+ Gold",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":119.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "psu-750w",
+      "atx",
+      "full-modular",
+      "80plus-gold"
+    ]
+  },
+  {
+    "objectID":"psu-evga-supernova-1000-g7",
+    "component_type":"PSU",
+    "brand":"EVGA",
+    "model":"SuperNOVA 1000 G7",
+    "wattage":1000,
+    "efficiency_rating":"80+ Gold",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":169.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "80plus-gold",
+      "psu-1000w",
+      "full-modular",
+      "atx"
+    ]
+  },
+  {
+    "objectID":"psu-evga-supernova-850-g6",
+    "component_type":"PSU",
+    "brand":"EVGA",
+    "model":"SuperNOVA 850 G6",
+    "wattage":850,
+    "efficiency_rating":"80+ Gold",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":129.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "80plus-gold",
+      "atx",
+      "full-modular",
+      "psu-850w"
+    ]
+  },
+  {
+    "objectID":"psu-evga-supernova-650-g6",
+    "component_type":"PSU",
+    "brand":"EVGA",
+    "model":"SuperNOVA 650 G6",
+    "wattage":650,
+    "efficiency_rating":"80+ Gold",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":89.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "80plus-gold",
+      "psu-650w",
+      "full-modular",
+      "atx"
+    ]
+  },
+  {
+    "objectID":"psu-thermaltake-toughpower-gf3-1000w",
+    "component_type":"PSU",
+    "brand":"Thermaltake",
+    "model":"Toughpower GF3 1000W",
+    "wattage":1000,
+    "efficiency_rating":"80+ Gold",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":159.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "80plus-gold",
+      "psu-1000w",
+      "full-modular",
+      "atx"
+    ]
+  },
+  {
+    "objectID":"psu-fractal-design-ion-2-860w",
+    "component_type":"PSU",
+    "brand":"Fractal Design",
+    "model":"ION+ 2 860W",
+    "wattage":860,
+    "efficiency_rating":"80+ Platinum",
+    "modular":"Full",
+    "form_factor":"ATX",
+    "price_usd":159.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "80plus-platinum",
+      "atx",
+      "full-modular",
+      "psu-850w"
+    ]
+  },
+  {
+    "objectID":"psu-corsair-sf750-platinum",
+    "component_type":"PSU",
+    "brand":"Corsair",
+    "model":"SF750 Platinum",
+    "wattage":750,
+    "efficiency_rating":"80+ Platinum",
+    "modular":"Full",
+    "form_factor":"SFX",
+    "price_usd":179.0,
+    "performance_tier":"mid-range",
+    "compatibility_tags":[
+      "psu-750w",
+      "80plus-platinum",
+      "sfx",
+      "full-modular"
+    ]
+  }
+]

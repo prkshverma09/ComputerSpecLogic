@@ -1,0 +1,13 @@
+name,brand,wattage,efficiency_rating,modular,form_factor,price_usd
+RM1000x,Corsair,1000,80+ Gold,Full,ATX,189
+RM850x,Corsair,850,80+ Gold,Full,ATX,149
+RM750x,Corsair,750,80+ Gold,Full,ATX,129
+FOCUS GX-1000,Seasonic,1000,80+ Gold,Full,ATX,179
+FOCUS GX-850,Seasonic,850,80+ Gold,Full,ATX,139
+FOCUS GX-750,Seasonic,750,80+ Gold,Full,ATX,119
+SuperNOVA 1000 G7,EVGA,1000,80+ Gold,Full,ATX,169
+SuperNOVA 850 G6,EVGA,850,80+ Gold,Full,ATX,129
+SuperNOVA 650 G6,EVGA,650,80+ Gold,Full,ATX,89
+Toughpower GF3 1000W,Thermaltake,1000,80+ Gold,Full,ATX,159
+ION+ 2 860W,Fractal Design,860,80+ Platinum,Full,ATX,159
+SF750 Platinum,Corsair,750,80+ Platinum,Full,SFX,179

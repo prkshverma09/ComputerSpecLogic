@@ -1,0 +1,27 @@
+# Spec-Logic Backend - Python ETL Pipeline
+# Data Processing
+pandas
+numpy
+
+# Web Scraping
+requests
+beautifulsoup4
+lxml
+
+# Algolia
+algoliasearch
+
+# Environment
+python-dotenv
+
+# Testing
+pytest
+pytest-mock
+pytest-cov
+responses  # For mocking HTTP requests
+
+# Code Quality
+black
+flake8
+isort
+mypy

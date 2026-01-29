@@ -1,0 +1,516 @@
+2026-01-29 22:45:00,832 - __main__ - INFO - ============================================================
+2026-01-29 22:45:00,832 - __main__ - INFO - SPEC-LOGIC ETL PIPELINE
+2026-01-29 22:45:00,833 - __main__ - INFO - ============================================================
+2026-01-29 22:45:00,833 - etl.pipeline - INFO - Starting ETL pipeline
+2026-01-29 22:45:00,833 - etl.pipeline - INFO - === Stage 1: Extraction ===
+2026-01-29 22:45:00,833 - etl.pipeline - INFO - Extracting from CSV files...
+2026-01-29 22:45:00,833 - etl.extractors.kaggle_extractor - INFO - Extracting all component data
+2026-01-29 22:45:00,833 - etl.extractors.kaggle_extractor - INFO - Extracting CPU data from data/raw/cpus.csv
+2026-01-29 22:45:00,837 - etl.extractors.kaggle_extractor - INFO - Extracted 10 CPU records
+2026-01-29 22:45:00,837 - etl.extractors.kaggle_extractor - INFO - Extracting GPU data from data/raw/gpus.csv
+2026-01-29 22:45:00,838 - etl.extractors.kaggle_extractor - INFO - Extracted 12 GPU records
+2026-01-29 22:45:00,838 - etl.extractors.kaggle_extractor - INFO - Extracting motherboard data from data/raw/motherboards.csv
+2026-01-29 22:45:00,838 - etl.extractors.kaggle_extractor - INFO - Extracted 11 motherboard records
+2026-01-29 22:45:00,839 - etl.extractors.kaggle_extractor - INFO - Extracting RAM data from data/raw/ram.csv
+2026-01-29 22:45:00,839 - etl.extractors.kaggle_extractor - INFO - Extracted 8 RAM records
+2026-01-29 22:45:00,839 - etl.extractors.kaggle_extractor - INFO - Extracting PSU data from data/raw/psus.csv
+2026-01-29 22:45:00,840 - etl.extractors.kaggle_extractor - INFO - Extracted 12 PSU records
+2026-01-29 22:45:00,840 - etl.extractors.kaggle_extractor - INFO - Extracting case data from data/raw/cases.csv
+2026-01-29 22:45:00,841 - etl.extractors.kaggle_extractor - INFO - Extracted 10 case records
+2026-01-29 22:45:00,841 - etl.extractors.kaggle_extractor - INFO - Extracting cooler data from data/raw/coolers.csv
+2026-01-29 22:45:00,842 - etl.extractors.kaggle_extractor - INFO - Extracted 11 cooler records
+2026-01-29 22:45:00,842 - etl.extractors.kaggle_extractor - INFO - Extracted 74 total records across 7 component types
+2026-01-29 22:45:00,842 - etl.pipeline - INFO -   Extracted 10 CPU records from CSV
+2026-01-29 22:45:00,842 - etl.pipeline - INFO -   Extracted 12 GPU records from CSV
+2026-01-29 22:45:00,842 - etl.pipeline - INFO -   Extracted 11 Motherboard records from CSV
+2026-01-29 22:45:00,842 - etl.pipeline - INFO -   Extracted 8 RAM records from CSV
+2026-01-29 22:45:00,842 - etl.pipeline - INFO -   Extracted 12 PSU records from CSV
+2026-01-29 22:45:00,842 - etl.pipeline - INFO -   Extracted 10 Case records from CSV
+2026-01-29 22:45:00,842 - etl.pipeline - INFO -   Extracted 11 Cooler records from CSV
+2026-01-29 22:45:00,842 - etl.pipeline - INFO - === Stage 2: Transformation ===
+2026-01-29 22:45:00,842 - etl.pipeline - INFO - Transforming CPU data...
+2026-01-29 22:45:00,846 - etl.transformers.normalizer - INFO - Normalized 10 records
+2026-01-29 22:45:00,846 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 10 records
+2026-01-29 22:45:00,846 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for CPU
+2026-01-29 22:45:00,846 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for CPU
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for CPU
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for CPU
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for CPU
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for CPU
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for CPU
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for CPU
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for CPU
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for CPU
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,847 - etl.transformers.schema_mapper - INFO - Mapped 0/10 CPU records
+2026-01-29 22:45:00,847 - etl.pipeline - INFO - Transforming GPU data...
+2026-01-29 22:45:00,848 - etl.transformers.normalizer - INFO - Normalized 12 records
+2026-01-29 22:45:00,848 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 12 records
+2026-01-29 22:45:00,848 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,848 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for GPU
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,849 - etl.transformers.schema_mapper - INFO - Mapped 0/12 GPU records
+2026-01-29 22:45:00,849 - etl.pipeline - INFO - Transforming Motherboard data...
+2026-01-29 22:45:00,850 - etl.transformers.normalizer - INFO - Normalized 11 records
+2026-01-29 22:45:00,850 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 11 records
+2026-01-29 22:45:00,850 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,850 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,850 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Motherboard
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,851 - etl.transformers.schema_mapper - INFO - Mapped 0/11 Motherboard records
+2026-01-29 22:45:00,851 - etl.pipeline - INFO - Transforming RAM data...
+2026-01-29 22:45:00,852 - etl.transformers.normalizer - INFO - Normalized 8 records
+2026-01-29 22:45:00,852 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 8 records
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for RAM
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for RAM
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for RAM
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for RAM
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for RAM
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for RAM
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for RAM
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for RAM
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,852 - etl.transformers.schema_mapper - INFO - Mapped 0/8 RAM records
+2026-01-29 22:45:00,853 - etl.pipeline - INFO - Transforming PSU data...
+2026-01-29 22:45:00,853 - etl.transformers.normalizer - INFO - Normalized 12 records
+2026-01-29 22:45:00,853 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 12 records
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for PSU
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,854 - etl.transformers.schema_mapper - INFO - Mapped 0/12 PSU records
+2026-01-29 22:45:00,854 - etl.pipeline - INFO - Transforming Case data...
+2026-01-29 22:45:00,855 - etl.transformers.normalizer - INFO - Normalized 10 records
+2026-01-29 22:45:00,855 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 10 records
+2026-01-29 22:45:00,855 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Case
+2026-01-29 22:45:00,855 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,855 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Case
+2026-01-29 22:45:00,855 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,855 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Case
+2026-01-29 22:45:00,855 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,855 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Case
+2026-01-29 22:45:00,855 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,855 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Case
+2026-01-29 22:45:00,855 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Case
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Case
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Case
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Case
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Case
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,856 - etl.transformers.schema_mapper - INFO - Mapped 0/10 Case records
+2026-01-29 22:45:00,856 - etl.pipeline - INFO - Transforming Cooler data...
+2026-01-29 22:45:00,856 - etl.transformers.normalizer - INFO - Normalized 11 records
+2026-01-29 22:45:00,857 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 11 records
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - WARNING - Missing required field 'objectID' for Cooler
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - DEBUG - Skipping invalid record: unknown
+2026-01-29 22:45:00,857 - etl.transformers.schema_mapper - INFO - Mapped 0/11 Cooler records
+2026-01-29 22:45:00,857 - etl.pipeline - INFO - Total records after transformation: 0
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - === Stage 3: Loading ===
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - Dry run - skipping upload
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - PIPELINE EXECUTION SUMMARY
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - Duration: 0.03 seconds
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - Extracted: 74 records
+2026-01-29 22:45:00,858 - etl.pipeline - INFO -   - CPU: 10
+2026-01-29 22:45:00,858 - etl.pipeline - INFO -   - GPU: 12
+2026-01-29 22:45:00,858 - etl.pipeline - INFO -   - Motherboard: 11
+2026-01-29 22:45:00,858 - etl.pipeline - INFO -   - RAM: 8
+2026-01-29 22:45:00,858 - etl.pipeline - INFO -   - PSU: 12
+2026-01-29 22:45:00,858 - etl.pipeline - INFO -   - Case: 10
+2026-01-29 22:45:00,858 - etl.pipeline - INFO -   - Cooler: 11
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - Normalized: 74
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - Tagged: 74
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - Mapped: 0
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - Uploaded: 0
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - Failed: 0
+2026-01-29 22:45:00,858 - etl.pipeline - WARNING - Warnings (7):
+2026-01-29 22:45:00,858 - etl.pipeline - WARNING -   - No valid CPU records after mapping
+2026-01-29 22:45:00,858 - etl.pipeline - WARNING -   - No valid GPU records after mapping
+2026-01-29 22:45:00,858 - etl.pipeline - WARNING -   - No valid Motherboard records after mapping
+2026-01-29 22:45:00,858 - etl.pipeline - WARNING -   - No valid RAM records after mapping
+2026-01-29 22:45:00,858 - etl.pipeline - WARNING -   - No valid PSU records after mapping
+2026-01-29 22:45:00,858 - etl.pipeline - WARNING -   - No valid Case records after mapping
+2026-01-29 22:45:00,858 - etl.pipeline - WARNING -   - No valid Cooler records after mapping
+2026-01-29 22:45:00,858 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:45:32,329 - __main__ - INFO - ============================================================
+2026-01-29 22:45:32,329 - __main__ - INFO - SPEC-LOGIC ETL PIPELINE
+2026-01-29 22:45:32,329 - __main__ - INFO - ============================================================
+2026-01-29 22:45:32,329 - etl.pipeline - INFO - Starting ETL pipeline
+2026-01-29 22:45:32,330 - etl.pipeline - INFO - === Stage 1: Extraction ===
+2026-01-29 22:45:32,330 - etl.pipeline - INFO - Extracting from CSV files...
+2026-01-29 22:45:32,330 - etl.extractors.kaggle_extractor - INFO - Extracting all component data
+2026-01-29 22:45:32,330 - etl.extractors.kaggle_extractor - INFO - Extracting CPU data from data/raw/cpus.csv
+2026-01-29 22:45:32,333 - etl.extractors.kaggle_extractor - INFO - Extracted 10 CPU records
+2026-01-29 22:45:32,333 - etl.extractors.kaggle_extractor - INFO - Extracting GPU data from data/raw/gpus.csv
+2026-01-29 22:45:32,334 - etl.extractors.kaggle_extractor - INFO - Extracted 12 GPU records
+2026-01-29 22:45:32,334 - etl.extractors.kaggle_extractor - INFO - Extracting motherboard data from data/raw/motherboards.csv
+2026-01-29 22:45:32,335 - etl.extractors.kaggle_extractor - INFO - Extracted 11 motherboard records
+2026-01-29 22:45:32,335 - etl.extractors.kaggle_extractor - INFO - Extracting RAM data from data/raw/ram.csv
+2026-01-29 22:45:32,336 - etl.extractors.kaggle_extractor - INFO - Extracted 8 RAM records
+2026-01-29 22:45:32,336 - etl.extractors.kaggle_extractor - INFO - Extracting PSU data from data/raw/psus.csv
+2026-01-29 22:45:32,336 - etl.extractors.kaggle_extractor - INFO - Extracted 12 PSU records
+2026-01-29 22:45:32,336 - etl.extractors.kaggle_extractor - INFO - Extracting case data from data/raw/cases.csv
+2026-01-29 22:45:32,337 - etl.extractors.kaggle_extractor - INFO - Extracted 10 case records
+2026-01-29 22:45:32,337 - etl.extractors.kaggle_extractor - INFO - Extracting cooler data from data/raw/coolers.csv
+2026-01-29 22:45:32,338 - etl.extractors.kaggle_extractor - INFO - Extracted 11 cooler records
+2026-01-29 22:45:32,338 - etl.extractors.kaggle_extractor - INFO - Extracted 74 total records across 7 component types
+2026-01-29 22:45:32,338 - etl.pipeline - INFO -   Extracted 10 CPU records from CSV
+2026-01-29 22:45:32,338 - etl.pipeline - INFO -   Extracted 12 GPU records from CSV
+2026-01-29 22:45:32,338 - etl.pipeline - INFO -   Extracted 11 Motherboard records from CSV
+2026-01-29 22:45:32,338 - etl.pipeline - INFO -   Extracted 8 RAM records from CSV
+2026-01-29 22:45:32,338 - etl.pipeline - INFO -   Extracted 12 PSU records from CSV
+2026-01-29 22:45:32,338 - etl.pipeline - INFO -   Extracted 10 Case records from CSV
+2026-01-29 22:45:32,338 - etl.pipeline - INFO -   Extracted 11 Cooler records from CSV
+2026-01-29 22:45:32,338 - etl.pipeline - INFO - === Stage 2: Transformation ===
+2026-01-29 22:45:32,338 - etl.pipeline - INFO - Transforming CPU data...
+2026-01-29 22:45:32,342 - etl.transformers.normalizer - INFO - Normalized 10 records
+2026-01-29 22:45:32,342 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 10 records
+2026-01-29 22:45:32,343 - etl.transformers.schema_mapper - INFO - Mapped 10/10 CPU records
+2026-01-29 22:45:32,345 - etl.pipeline - INFO -   Saved 10 CPU records to data/processed/cpu_processed.json
+2026-01-29 22:45:32,345 - etl.pipeline - INFO - Transforming GPU data...
+2026-01-29 22:45:32,346 - etl.transformers.normalizer - INFO - Normalized 12 records
+2026-01-29 22:45:32,347 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 12 records
+2026-01-29 22:45:32,347 - etl.transformers.schema_mapper - INFO - Mapped 12/12 GPU records
+2026-01-29 22:45:32,348 - etl.pipeline - INFO -   Saved 12 GPU records to data/processed/gpu_processed.json
+2026-01-29 22:45:32,348 - etl.pipeline - INFO - Transforming Motherboard data...
+2026-01-29 22:45:32,350 - etl.transformers.normalizer - INFO - Normalized 11 records
+2026-01-29 22:45:32,350 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 11 records
+2026-01-29 22:45:32,351 - etl.transformers.schema_mapper - INFO - Mapped 11/11 Motherboard records
+2026-01-29 22:45:32,352 - etl.pipeline - INFO -   Saved 11 Motherboard records to data/processed/motherboard_processed.json
+2026-01-29 22:45:32,352 - etl.pipeline - INFO - Transforming RAM data...
+2026-01-29 22:45:32,353 - etl.transformers.normalizer - INFO - Normalized 8 records
+2026-01-29 22:45:32,353 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 8 records
+2026-01-29 22:45:32,354 - etl.transformers.schema_mapper - INFO - Mapped 8/8 RAM records
+2026-01-29 22:45:32,354 - etl.pipeline - INFO -   Saved 8 RAM records to data/processed/ram_processed.json
+2026-01-29 22:45:32,354 - etl.pipeline - INFO - Transforming PSU data...
+2026-01-29 22:45:32,355 - etl.transformers.normalizer - INFO - Normalized 12 records
+2026-01-29 22:45:32,356 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 12 records
+2026-01-29 22:45:32,356 - etl.transformers.schema_mapper - INFO - Mapped 12/12 PSU records
+2026-01-29 22:45:32,357 - etl.pipeline - INFO -   Saved 12 PSU records to data/processed/psu_processed.json
+2026-01-29 22:45:32,357 - etl.pipeline - INFO - Transforming Case data...
+2026-01-29 22:45:32,358 - etl.transformers.normalizer - INFO - Normalized 10 records
+2026-01-29 22:45:32,358 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 10 records
+2026-01-29 22:45:32,359 - etl.transformers.schema_mapper - INFO - Mapped 10/10 Case records
+2026-01-29 22:45:32,360 - etl.pipeline - INFO -   Saved 10 Case records to data/processed/case_processed.json
+2026-01-29 22:45:32,360 - etl.pipeline - INFO - Transforming Cooler data...
+2026-01-29 22:45:32,360 - etl.transformers.normalizer - INFO - Normalized 11 records
+2026-01-29 22:45:32,361 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 11 records
+2026-01-29 22:45:32,361 - etl.transformers.schema_mapper - INFO - Mapped 11/11 Cooler records
+2026-01-29 22:45:32,362 - etl.pipeline - INFO -   Saved 11 Cooler records to data/processed/cooler_processed.json
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - Total records after transformation: 74
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - === Stage 3: Loading ===
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - Dry run - skipping upload
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - PIPELINE EXECUTION SUMMARY
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - Duration: 0.03 seconds
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - Extracted: 74 records
+2026-01-29 22:45:32,362 - etl.pipeline - INFO -   - CPU: 10
+2026-01-29 22:45:32,362 - etl.pipeline - INFO -   - GPU: 12
+2026-01-29 22:45:32,362 - etl.pipeline - INFO -   - Motherboard: 11
+2026-01-29 22:45:32,362 - etl.pipeline - INFO -   - RAM: 8
+2026-01-29 22:45:32,362 - etl.pipeline - INFO -   - PSU: 12
+2026-01-29 22:45:32,362 - etl.pipeline - INFO -   - Case: 10
+2026-01-29 22:45:32,362 - etl.pipeline - INFO -   - Cooler: 11
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - Normalized: 74
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - Tagged: 74
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - Mapped: 74
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - Uploaded: 74
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - Failed: 0
+2026-01-29 22:45:32,362 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:45:38,294 - __main__ - INFO - ============================================================
+2026-01-29 22:45:38,294 - __main__ - INFO - SPEC-LOGIC ETL PIPELINE
+2026-01-29 22:45:38,294 - __main__ - INFO - ============================================================
+2026-01-29 22:45:38,294 - etl.pipeline - INFO - Starting ETL pipeline
+2026-01-29 22:45:38,294 - etl.pipeline - INFO - === Stage 1: Extraction ===
+2026-01-29 22:45:38,294 - etl.pipeline - INFO - Extracting from CSV files...
+2026-01-29 22:45:38,294 - etl.extractors.kaggle_extractor - INFO - Extracting all component data
+2026-01-29 22:45:38,294 - etl.extractors.kaggle_extractor - INFO - Extracting CPU data from data/raw/cpus.csv
+2026-01-29 22:45:38,296 - etl.extractors.kaggle_extractor - INFO - Extracted 10 CPU records
+2026-01-29 22:45:38,296 - etl.extractors.kaggle_extractor - INFO - Extracting GPU data from data/raw/gpus.csv
+2026-01-29 22:45:38,297 - etl.extractors.kaggle_extractor - INFO - Extracted 12 GPU records
+2026-01-29 22:45:38,297 - etl.extractors.kaggle_extractor - INFO - Extracting motherboard data from data/raw/motherboards.csv
+2026-01-29 22:45:38,297 - etl.extractors.kaggle_extractor - INFO - Extracted 11 motherboard records
+2026-01-29 22:45:38,298 - etl.extractors.kaggle_extractor - INFO - Extracting RAM data from data/raw/ram.csv
+2026-01-29 22:45:38,298 - etl.extractors.kaggle_extractor - INFO - Extracted 8 RAM records
+2026-01-29 22:45:38,298 - etl.extractors.kaggle_extractor - INFO - Extracting PSU data from data/raw/psus.csv
+2026-01-29 22:45:38,299 - etl.extractors.kaggle_extractor - INFO - Extracted 12 PSU records
+2026-01-29 22:45:38,299 - etl.extractors.kaggle_extractor - INFO - Extracting case data from data/raw/cases.csv
+2026-01-29 22:45:38,300 - etl.extractors.kaggle_extractor - INFO - Extracted 10 case records
+2026-01-29 22:45:38,300 - etl.extractors.kaggle_extractor - INFO - Extracting cooler data from data/raw/coolers.csv
+2026-01-29 22:45:38,301 - etl.extractors.kaggle_extractor - INFO - Extracted 11 cooler records
+2026-01-29 22:45:38,301 - etl.extractors.kaggle_extractor - INFO - Extracted 74 total records across 7 component types
+2026-01-29 22:45:38,301 - etl.pipeline - INFO -   Extracted 10 CPU records from CSV
+2026-01-29 22:45:38,301 - etl.pipeline - INFO -   Extracted 12 GPU records from CSV
+2026-01-29 22:45:38,301 - etl.pipeline - INFO -   Extracted 11 Motherboard records from CSV
+2026-01-29 22:45:38,301 - etl.pipeline - INFO -   Extracted 8 RAM records from CSV
+2026-01-29 22:45:38,301 - etl.pipeline - INFO -   Extracted 12 PSU records from CSV
+2026-01-29 22:45:38,301 - etl.pipeline - INFO -   Extracted 10 Case records from CSV
+2026-01-29 22:45:38,301 - etl.pipeline - INFO -   Extracted 11 Cooler records from CSV
+2026-01-29 22:45:38,301 - etl.pipeline - INFO - === Stage 2: Transformation ===
+2026-01-29 22:45:38,301 - etl.pipeline - INFO - Transforming CPU data...
+2026-01-29 22:45:38,304 - etl.transformers.normalizer - INFO - Normalized 10 records
+2026-01-29 22:45:38,304 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 10 records
+2026-01-29 22:45:38,305 - etl.transformers.schema_mapper - INFO - Mapped 10/10 CPU records
+2026-01-29 22:45:38,307 - etl.pipeline - INFO -   Saved 10 CPU records to data/processed/cpu_processed.json
+2026-01-29 22:45:38,307 - etl.pipeline - INFO - Transforming GPU data...
+2026-01-29 22:45:38,308 - etl.transformers.normalizer - INFO - Normalized 12 records
+2026-01-29 22:45:38,309 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 12 records
+2026-01-29 22:45:38,309 - etl.transformers.schema_mapper - INFO - Mapped 12/12 GPU records
+2026-01-29 22:45:38,311 - etl.pipeline - INFO -   Saved 12 GPU records to data/processed/gpu_processed.json
+2026-01-29 22:45:38,311 - etl.pipeline - INFO - Transforming Motherboard data...
+2026-01-29 22:45:38,312 - etl.transformers.normalizer - INFO - Normalized 11 records
+2026-01-29 22:45:38,312 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 11 records
+2026-01-29 22:45:38,313 - etl.transformers.schema_mapper - INFO - Mapped 11/11 Motherboard records
+2026-01-29 22:45:38,314 - etl.pipeline - INFO -   Saved 11 Motherboard records to data/processed/motherboard_processed.json
+2026-01-29 22:45:38,314 - etl.pipeline - INFO - Transforming RAM data...
+2026-01-29 22:45:38,315 - etl.transformers.normalizer - INFO - Normalized 8 records
+2026-01-29 22:45:38,316 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 8 records
+2026-01-29 22:45:38,316 - etl.transformers.schema_mapper - INFO - Mapped 8/8 RAM records
+2026-01-29 22:45:38,317 - etl.pipeline - INFO -   Saved 8 RAM records to data/processed/ram_processed.json
+2026-01-29 22:45:38,317 - etl.pipeline - INFO - Transforming PSU data...
+2026-01-29 22:45:38,318 - etl.transformers.normalizer - INFO - Normalized 12 records
+2026-01-29 22:45:38,319 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 12 records
+2026-01-29 22:45:38,319 - etl.transformers.schema_mapper - INFO - Mapped 12/12 PSU records
+2026-01-29 22:45:38,320 - etl.pipeline - INFO -   Saved 12 PSU records to data/processed/psu_processed.json
+2026-01-29 22:45:38,321 - etl.pipeline - INFO - Transforming Case data...
+2026-01-29 22:45:38,322 - etl.transformers.normalizer - INFO - Normalized 10 records
+2026-01-29 22:45:38,340 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 10 records
+2026-01-29 22:45:38,342 - etl.transformers.schema_mapper - INFO - Mapped 10/10 Case records
+2026-01-29 22:45:38,347 - etl.pipeline - INFO -   Saved 10 Case records to data/processed/case_processed.json
+2026-01-29 22:45:38,347 - etl.pipeline - INFO - Transforming Cooler data...
+2026-01-29 22:45:38,349 - etl.transformers.normalizer - INFO - Normalized 11 records
+2026-01-29 22:45:38,349 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 11 records
+2026-01-29 22:45:38,350 - etl.transformers.schema_mapper - INFO - Mapped 11/11 Cooler records
+2026-01-29 22:45:38,351 - etl.pipeline - INFO -   Saved 11 Cooler records to data/processed/cooler_processed.json
+2026-01-29 22:45:38,351 - etl.pipeline - INFO - Total records after transformation: 74
+2026-01-29 22:45:38,351 - etl.pipeline - INFO - === Stage 3: Loading ===
+2026-01-29 22:45:38,351 - etl.pipeline - INFO - Configuring Algolia index...
+2026-01-29 22:45:38,351 - etl.loaders.algolia_loader - INFO - Initialized Algolia loader for index: prod_components
+2026-01-29 22:45:38,351 - etl.loaders.algolia_loader - INFO - Configuring index 'prod_components' with settings
+2026-01-29 22:45:39,562 - etl.loaders.algolia_loader - INFO - Index 'prod_components' configured successfully
+2026-01-29 22:45:39,562 - etl.pipeline - INFO - Uploading 74 records to Algolia...
+2026-01-29 22:45:39,563 - etl.loaders.algolia_loader - INFO - Uploading 74 records to 'prod_components'
+2026-01-29 22:45:39,563 - etl.loaders.algolia_loader - INFO - Clearing index 'prod_components'
+2026-01-29 22:45:40,639 - etl.loaders.algolia_loader - INFO - Index cleared successfully
+2026-01-29 22:45:40,640 - etl.loaders.algolia_loader - INFO - Uploading batch 1/1 (74 records)
+2026-01-29 22:45:40,670 - etl.loaders.algolia_loader - WARNING - Upload attempt 1 failed: lexical error: invalid char in json text. In the middle of '-cooler"], "radiator_size_mm": NaN}}, {"action": "addObject", "b' near line:1 column:30164. Retrying in 1s...
+2026-01-29 22:45:41,693 - etl.loaders.algolia_loader - WARNING - Upload attempt 2 failed: lexical error: invalid char in json text. In the middle of '-cooler"], "radiator_size_mm": NaN}}, {"action": "addObject", "b' near line:1 column:30164. Retrying in 2s...
+2026-01-29 22:45:43,707 - etl.loaders.algolia_loader - ERROR - Failed to upload batch 1: lexical error: invalid char in json text. In the middle of '-cooler"], "radiator_size_mm": NaN}}, {"action": "addObject", "b' near line:1 column:30164
+2026-01-29 22:45:43,709 - etl.loaders.algolia_loader - INFO - Upload complete: 0 uploaded, 74 errors
+2026-01-29 22:45:43,709 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:45:43,709 - etl.pipeline - INFO - PIPELINE EXECUTION SUMMARY
+2026-01-29 22:45:43,709 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:45:43,709 - etl.pipeline - INFO - Duration: 5.42 seconds
+2026-01-29 22:45:43,709 - etl.pipeline - INFO - Extracted: 74 records
+2026-01-29 22:45:43,709 - etl.pipeline - INFO -   - CPU: 10
+2026-01-29 22:45:43,709 - etl.pipeline - INFO -   - GPU: 12
+2026-01-29 22:45:43,709 - etl.pipeline - INFO -   - Motherboard: 11
+2026-01-29 22:45:43,713 - etl.pipeline - INFO -   - RAM: 8
+2026-01-29 22:45:43,713 - etl.pipeline - INFO -   - PSU: 12
+2026-01-29 22:45:43,713 - etl.pipeline - INFO -   - Case: 10
+2026-01-29 22:45:43,713 - etl.pipeline - INFO -   - Cooler: 11
+2026-01-29 22:45:43,713 - etl.pipeline - INFO - Normalized: 74
+2026-01-29 22:45:43,713 - etl.pipeline - INFO - Tagged: 74
+2026-01-29 22:45:43,713 - etl.pipeline - INFO - Mapped: 74
+2026-01-29 22:45:43,713 - etl.pipeline - INFO - Uploaded: 0
+2026-01-29 22:45:43,713 - etl.pipeline - INFO - Failed: 74
+2026-01-29 22:45:43,713 - etl.pipeline - WARNING - Warnings (1):
+2026-01-29 22:45:43,713 - etl.pipeline - WARNING -   - 74 records failed to upload
+2026-01-29 22:45:43,714 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:46:07,690 - __main__ - INFO - ============================================================
+2026-01-29 22:46:07,691 - __main__ - INFO - SPEC-LOGIC ETL PIPELINE
+2026-01-29 22:46:07,691 - __main__ - INFO - ============================================================
+2026-01-29 22:46:07,691 - etl.pipeline - INFO - Starting ETL pipeline
+2026-01-29 22:46:07,691 - etl.pipeline - INFO - === Stage 1: Extraction ===
+2026-01-29 22:46:07,691 - etl.pipeline - INFO - Extracting from CSV files...
+2026-01-29 22:46:07,691 - etl.extractors.kaggle_extractor - INFO - Extracting all component data
+2026-01-29 22:46:07,691 - etl.extractors.kaggle_extractor - INFO - Extracting CPU data from data/raw/cpus.csv
+2026-01-29 22:46:07,696 - etl.extractors.kaggle_extractor - INFO - Extracted 10 CPU records
+2026-01-29 22:46:07,696 - etl.extractors.kaggle_extractor - INFO - Extracting GPU data from data/raw/gpus.csv
+2026-01-29 22:46:07,697 - etl.extractors.kaggle_extractor - INFO - Extracted 12 GPU records
+2026-01-29 22:46:07,697 - etl.extractors.kaggle_extractor - INFO - Extracting motherboard data from data/raw/motherboards.csv
+2026-01-29 22:46:07,698 - etl.extractors.kaggle_extractor - INFO - Extracted 11 motherboard records
+2026-01-29 22:46:07,698 - etl.extractors.kaggle_extractor - INFO - Extracting RAM data from data/raw/ram.csv
+2026-01-29 22:46:07,699 - etl.extractors.kaggle_extractor - INFO - Extracted 8 RAM records
+2026-01-29 22:46:07,699 - etl.extractors.kaggle_extractor - INFO - Extracting PSU data from data/raw/psus.csv
+2026-01-29 22:46:07,700 - etl.extractors.kaggle_extractor - INFO - Extracted 12 PSU records
+2026-01-29 22:46:07,700 - etl.extractors.kaggle_extractor - INFO - Extracting case data from data/raw/cases.csv
+2026-01-29 22:46:07,701 - etl.extractors.kaggle_extractor - INFO - Extracted 10 case records
+2026-01-29 22:46:07,701 - etl.extractors.kaggle_extractor - INFO - Extracting cooler data from data/raw/coolers.csv
+2026-01-29 22:46:07,702 - etl.extractors.kaggle_extractor - INFO - Extracted 11 cooler records
+2026-01-29 22:46:07,702 - etl.extractors.kaggle_extractor - INFO - Extracted 74 total records across 7 component types
+2026-01-29 22:46:07,702 - etl.pipeline - INFO -   Extracted 10 CPU records from CSV
+2026-01-29 22:46:07,702 - etl.pipeline - INFO -   Extracted 12 GPU records from CSV
+2026-01-29 22:46:07,702 - etl.pipeline - INFO -   Extracted 11 Motherboard records from CSV
+2026-01-29 22:46:07,703 - etl.pipeline - INFO -   Extracted 8 RAM records from CSV
+2026-01-29 22:46:07,703 - etl.pipeline - INFO -   Extracted 12 PSU records from CSV
+2026-01-29 22:46:07,703 - etl.pipeline - INFO -   Extracted 10 Case records from CSV
+2026-01-29 22:46:07,703 - etl.pipeline - INFO -   Extracted 11 Cooler records from CSV
+2026-01-29 22:46:07,703 - etl.pipeline - INFO - === Stage 2: Transformation ===
+2026-01-29 22:46:07,703 - etl.pipeline - INFO - Transforming CPU data...
+2026-01-29 22:46:07,707 - etl.transformers.normalizer - INFO - Normalized 10 records
+2026-01-29 22:46:07,707 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 10 records
+2026-01-29 22:46:07,708 - etl.transformers.schema_mapper - INFO - Mapped 10/10 CPU records
+2026-01-29 22:46:07,711 - etl.pipeline - INFO -   Saved 10 CPU records to data/processed/cpu_processed.json
+2026-01-29 22:46:07,711 - etl.pipeline - INFO - Transforming GPU data...
+2026-01-29 22:46:07,712 - etl.transformers.normalizer - INFO - Normalized 12 records
+2026-01-29 22:46:07,712 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 12 records
+2026-01-29 22:46:07,713 - etl.transformers.schema_mapper - INFO - Mapped 12/12 GPU records
+2026-01-29 22:46:07,714 - etl.pipeline - INFO -   Saved 12 GPU records to data/processed/gpu_processed.json
+2026-01-29 22:46:07,714 - etl.pipeline - INFO - Transforming Motherboard data...
+2026-01-29 22:46:07,715 - etl.transformers.normalizer - INFO - Normalized 11 records
+2026-01-29 22:46:07,716 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 11 records
+2026-01-29 22:46:07,716 - etl.transformers.schema_mapper - INFO - Mapped 11/11 Motherboard records
+2026-01-29 22:46:07,717 - etl.pipeline - INFO -   Saved 11 Motherboard records to data/processed/motherboard_processed.json
+2026-01-29 22:46:07,717 - etl.pipeline - INFO - Transforming RAM data...
+2026-01-29 22:46:07,718 - etl.transformers.normalizer - INFO - Normalized 8 records
+2026-01-29 22:46:07,719 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 8 records
+2026-01-29 22:46:07,719 - etl.transformers.schema_mapper - INFO - Mapped 8/8 RAM records
+2026-01-29 22:46:07,720 - etl.pipeline - INFO -   Saved 8 RAM records to data/processed/ram_processed.json
+2026-01-29 22:46:07,720 - etl.pipeline - INFO - Transforming PSU data...
+2026-01-29 22:46:07,721 - etl.transformers.normalizer - INFO - Normalized 12 records
+2026-01-29 22:46:07,721 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 12 records
+2026-01-29 22:46:07,722 - etl.transformers.schema_mapper - INFO - Mapped 12/12 PSU records
+2026-01-29 22:46:07,723 - etl.pipeline - INFO -   Saved 12 PSU records to data/processed/psu_processed.json
+2026-01-29 22:46:07,723 - etl.pipeline - INFO - Transforming Case data...
+2026-01-29 22:46:07,724 - etl.transformers.normalizer - INFO - Normalized 10 records
+2026-01-29 22:46:07,724 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 10 records
+2026-01-29 22:46:07,725 - etl.transformers.schema_mapper - INFO - Mapped 10/10 Case records
+2026-01-29 22:46:07,725 - etl.pipeline - INFO -   Saved 10 Case records to data/processed/case_processed.json
+2026-01-29 22:46:07,726 - etl.pipeline - INFO - Transforming Cooler data...
+2026-01-29 22:46:07,726 - etl.transformers.normalizer - INFO - Normalized 11 records
+2026-01-29 22:46:07,727 - etl.transformers.compatibility_tagger - INFO - Generated compatibility tags for 11 records
+2026-01-29 22:46:07,727 - etl.transformers.schema_mapper - INFO - Mapped 11/11 Cooler records
+2026-01-29 22:46:07,728 - etl.pipeline - INFO -   Saved 11 Cooler records to data/processed/cooler_processed.json
+2026-01-29 22:46:07,728 - etl.pipeline - INFO - Total records after transformation: 74
+2026-01-29 22:46:07,728 - etl.pipeline - INFO - === Stage 3: Loading ===
+2026-01-29 22:46:07,728 - etl.pipeline - INFO - Configuring Algolia index...
+2026-01-29 22:46:07,728 - etl.loaders.algolia_loader - INFO - Initialized Algolia loader for index: prod_components
+2026-01-29 22:46:07,728 - etl.loaders.algolia_loader - INFO - Configuring index 'prod_components' with settings
+2026-01-29 22:46:08,850 - etl.loaders.algolia_loader - INFO - Index 'prod_components' configured successfully
+2026-01-29 22:46:08,850 - etl.pipeline - INFO - Uploading 74 records to Algolia...
+2026-01-29 22:46:08,851 - etl.loaders.algolia_loader - INFO - Uploading 74 records to 'prod_components'
+2026-01-29 22:46:08,851 - etl.loaders.algolia_loader - INFO - Clearing index 'prod_components'
+2026-01-29 22:46:10,972 - etl.loaders.algolia_loader - INFO - Index cleared successfully
+2026-01-29 22:46:10,973 - etl.loaders.algolia_loader - INFO - Uploading batch 1/1 (74 records)
+2026-01-29 22:46:14,073 - etl.loaders.algolia_loader - INFO - Upload complete: 74 uploaded, 0 errors
+2026-01-29 22:46:14,073 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:46:14,073 - etl.pipeline - INFO - PIPELINE EXECUTION SUMMARY
+2026-01-29 22:46:14,079 - etl.pipeline - INFO - ==================================================
+2026-01-29 22:46:14,079 - etl.pipeline - INFO - Duration: 6.38 seconds
+2026-01-29 22:46:14,080 - etl.pipeline - INFO - Extracted: 74 records
+2026-01-29 22:46:14,080 - etl.pipeline - INFO -   - CPU: 10
+2026-01-29 22:46:14,080 - etl.pipeline - INFO -   - GPU: 12
+2026-01-29 22:46:14,080 - etl.pipeline - INFO -   - Motherboard: 11
+2026-01-29 22:46:14,080 - etl.pipeline - INFO -   - RAM: 8
+2026-01-29 22:46:14,080 - etl.pipeline - INFO -   - PSU: 12
+2026-01-29 22:46:14,080 - etl.pipeline - INFO -   - Case: 10
+2026-01-29 22:46:14,080 - etl.pipeline - INFO -   - Cooler: 11
+2026-01-29 22:46:14,080 - etl.pipeline - INFO - Normalized: 74
+2026-01-29 22:46:14,080 - etl.pipeline - INFO - Tagged: 74
+2026-01-29 22:46:14,080 - etl.pipeline - INFO - Mapped: 74
+2026-01-29 22:46:14,081 - etl.pipeline - INFO - Uploaded: 74
+2026-01-29 22:46:14,081 - etl.pipeline - INFO - Failed: 0
+2026-01-29 22:46:14,081 - etl.pipeline - INFO - ==================================================
