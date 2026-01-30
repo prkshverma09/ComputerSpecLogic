@@ -16,6 +16,38 @@ import type {
 } from "@/types/components";
 
 /**
+ * Helper to normalize array fields that might be string or array
+ * Handles both string and array inputs from different data sources
+ */
+function normalizeToArray(value: string | string[] | undefined): string[] {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  return [value];
+}
+
+/**
+ * Helper to check if a value is in a list (handles both string and array)
+ */
+function isValueInList(list: string | string[] | undefined, value: string): boolean {
+  if (!value) return false;
+  const normalizedList = normalizeToArray(list);
+  if (normalizedList.length === 0) return true; // If no restrictions, allow
+  return normalizedList.some(item => 
+    item.toLowerCase() === value.toLowerCase() ||
+    item.toLowerCase().includes(value.toLowerCase()) ||
+    value.toLowerCase().includes(item.toLowerCase())
+  );
+}
+
+/**
+ * Helper to format array values for display
+ */
+function formatArrayValues(value: string | string[] | undefined): string {
+  const items = normalizeToArray(value);
+  return items.length > 0 ? items.join("/") : "Unknown";
+}
+
+/**
  * Check compatibility of a component with the current build
  */
 export function checkComponentCompatibility(
@@ -63,7 +95,7 @@ function checkCPUCompatibility(
 
   // Check cooler socket support
   if (build.cooler) {
-    if (!build.cooler.socket_support.includes(cpu.socket)) {
+    if (!isValueInList(build.cooler.socket_support, cpu.socket)) {
       return {
         status: "warning",
         message: `Cooler may not support ${cpu.socket} socket. Please verify compatibility.`,
@@ -133,17 +165,17 @@ function checkMotherboardCompatibility(
 
   // Check RAM compatibility
   if (build.ram) {
-    if (!motherboard.memory_type.includes(build.ram.memory_type)) {
+    if (!isValueInList(motherboard.memory_type, build.ram.memory_type)) {
       return {
         status: "incompatible",
-        message: `Memory mismatch: Motherboard supports ${motherboard.memory_type.join("/")}, RAM is ${build.ram.memory_type}`,
+        message: `Memory mismatch: Motherboard supports ${formatArrayValues(motherboard.memory_type)}, RAM is ${build.ram.memory_type}`,
       };
     }
   }
 
   // Check case form factor support
   if (build.case) {
-    if (!build.case.form_factor_support.includes(motherboard.form_factor)) {
+    if (!isValueInList(build.case.form_factor_support, motherboard.form_factor)) {
       return {
         status: "incompatible",
         message: `Case does not support ${motherboard.form_factor} motherboards`,
@@ -163,17 +195,17 @@ function checkRAMCompatibility(
 ): { status: CompatibilityStatus; message?: string } {
   // Check motherboard memory type
   if (build.motherboard) {
-    if (!build.motherboard.memory_type.includes(ram.memory_type)) {
+    if (!isValueInList(build.motherboard.memory_type, ram.memory_type)) {
       return {
         status: "incompatible",
-        message: `Memory type mismatch: Motherboard supports ${build.motherboard.memory_type.join("/")}, RAM is ${ram.memory_type}`,
+        message: `Memory type mismatch: Motherboard supports ${formatArrayValues(build.motherboard.memory_type)}, RAM is ${ram.memory_type}`,
       };
     }
   }
 
   // Check CPU memory support
   if (build.cpu) {
-    if (!build.cpu.memory_type.includes(ram.memory_type)) {
+    if (!isValueInList(build.cpu.memory_type, ram.memory_type)) {
       return {
         status: "incompatible",
         message: `CPU does not support ${ram.memory_type} memory`,
@@ -240,9 +272,7 @@ function checkCaseCompatibility(
 
   // Check motherboard form factor
   if (build.motherboard) {
-    if (
-      !caseComponent.form_factor_support.includes(build.motherboard.form_factor)
-    ) {
+    if (!isValueInList(caseComponent.form_factor_support, build.motherboard.form_factor)) {
       return {
         status: "incompatible",
         message: `Case does not support ${build.motherboard.form_factor} motherboards`,
@@ -262,7 +292,7 @@ function checkCoolerCompatibility(
 ): { status: CompatibilityStatus; message?: string } {
   // Check socket support
   if (build.cpu) {
-    if (!cooler.socket_support.includes(build.cpu.socket)) {
+    if (!isValueInList(cooler.socket_support, build.cpu.socket)) {
       return {
         status: "incompatible",
         message: `Cooler does not support ${build.cpu.socket} socket`,
@@ -383,13 +413,13 @@ export function validateBuild(build: Build): ValidationResult {
 
   // RAM ↔ Motherboard memory type
   if (build.ram && build.motherboard) {
-    if (!build.motherboard.memory_type.includes(build.ram.memory_type)) {
+    if (!isValueInList(build.motherboard.memory_type, build.ram.memory_type)) {
       issues.push({
         type: "error",
         code: "MEMORY_TYPE_MISMATCH",
-        message: `RAM type (${build.ram.memory_type}) is not supported by motherboard (${build.motherboard.memory_type.join("/")})`,
+        message: `RAM type (${build.ram.memory_type}) is not supported by motherboard (${formatArrayValues(build.motherboard.memory_type)})`,
         affectedComponents: ["RAM", "Motherboard"],
-        suggestion: `Select ${build.motherboard.memory_type.join(" or ")} RAM`,
+        suggestion: `Select ${formatArrayValues(build.motherboard.memory_type)} RAM`,
       });
     }
   }
@@ -422,7 +452,7 @@ export function validateBuild(build: Build): ValidationResult {
 
   // Cooler socket support
   if (build.cooler && build.cpu) {
-    if (!build.cooler.socket_support.includes(build.cpu.socket)) {
+    if (!isValueInList(build.cooler.socket_support, build.cpu.socket)) {
       issues.push({
         type: "error",
         code: "COOLER_SOCKET_MISMATCH",
@@ -435,9 +465,7 @@ export function validateBuild(build: Build): ValidationResult {
 
   // Motherboard ↔ Case form factor
   if (build.motherboard && build.case) {
-    if (
-      !build.case.form_factor_support.includes(build.motherboard.form_factor)
-    ) {
+    if (!isValueInList(build.case.form_factor_support, build.motherboard.form_factor)) {
       issues.push({
         type: "error",
         code: "FORM_FACTOR_MISMATCH",
@@ -494,20 +522,22 @@ export function deriveActiveFilters(build: Build): {
   }
 
   // Lock memory type from Motherboard or RAM
-  if (build.motherboard && build.motherboard.memory_type.length === 1) {
-    memory_type = build.motherboard.memory_type[0];
+  const memTypes = normalizeToArray(build.motherboard?.memory_type);
+  if (memTypes.length === 1) {
+    memory_type = memTypes[0];
   } else if (build.ram) {
     memory_type = build.ram.memory_type;
   }
 
   // Derive form factor from Case
   if (build.case) {
+    const ffSupport = normalizeToArray(build.case.form_factor_support);
     // If case supports ATX, that's likely the target
-    if (build.case.form_factor_support.includes("ATX")) {
+    if (ffSupport.some(ff => ff.toUpperCase() === "ATX")) {
       form_factor = "ATX";
-    } else if (build.case.form_factor_support.includes("Micro-ATX")) {
+    } else if (ffSupport.some(ff => ff.toUpperCase() === "MICRO-ATX")) {
       form_factor = "Micro-ATX";
-    } else if (build.case.form_factor_support.includes("Mini-ITX")) {
+    } else if (ffSupport.some(ff => ff.toUpperCase() === "MINI-ITX")) {
       form_factor = "Mini-ITX";
     }
   }
