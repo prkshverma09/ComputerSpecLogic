@@ -22,16 +22,19 @@ test.describe("Chat Widget", () => {
     await expect(page.getByText("Powered by Algolia AI")).toBeVisible();
   });
 
-  test("should display suggested prompts when chat opens", async ({ page }) => {
+  test("should display quick questions dropdown when chat opens", async ({ page }) => {
     // Open chat
     const chatButton = page.locator('button:has(svg[class*="lucide-message-circle"])');
     await chatButton.click();
 
-    // Check for suggested prompts
-    await expect(page.getByText("Quick questions")).toBeVisible();
-    await expect(page.getByRole("button", { name: /Gaming CPU/i })).toBeVisible();
-    await expect(page.getByRole("button", { name: /PSU Check/i })).toBeVisible();
-    await expect(page.getByRole("button", { name: /Compatibility/i })).toBeVisible();
+    // Check for quick questions dropdown
+    await expect(page.getByText("Quick questions - select a topic")).toBeVisible();
+    
+    // Open dropdown and check options
+    const dropdown = page.getByRole("combobox");
+    await dropdown.click();
+    await expect(page.getByText("Best CPU for 1440p gaming under $350")).toBeVisible();
+    await expect(page.getByText("Complete $1000 gaming build")).toBeVisible();
   });
 
   test("should minimize chat window", async ({ page }) => {
@@ -45,7 +48,7 @@ test.describe("Chat Widget", () => {
 
     // Chat header should still be visible but content should be hidden
     await expect(page.getByText("PC Build Assistant")).toBeVisible();
-    await expect(page.getByText("Quick questions")).not.toBeVisible();
+    await expect(page.getByText("Quick questions - select a topic")).not.toBeVisible();
   });
 
   test("should maximize minimized chat window", async ({ page }) => {
@@ -61,7 +64,7 @@ test.describe("Chat Widget", () => {
     await maximizeButton.click();
 
     // Content should be visible again
-    await expect(page.getByText("Quick questions")).toBeVisible();
+    await expect(page.getByText("Quick questions - select a topic")).toBeVisible();
   });
 
   test("should close chat window", async ({ page }) => {
@@ -78,18 +81,14 @@ test.describe("Chat Widget", () => {
     await expect(chatButton).toBeVisible();
   });
 
-  test("should hide suggested prompts when collapsed", async ({ page }) => {
+  test("should have clear chat button", async ({ page }) => {
     // Open chat
     const chatButton = page.locator('button:has(svg[class*="lucide-message-circle"])');
     await chatButton.click();
 
-    // Click collapse button on suggestions
-    const collapseButton = page.locator('button:has(svg[class*="lucide-chevron-up"])');
-    await collapseButton.click();
-
-    // Suggestions should be hidden
-    await expect(page.getByText("Quick questions")).not.toBeVisible();
-    await expect(page.getByRole("button", { name: /Gaming CPU/i })).not.toBeVisible();
+    // Clear chat button should be visible
+    const clearButton = page.locator('button[title="New chat"]');
+    await expect(clearButton).toBeVisible();
   });
 
   test("should have chat input placeholder", async ({ page }) => {
