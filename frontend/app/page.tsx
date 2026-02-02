@@ -251,28 +251,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
-        {/* CTA Section */}
-        <section className="border-t bg-primary py-16">
-          <div className="container">
-            <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl mb-4">
-                Start Building Your Dream PC Today
-              </h2>
-              <p className="text-lg text-primary-foreground/80 mb-8">
-                No more compatibility worries. No more second-guessing. Just
-                smart, guided PC building.
-              </p>
-              <Link
-                href="/build"
-                className="inline-flex items-center justify-center rounded-md bg-white px-8 py-3 text-base font-medium text-primary shadow-lg hover:bg-gray-100 transition-all hover:shadow-xl"
-              >
-                Get Started Free
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </div>
-          </div>
-        </section>
       </main>
 
       {/* Footer */}
