@@ -17,6 +17,9 @@ import {
   ChevronUp,
   Sparkles,
   Loader2,
+  RotateCcw,
+  Monitor,
+  DollarSign,
 } from "lucide-react"
 
 /**
@@ -40,18 +43,28 @@ interface SuggestedPrompt {
 const suggestedPrompts: SuggestedPrompt[] = [
   {
     icon: Cpu,
-    label: "Gaming CPU",
-    prompt: "What CPU should I get for gaming under $300?",
+    label: "Best CPU for gaming",
+    prompt: "What's the best CPU for 1440p gaming under $350? I want good single-thread performance for high FPS.",
+  },
+  {
+    icon: Monitor,
+    label: "GPU recommendation",
+    prompt: "Recommend a graphics card for 4K gaming. What GPU pairs well with a Ryzen 7 or Intel i7?",
+  },
+  {
+    icon: DollarSign,
+    label: "Budget build",
+    prompt: "Help me build a complete gaming PC for around $1000. What components should I prioritize?",
   },
   {
     icon: Zap,
-    label: "PSU Check",
-    prompt: "Do I have enough PSU wattage for my build?",
+    label: "PSU wattage",
+    prompt: "How do I calculate the right PSU wattage for my build? What's a good 80+ Gold PSU?",
   },
   {
     icon: HelpCircle,
-    label: "Compatibility",
-    prompt: "Is my current build compatible?",
+    label: "Compatibility help",
+    prompt: "What should I check to make sure my CPU, motherboard, and RAM are all compatible?",
   },
 ]
 
@@ -62,6 +75,13 @@ export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(true)
+  const [chatKey, setChatKey] = useState(0) // Key to force re-mount and clear chat
+
+  // Clear chat by changing key to force re-mount
+  const clearChat = () => {
+    setChatKey(prev => prev + 1)
+    setShowSuggestions(true)
+  }
 
   // Don't render if no agent configured
   if (!AGENT_ID) {
@@ -105,6 +125,17 @@ export function ChatWidget() {
               </div>
             </div>
             <div className="flex items-center gap-1">
+              {!isMinimized && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={clearChat}
+                  title="Clear chat"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                </Button>
+              )}
               <Button
                 variant="ghost"
                 size="icon"
@@ -145,13 +176,13 @@ export function ChatWidget() {
                       <ChevronUp className="h-3 w-3" />
                     </Button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5">
                     {suggestedPrompts.map((prompt, idx) => (
                       <Button
                         key={idx}
                         variant="outline"
                         size="sm"
-                        className="text-xs h-7"
+                        className="text-xs h-auto py-1.5 px-2"
                         onClick={() => {
                           // Find the textarea and fill it
                           const textarea = document.querySelector('[class*="ais-Chat"] textarea') as HTMLTextAreaElement
@@ -162,7 +193,7 @@ export function ChatWidget() {
                           }
                         }}
                       >
-                        <prompt.icon className="h-3 w-3 mr-1" />
+                        <prompt.icon className="h-3 w-3 mr-1 shrink-0" />
                         {prompt.label}
                       </Button>
                     ))}
@@ -173,6 +204,7 @@ export function ChatWidget() {
               {/* Algolia Chat Component */}
               <div className="flex-1 overflow-hidden chat-container">
                 <Chat
+                  key={chatKey}
                   agentId={AGENT_ID}
                   messagesLoaderComponent={ChatLoader}
                   classNames={{
