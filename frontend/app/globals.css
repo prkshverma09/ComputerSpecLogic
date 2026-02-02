@@ -274,3 +274,47 @@
 .ais-Chat-messages-scroll::-webkit-scrollbar-thumb:hover {
   background-color: hsl(var(--muted-foreground) / 0.5);
 }
+
+/* Chat Loading Indicator */
+.ais-Chat-messages-loader,
+.ais-Chat .ais-Chat-loader,
+[class*="ais-Chat"] [class*="loader"] {
+  @apply flex items-center justify-center p-4;
+}
+
+.ais-Chat-messages-loader svg,
+.ais-Chat .ais-Chat-loader svg,
+[class*="ais-Chat"] [class*="loader"] svg {
+  @apply w-6 h-6 animate-spin text-primary;
+}
+
+/* Fix oversized loading spinner */
+.ais-Chat svg[class*="loader"],
+.ais-Chat [class*="loading"] svg,
+.ais-Chat-messages svg:not([class]) {
+  @apply !w-6 !h-6 !max-w-6 !max-h-6;
+  stroke: hsl(var(--primary));
+  stroke-width: 2;
+}
+
+/* Loading animation for assistant messages */
+.ais-Chat-message--assistant.ais-Chat-message--loading {
+  @apply animate-pulse;
+}
+
+/* Loading dots animation */
+.ais-Chat-loading-dots {
+  @apply flex gap-1 items-center justify-center p-4;
+}
+
+.ais-Chat-loading-dots span {
+  @apply w-2 h-2 rounded-full bg-primary animate-bounce;
+}
+
+.ais-Chat-loading-dots span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.ais-Chat-loading-dots span:nth-child(3) {
+  animation-delay: 0.2s;
+}

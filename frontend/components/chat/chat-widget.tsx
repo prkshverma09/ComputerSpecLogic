@@ -16,7 +16,20 @@ import {
   HelpCircle,
   ChevronUp,
   Sparkles,
+  Loader2,
 } from "lucide-react"
+
+/**
+ * Custom loading component for chat messages
+ */
+function ChatLoader() {
+  return (
+    <div className="flex items-center gap-2 p-4 text-muted-foreground">
+      <Loader2 className="h-4 w-4 animate-spin text-primary" />
+      <span className="text-sm">Thinking...</span>
+    </div>
+  )
+}
 
 interface SuggestedPrompt {
   icon: React.ElementType
@@ -161,6 +174,7 @@ export function ChatWidget() {
               <div className="flex-1 overflow-hidden chat-container">
                 <Chat
                   agentId={AGENT_ID}
+                  messagesLoaderComponent={ChatLoader}
                   classNames={{
                     root: "h-full flex flex-col",
                     container: "h-full flex flex-col",
@@ -190,6 +204,9 @@ export function ChatWidget() {
                     },
                     prompt: {
                       textareaPlaceholder: "Ask about PC builds, compatibility, or recommendations...",
+                    },
+                    messages: {
+                      loaderText: "Thinking...",
                     },
                   }}
                 />
