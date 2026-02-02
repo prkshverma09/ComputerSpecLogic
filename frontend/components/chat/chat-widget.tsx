@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
 import { Chat } from "react-instantsearch"
 import { useBuildStore } from "@/stores/build-store"
 import { AGENT_ID } from "@/lib/algolia"
@@ -23,6 +23,9 @@ import {
   RotateCcw,
   Lightbulb,
 } from "lucide-react"
+
+// Generate a unique session ID
+const generateSessionId = () => `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
 /**
  * Custom loading component for chat messages
@@ -101,12 +104,23 @@ const suggestedPrompts: SuggestedPrompt[] = [
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
-  const [chatKey, setChatKey] = useState(0) // Key to force Chat component to reset
+  const [sessionId, setSessionId] = useState(() => generateSessionId())
 
-  // Clear chat by incrementing key - forces React to unmount and remount
-  const clearChat = () => {
-    setChatKey(prev => prev + 1)
-  }
+  // Clear chat by clearing sessionStorage and generating new session ID
+  const clearChat = useCallback(() => {
+    // Clear Algolia's sessionStorage for chat messages
+    try {
+      Object.keys(sessionStorage).forEach(key => {
+        if (key.includes('instantsearch-chat') || key.includes(AGENT_ID)) {
+          sessionStorage.removeItem(key)
+        }
+      })
+    } catch (e) {
+      // Ignore storage errors
+    }
+    // Generate new session ID to start fresh conversation
+    setSessionId(generateSessionId())
+  }, [])
 
   // Handle prompt selection from dropdown
   const handlePromptSelect = (promptId: string) => {
@@ -229,14 +243,14 @@ export function ChatWidget() {
               {/* Algolia Chat Component */}
               <div className="flex-1 overflow-hidden chat-container">
                 <Chat
-                  key={`chat-${chatKey}`}
+                  key={sessionId}
                   agentId={AGENT_ID}
                   messagesLoaderComponent={ChatLoader}
                     classNames={{
                       root: "h-full flex flex-col",
                       container: "h-full flex flex-col",
                       header: {
-                        root: "hidden", // We use our custom header
+                        root: "hidden", // Hide Algolia header, we use our custom one
                       },
                       messages: {
                         root: "flex-1 overflow-hidden",
