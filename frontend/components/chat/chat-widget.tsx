@@ -204,6 +204,7 @@ export function ChatWidget() {
                     },
                     prompt: {
                       textareaPlaceholder: "Ask about PC builds, compatibility, or recommendations...",
+                      disclaimer: "", // Remove disclaimer text
                     },
                     messages: {
                       loaderText: "Thinking...",
@@ -237,6 +238,17 @@ export function ChatWidget() {
         }
         .chat-container .ais-Chat-prompt {
           border-top: 1px solid hsl(var(--border));
+        }
+        /* Hide scroll-to-bottom button */
+        .chat-container .ais-Chat-messages-scrollToBottom,
+        .chat-container [class*="scrollToBottom"] {
+          display: none !important;
+        }
+        /* Hide disclaimer/footer */
+        .chat-container .ais-Chat-prompt-footer,
+        .chat-container [class*="disclaimer"],
+        .chat-container [class*="footer"]:not(.ais-Chat-message-footer) {
+          display: none !important;
         }
       `}</style>
     </>
