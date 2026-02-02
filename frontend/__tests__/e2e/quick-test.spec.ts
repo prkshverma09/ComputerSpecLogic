@@ -94,9 +94,9 @@ test.describe("Quick Frontend Tests", () => {
     await dropdown.click();
     
     // Check some options exist
-    await expect(page.getByText("List Intel CPUs")).toBeVisible();
-    await expect(page.getByText("List NVIDIA GPUs")).toBeVisible();
-    await expect(page.getByText("List CPU coolers")).toBeVisible();
+    await expect(page.getByText("CPU for gaming PC")).toBeVisible();
+    await expect(page.getByText("GPU for my build")).toBeVisible();
+    await expect(page.getByText("Cooling for my CPU")).toBeVisible();
     
     await page.screenshot({ path: "test-chat-dropdown.png", fullPage: true });
   });

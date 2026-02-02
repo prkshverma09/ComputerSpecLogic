@@ -47,29 +47,29 @@ interface SuggestedPrompt {
 
 const suggestedPrompts: SuggestedPrompt[] = [
   {
-    id: "list-cpus",
-    label: "List Intel CPUs",
-    prompt: "List some Intel CPUs from your database with their prices.",
+    id: "gaming-cpu",
+    label: "CPU for gaming PC",
+    prompt: "I'm building a gaming PC. What Intel CPUs do you have that would be good for gaming?",
   },
   {
-    id: "list-gpus",
-    label: "List NVIDIA GPUs",
-    prompt: "List some NVIDIA GPUs from your database with their prices.",
+    id: "gpu-for-build",
+    label: "GPU for my build",
+    prompt: "I need a GPU for my PC build. What NVIDIA graphics cards do you have available?",
   },
   {
-    id: "list-motherboards",
-    label: "List motherboards",
-    prompt: "List some motherboards from your database. Show the socket type for each.",
+    id: "compatible-mobo",
+    label: "Find a motherboard",
+    prompt: "I'm looking for a motherboard for my PC build. What motherboards do you have? Show me the socket types.",
   },
   {
-    id: "list-psu",
-    label: "List power supplies",
-    prompt: "List some power supplies (PSU) from your database with their wattage.",
+    id: "psu-for-build",
+    label: "PSU for my system",
+    prompt: "I need a power supply for my PC build. What PSUs do you have and what wattage are they?",
   },
   {
-    id: "list-coolers",
-    label: "List CPU coolers",
-    prompt: "List some CPU coolers from your database.",
+    id: "cooling-solution",
+    label: "Cooling for my CPU",
+    prompt: "I need cooling for my PC build. What CPU coolers do you have available?",
   },
 ]
 
