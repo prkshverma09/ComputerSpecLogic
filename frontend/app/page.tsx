@@ -287,10 +287,15 @@ export default function HomePage() {
               Built for the Algolia Agent Studio Challenge 2026
             </p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <Link href="#" className="hover:text-foreground transition-colors">
+              <a 
+                href="https://github.com/prkshverma09/ComputerSpecLogic" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-foreground transition-colors"
+              >
                 GitHub
-              </Link>
-              <Link href="#" className="hover:text-foreground transition-colors">
+              </a>
+              <Link href="#features" className="hover:text-foreground transition-colors">
                 About
               </Link>
             </div>
