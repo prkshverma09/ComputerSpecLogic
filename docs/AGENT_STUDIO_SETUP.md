@@ -1,11 +1,15 @@
 # Algolia Agent Studio Configuration Guide
 
-The PC Build Assistant chat widget uses Algolia Agent Studio to provide AI-powered component recommendations. For the chatbot to access your component data, you need to configure the Agent with the Algolia Search tool.
+> **IMPORTANT:** The PC Build Assistant chat widget uses Algolia Agent Studio for AI responses. By default, the Agent provides general PC building advice. **To enable product-specific recommendations from your index, you MUST configure the Algolia Search tool in the Agent Studio dashboard.**
+
+The chatbot can work in two modes:
+1. **General Knowledge Mode** (default): Answers questions about PC building using AI knowledge
+2. **Data-Connected Mode**: Searches your `prod_components` index to recommend specific products
 
 ## Prerequisites
 
 - Algolia account with Agent Studio access (beta feature)
-- Your component index (`prod_components`) already set up
+- Your component index (`prod_components`) already set up with 1,900+ components
 - Agent ID configured in `.env.local`
 
 ## Step 1: Access Agent Studio Dashboard

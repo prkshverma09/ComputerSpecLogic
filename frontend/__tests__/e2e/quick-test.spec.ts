@@ -94,9 +94,9 @@ test.describe("Quick Frontend Tests", () => {
     await dropdown.click();
     
     // Check some options exist
-    await expect(page.getByText("Best CPU for 1440p gaming under $350")).toBeVisible();
-    await expect(page.getByText("Complete $1000 gaming build")).toBeVisible();
-    await expect(page.getByText("Tips for first-time PC builder")).toBeVisible();
+    await expect(page.getByText("Intel vs AMD - Which CPU brand?")).toBeVisible();
+    await expect(page.getByText("How to allocate PC build budget")).toBeVisible();
+    await expect(page.getByText("First-time builder tips")).toBeVisible();
     
     await page.screenshot({ path: "test-chat-dropdown.png", fullPage: true });
   });
