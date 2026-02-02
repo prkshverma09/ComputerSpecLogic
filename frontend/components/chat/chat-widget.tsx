@@ -5,21 +5,23 @@ import { Chat } from "react-instantsearch"
 import { useBuildStore } from "@/stores/build-store"
 import { AGENT_ID } from "@/lib/algolia"
 import { Button } from "@/components/ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import {
   MessageCircle,
   X,
   Minimize2,
   Maximize2,
-  Cpu,
-  Zap,
-  HelpCircle,
-  ChevronUp,
   Sparkles,
   Loader2,
   RotateCcw,
-  Monitor,
-  DollarSign,
+  Lightbulb,
 } from "lucide-react"
 
 /**
@@ -35,36 +37,61 @@ function ChatLoader() {
 }
 
 interface SuggestedPrompt {
-  icon: React.ElementType
+  id: string
   label: string
   prompt: string
 }
 
 const suggestedPrompts: SuggestedPrompt[] = [
   {
-    icon: Cpu,
-    label: "Best CPU for gaming",
-    prompt: "What's the best CPU for 1440p gaming under $350? I want good single-thread performance for high FPS.",
+    id: "gaming-cpu",
+    label: "Best CPU for 1440p gaming under $350",
+    prompt: "What's the best CPU for 1440p gaming under $350? I want good single-thread performance for high FPS in competitive games like CS2 and Valorant.",
   },
   {
-    icon: Monitor,
-    label: "GPU recommendation",
-    prompt: "Recommend a graphics card for 4K gaming. What GPU pairs well with a Ryzen 7 or Intel i7?",
+    id: "4k-gpu",
+    label: "GPU for 4K gaming with ray tracing",
+    prompt: "What GPU should I get for 4K gaming with ray tracing enabled? I want to play AAA games at 60+ FPS. What pairs well with a high-end CPU?",
   },
   {
-    icon: DollarSign,
-    label: "Budget build",
-    prompt: "Help me build a complete gaming PC for around $1000. What components should I prioritize?",
+    id: "budget-1000",
+    label: "Complete $1000 gaming build",
+    prompt: "Help me build a complete gaming PC for around $1000. What components should I prioritize? I want to play modern games at 1080p high settings.",
   },
   {
-    icon: Zap,
-    label: "PSU wattage",
-    prompt: "How do I calculate the right PSU wattage for my build? What's a good 80+ Gold PSU?",
+    id: "budget-1500",
+    label: "Complete $1500 gaming build",
+    prompt: "I have a $1500 budget for a gaming PC. Can you recommend a full build with CPU, GPU, motherboard, RAM, PSU, and case that will handle 1440p gaming?",
   },
   {
-    icon: HelpCircle,
-    label: "Compatibility help",
-    prompt: "What should I check to make sure my CPU, motherboard, and RAM are all compatible?",
+    id: "psu-calc",
+    label: "How to calculate PSU wattage",
+    prompt: "How do I calculate the right PSU wattage for my PC build? What's the difference between 80+ Bronze, Gold, and Platinum? Recommend some reliable PSU brands.",
+  },
+  {
+    id: "cpu-cooler",
+    label: "CPU cooler recommendation",
+    prompt: "What CPU cooler should I get? When do I need an AIO liquid cooler vs air cooler? What's a good budget cooler for a mid-range build?",
+  },
+  {
+    id: "compatibility",
+    label: "Check component compatibility",
+    prompt: "What compatibility factors should I check when building a PC? How do I know if my CPU, motherboard, RAM, and case will all work together?",
+  },
+  {
+    id: "ram-speed",
+    label: "RAM speed and capacity guide",
+    prompt: "How much RAM do I need for gaming? Does RAM speed matter? Should I get DDR4 or DDR5? What's the sweet spot for price to performance?",
+  },
+  {
+    id: "streaming-build",
+    label: "PC build for gaming + streaming",
+    prompt: "I want to build a PC for gaming and streaming at the same time. What specs do I need? Should I prioritize more CPU cores or a better GPU?",
+  },
+  {
+    id: "first-build",
+    label: "Tips for first-time PC builder",
+    prompt: "I'm building my first PC. What are the most common mistakes to avoid? Any tips for cable management and installation order?",
   },
 ]
 
@@ -74,13 +101,29 @@ const suggestedPrompts: SuggestedPrompt[] = [
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
-  const [showSuggestions, setShowSuggestions] = useState(true)
-  const [chatKey, setChatKey] = useState(0) // Key to force re-mount and clear chat
+  const [chatMounted, setChatMounted] = useState(true) // Control chat mount state
 
-  // Clear chat by changing key to force re-mount
+  // Clear chat by unmounting and remounting the Chat component
   const clearChat = () => {
-    setChatKey(prev => prev + 1)
-    setShowSuggestions(true)
+    setChatMounted(false)
+    // Small delay to ensure unmount completes
+    setTimeout(() => setChatMounted(true), 100)
+  }
+
+  // Handle prompt selection from dropdown
+  const handlePromptSelect = (promptId: string) => {
+    const selectedPrompt = suggestedPrompts.find(p => p.id === promptId)
+    if (selectedPrompt) {
+      // Small delay to ensure dropdown closes first
+      setTimeout(() => {
+        const textarea = document.querySelector('[class*="ais-Chat"] textarea') as HTMLTextAreaElement
+        if (textarea) {
+          textarea.value = selectedPrompt.prompt
+          textarea.dispatchEvent(new Event('input', { bubbles: true }))
+          textarea.focus()
+        }
+      }, 50)
+    }
   }
 
   // Don't render if no agent configured
@@ -131,7 +174,7 @@ export function ChatWidget() {
                   size="icon"
                   className="h-8 w-8"
                   onClick={clearChat}
-                  title="Clear chat"
+                  title="New chat"
                 >
                   <RotateCcw className="h-4 w-4" />
                 </Button>
@@ -162,87 +205,72 @@ export function ChatWidget() {
           {/* Chat Content */}
           {!isMinimized && (
             <div className="h-[calc(100%-60px)] flex flex-col">
-              {/* Suggested Prompts */}
-              {showSuggestions && (
-                <div className="p-3 border-b bg-muted/30">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-muted-foreground">Quick questions</p>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-6 w-6"
-                      onClick={() => setShowSuggestions(false)}
-                    >
-                      <ChevronUp className="h-3 w-3" />
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {suggestedPrompts.map((prompt, idx) => (
-                      <Button
-                        key={idx}
-                        variant="outline"
-                        size="sm"
-                        className="text-xs h-auto py-1.5 px-2"
-                        onClick={() => {
-                          // Find the textarea and fill it
-                          const textarea = document.querySelector('[class*="ais-Chat"] textarea') as HTMLTextAreaElement
-                          if (textarea) {
-                            textarea.value = prompt.prompt
-                            textarea.dispatchEvent(new Event('input', { bubbles: true }))
-                            textarea.focus()
-                          }
-                        }}
+              {/* Quick Questions Dropdown */}
+              <div className="p-2 border-b bg-muted/20">
+                <Select onValueChange={handlePromptSelect}>
+                  <SelectTrigger className="w-full h-9 text-xs">
+                    <div className="flex items-center gap-2">
+                      <Lightbulb className="h-3.5 w-3.5 text-muted-foreground" />
+                      <SelectValue placeholder="Quick questions - select a topic" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    {suggestedPrompts.map((prompt) => (
+                      <SelectItem 
+                        key={prompt.id} 
+                        value={prompt.id}
+                        className="text-xs py-2"
                       >
-                        <prompt.icon className="h-3 w-3 mr-1 shrink-0" />
                         {prompt.label}
-                      </Button>
+                      </SelectItem>
                     ))}
-                  </div>
-                </div>
-              )}
+                  </SelectContent>
+                </Select>
+              </div>
 
               {/* Algolia Chat Component */}
               <div className="flex-1 overflow-hidden chat-container">
-                <Chat
-                  key={chatKey}
-                  agentId={AGENT_ID}
-                  messagesLoaderComponent={ChatLoader}
-                  classNames={{
-                    root: "h-full flex flex-col",
-                    container: "h-full flex flex-col",
-                    header: {
-                      root: "hidden", // We use our custom header
-                    },
-                    messages: {
-                      root: "flex-1 overflow-hidden",
-                      content: "p-3 space-y-3",
-                      scroll: "h-full overflow-y-auto",
-                    },
-                    message: {
-                      root: "max-w-[85%] rounded-lg p-3 text-sm",
-                    },
-                    prompt: {
-                      root: "p-3 border-t",
-                      textarea: "w-full min-h-[40px] max-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none",
-                      submit: "bg-primary text-primary-foreground rounded-md px-3 py-1.5 text-sm font-medium hover:bg-primary/90 disabled:opacity-50",
-                    },
-                    toggleButton: {
-                      root: "hidden", // We use our custom toggle
-                    },
-                  }}
-                  translations={{
-                    header: {
-                      title: "PC Build Assistant",
-                    },
-                    prompt: {
-                      textareaPlaceholder: "Ask about PC builds, compatibility, or recommendations...",
-                      disclaimer: "", // Remove disclaimer text
-                    },
-                    messages: {
-                      loaderText: "Thinking...",
-                    },
-                  }}
-                />
+                {chatMounted && (
+                  <Chat
+                    agentId={AGENT_ID}
+                    messagesLoaderComponent={ChatLoader}
+                    classNames={{
+                      root: "h-full flex flex-col",
+                      container: "h-full flex flex-col",
+                      header: {
+                        root: "hidden", // We use our custom header
+                      },
+                      messages: {
+                        root: "flex-1 overflow-hidden",
+                        content: "p-3 space-y-3",
+                        scroll: "h-full overflow-y-auto",
+                      },
+                      message: {
+                        root: "max-w-[85%] rounded-lg p-3 text-sm",
+                      },
+                      prompt: {
+                        root: "p-3 border-t",
+                        textarea: "w-full min-h-[40px] max-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none",
+                        submit: "bg-primary text-primary-foreground rounded-md px-3 py-1.5 text-sm font-medium hover:bg-primary/90 disabled:opacity-50",
+                      },
+                      toggleButton: {
+                        root: "hidden", // We use our custom toggle
+                      },
+                    }}
+                    translations={{
+                      header: {
+                        title: "PC Build Assistant",
+                      },
+                      prompt: {
+                        textareaPlaceholder: "Ask about PC builds, compatibility, or recommendations...",
+                        disclaimer: "", // Remove disclaimer text
+                      },
+                      messages: {
+                        loaderText: "Thinking...",
+                      },
+                    }}
+                  />
+                )}
               </div>
             </div>
           )}
