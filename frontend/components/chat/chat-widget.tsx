@@ -47,54 +47,29 @@ interface SuggestedPrompt {
 
 const suggestedPrompts: SuggestedPrompt[] = [
   {
-    id: "show-cpus",
-    label: "Show me Intel CPUs you have",
-    prompt: "What Intel CPUs do you have in your database? Show me some options with their specs and prices.",
+    id: "list-cpus",
+    label: "List Intel CPUs",
+    prompt: "List some Intel CPUs from your database with their prices.",
   },
   {
-    id: "show-gpus",
-    label: "Show me available GPUs",
-    prompt: "What GPUs are available? Show me some options across different price ranges with their VRAM and specs.",
+    id: "list-gpus",
+    label: "List NVIDIA GPUs",
+    prompt: "List some NVIDIA GPUs from your database with their prices.",
   },
   {
-    id: "budget-build",
-    label: "Help me build a budget gaming PC",
-    prompt: "Help me pick components for a budget gaming PC. What CPU, GPU, motherboard, and RAM would you recommend from your available parts?",
+    id: "list-motherboards",
+    label: "List motherboards",
+    prompt: "List some motherboards from your database. Show the socket type for each.",
   },
   {
-    id: "lga1700-motherboards",
-    label: "LGA1700 compatible motherboards",
-    prompt: "Show me motherboards that are compatible with LGA1700 socket CPUs. What are my options for DDR5 support?",
+    id: "list-psu",
+    label: "List power supplies",
+    prompt: "List some power supplies (PSU) from your database with their wattage.",
   },
   {
-    id: "psu-options",
-    label: "What PSUs do you have?",
-    prompt: "What power supplies are available? I need at least 650W. Show me some reliable options.",
-  },
-  {
-    id: "ddr5-ram",
-    label: "DDR5 RAM options",
-    prompt: "What DDR5 RAM kits do you have? I'm looking for good speed and capacity for gaming.",
-  },
-  {
-    id: "cases-atx",
-    label: "ATX cases available",
-    prompt: "Show me ATX cases. I want good airflow and space for a large GPU.",
-  },
-  {
-    id: "cpu-coolers",
-    label: "CPU cooler recommendations",
-    prompt: "What CPU coolers do you have? I need one for an Intel CPU with about 125W TDP.",
-  },
-  {
-    id: "compatibility-check",
-    label: "Check component compatibility",
-    prompt: "I want to build a PC with an Intel Core i5 and DDR5 RAM. What compatible motherboards and coolers do you have?",
-  },
-  {
-    id: "high-end-build",
-    label: "High-end gaming build",
-    prompt: "Help me build a high-end gaming PC. What are your best CPUs and GPUs? I want great 1440p or 4K performance.",
+    id: "list-coolers",
+    label: "List CPU coolers",
+    prompt: "List some CPU coolers from your database.",
   },
 ]
 
