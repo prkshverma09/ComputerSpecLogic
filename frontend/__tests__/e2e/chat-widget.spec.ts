@@ -33,8 +33,8 @@ test.describe("Chat Widget", () => {
     // Open dropdown and check options
     const dropdown = page.getByRole("combobox");
     await dropdown.click();
-    await expect(page.getByText("Intel vs AMD - Which CPU brand?")).toBeVisible();
-    await expect(page.getByText("How to allocate PC build budget")).toBeVisible();
+    await expect(page.getByText("Show me Intel CPUs you have")).toBeVisible();
+    await expect(page.getByText("Help me build a budget gaming PC")).toBeVisible();
   });
 
   test("should minimize chat window", async ({ page }) => {
