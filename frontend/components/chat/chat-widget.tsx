@@ -101,13 +101,11 @@ const suggestedPrompts: SuggestedPrompt[] = [
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
-  const [chatMounted, setChatMounted] = useState(true) // Control chat mount state
+  const [chatKey, setChatKey] = useState(0) // Key to force Chat component to reset
 
-  // Clear chat by unmounting and remounting the Chat component
+  // Clear chat by incrementing key - forces React to unmount and remount
   const clearChat = () => {
-    setChatMounted(false)
-    // Small delay to ensure unmount completes
-    setTimeout(() => setChatMounted(true), 100)
+    setChatKey(prev => prev + 1)
   }
 
   // Handle prompt selection from dropdown
@@ -230,10 +228,10 @@ export function ChatWidget() {
 
               {/* Algolia Chat Component */}
               <div className="flex-1 overflow-hidden chat-container">
-                {chatMounted && (
-                  <Chat
-                    agentId={AGENT_ID}
-                    messagesLoaderComponent={ChatLoader}
+                <Chat
+                  key={`chat-${chatKey}`}
+                  agentId={AGENT_ID}
+                  messagesLoaderComponent={ChatLoader}
                     classNames={{
                       root: "h-full flex flex-col",
                       container: "h-full flex flex-col",
@@ -269,8 +267,7 @@ export function ChatWidget() {
                         loaderText: "Thinking...",
                       },
                     }}
-                  />
-                )}
+                />
               </div>
             </div>
           )}
