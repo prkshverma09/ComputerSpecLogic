@@ -47,7 +47,7 @@ test.describe("Build Page - Redesigned UI", () => {
     // Check for dialog with search box
     await expect(page.getByRole("dialog")).toBeVisible();
     await expect(page.getByRole("heading", { name: "Select CPU" })).toBeVisible();
-    await expect(page.getByPlaceholder(/search cpu/i)).toBeVisible();
+    await expect(page.getByPlaceholder(/search cpu.*ryzen/i)).toBeVisible();
   });
 
   test("should show component cards in selection dialog", async ({ page }) => {
