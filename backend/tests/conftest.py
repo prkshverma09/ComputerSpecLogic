@@ -30,14 +30,14 @@ def sample_components(fixtures_dir: Path) -> Dict[str, List[Dict[str, Any]]]:
         with open(fixtures_file) as f:
             return json.load(f)
     
-    # Return minimal test data if file doesn't exist
     return {
         "cpus": [
             {
                 "objectID": "cpu-test-1",
+                "name": "AMD Ryzen 5 7600X",
                 "component_type": "CPU",
                 "brand": "AMD",
-                "model": "Test CPU",
+                "model": "Ryzen 5 7600X",
                 "socket": "AM5",
                 "tdp_watts": 65,
                 "cores": 8,
@@ -51,15 +51,17 @@ def sample_components(fixtures_dir: Path) -> Dict[str, List[Dict[str, Any]]]:
         "gpus": [
             {
                 "objectID": "gpu-test-1",
+                "name": "NVIDIA GeForce RTX 4070",
                 "component_type": "GPU",
                 "brand": "NVIDIA",
-                "model": "Test GPU",
+                "model": "RTX 4070",
                 "length_mm": 300,
                 "tdp_watts": 200,
-                "vram_gb": 8,
+                "vram": 12,
+                "vram_gb": 12,
                 "price_usd": 399,
                 "performance_tier": "mid-range",
-                "compatibility_tags": ["mid-tdp", "vram-8gb"]
+                "compatibility_tags": ["mid-tdp", "vram-12gb"]
             }
         ]
     }

@@ -77,20 +77,20 @@ function cleanChatContent(container: HTMLElement) {
   // FIRST: Hide duplicate assistant messages (keep only the first one for each response)
   const assistantMessages = container.querySelectorAll('[data-role="assistant"]')
   const seenMessages = new Set<string>()
-  
+
   assistantMessages.forEach((msg) => {
     const htmlMsg = msg as HTMLElement
     const content = htmlMsg.textContent?.trim() || ''
-    
+
     // Clean the content for comparison (remove tool result prefixes)
     const cleanedContent = content
       .replace(/^\d+\s+of\s+\d+\s+results?\s*/i, '')
       .replace(/^View\s+all\s*/i, '')
       .substring(0, 100)
       .toLowerCase()
-    
+
     if (cleanedContent.length < 20) return
-    
+
     if (seenMessages.has(cleanedContent)) {
       // This is a duplicate - hide it
       htmlMsg.style.setProperty('display', 'none', 'important')
@@ -100,23 +100,23 @@ function cleanChatContent(container: HTMLElement) {
   })
 
   const allElements = container.querySelectorAll('*')
-  
+
   allElements.forEach((el) => {
     const htmlEl = el as HTMLElement
-    
+
     if (isProtectedElement(htmlEl)) return
-    
+
     const fullText = htmlEl.textContent?.trim() || ''
     const ownText = Array.from(htmlEl.childNodes)
       .filter(n => n.nodeType === Node.TEXT_NODE)
       .map(n => n.textContent?.trim())
       .join('')
-    
+
     if (resultsPattern.test(ownText) || resultsPattern.test(fullText)) {
       htmlEl.style.display = 'none'
       return
     }
-    
+
     if (/^View\s+all$/i.test(ownText) || /^View\s+all$/i.test(fullText)) {
       htmlEl.style.display = 'none'
       return
@@ -128,10 +128,10 @@ function cleanChatContent(container: HTMLElement) {
   listItems.forEach((item) => {
     const htmlItem = item as HTMLElement
     if (isProtectedElement(htmlItem)) return
-    
+
     const textContent = htmlItem.textContent?.trim() || ''
     const hasVisibleContent = htmlItem.querySelector('img, svg, video, canvas, iframe')
-    
+
     if (!textContent && !hasVisibleContent) {
       htmlItem.style.display = 'none'
     }
@@ -142,13 +142,13 @@ function cleanChatContent(container: HTMLElement) {
   orderedLists.forEach((ol) => {
     const htmlOl = ol as HTMLElement
     if (isProtectedElement(htmlOl)) return
-    
+
     const items = htmlOl.querySelectorAll('li')
     const allEmpty = Array.from(items).every(li => {
       const text = li.textContent?.trim() || ''
       return !text || /^\d+\.?\s*$/.test(text)
     })
-    
+
     if (allEmpty && items.length > 0) {
       htmlOl.style.display = 'none'
     }
@@ -163,13 +163,13 @@ function cleanChatContent(container: HTMLElement) {
       return NodeFilter.FILTER_ACCEPT
     }
   })
-  
+
   const textNodes: Text[] = []
   let node: Text | null
   while ((node = walker.nextNode() as Text | null)) {
     textNodes.push(node)
   }
-  
+
   textNodes.forEach((textNode) => {
     if (textNode.textContent) {
       const original = textNode.textContent
@@ -231,7 +231,7 @@ function CustomSuggestions({ onSuggestionClick }: { suggestions?: string[], onSu
       globalSuggestionClickHandler = onSuggestionClick
     }
   }, [onSuggestionClick])
-  
+
   return null
 }
 
@@ -263,7 +263,7 @@ export function ChatWidget() {
     }
 
     cleanup()
-    
+
     const intervalId = setInterval(cleanup, 500)
 
     const observer = new MutationObserver(() => {
@@ -304,7 +304,7 @@ export function ChatWidget() {
       globalSuggestionClickHandler(selectedPrompt.prompt)
       return
     }
-    
+
     const chatContainer = chatContainerRef.current
     if (!chatContainer) return
 
@@ -317,13 +317,13 @@ export function ChatWidget() {
       window.HTMLTextAreaElement.prototype,
       'value'
     )?.set
-    
+
     if (nativeInputValueSetter) {
       nativeInputValueSetter.call(textarea, selectedPrompt.prompt)
     } else {
       textarea.value = selectedPrompt.prompt
     }
-    
+
     textarea.dispatchEvent(new Event('input', { bubbles: true }))
     textarea.focus()
   }, [])
@@ -420,9 +420,9 @@ export function ChatWidget() {
                 </Select>
               </div>
               <div ref={chatContainerRef} className="flex-1 overflow-hidden chat-container">
-                <InstantSearch 
+                <InstantSearch
                   key={sessionId}
-                  searchClient={searchClient} 
+                  searchClient={searchClient}
                   indexName={COMPONENTS_INDEX}
                 >
                   <Chat
@@ -487,7 +487,7 @@ export function useBuildContextForChat() {
 
   return useMemo(() => {
     const components: string[] = []
-    
+
     if (build.cpu) {
       components.push(`CPU: ${build.cpu.brand} ${build.cpu.model}`)
     }

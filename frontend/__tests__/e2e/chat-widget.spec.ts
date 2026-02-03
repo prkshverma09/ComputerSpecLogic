@@ -29,7 +29,7 @@ test.describe("Chat Widget", () => {
 
     // Check for quick questions dropdown
     await expect(page.getByText("Quick questions...")).toBeVisible();
-    
+
     // Open dropdown and check options
     const dropdown = page.getByRole("combobox");
     await dropdown.click();
@@ -55,7 +55,7 @@ test.describe("Chat Widget", () => {
     // Open and minimize chat
     const chatButton = page.locator('button:has(svg[class*="lucide-message-circle"])');
     await chatButton.click();
-    
+
     const minimizeButton = page.locator('button:has(svg[class*="lucide-minimize"])');
     await minimizeButton.click();
 
