@@ -110,24 +110,69 @@ function removeDuplicateMessages(container: HTMLElement) {
     return el.querySelector('textarea, input, button, form, [role="combobox"]') !== null
   }
   
-  const messageGroups = container.querySelectorAll('[class*="message--assistant"]')
-  const seenPhrases = new Map<string, HTMLElement>()
+  function normalizeText(text: string): string {
+    return text.replace(/\s+/g, ' ').trim().toLowerCase()
+  }
+  
+  // Find all article elements which are message containers in Algolia Chat
+  const articles = container.querySelectorAll('article')
+  const seenUserMessages = new Set<string>()
+  let lastUserMessage = ''
+  let assistantCount = 0
+  
+  articles.forEach((article) => {
+    const htmlEl = article as HTMLElement
+    if (htmlEl.style.display === 'none') return
+    
+    const text = normalizeText(htmlEl.textContent || '')
+    if (text.length < 20) return
+    
+    // Check if this is a user message (typically shorter, no lists)
+    const hasLists = htmlEl.querySelector('ul, ol')
+    const isShort = text.length < 200
+    const isUserMessage = isShort && !hasLists
+    
+    if (isUserMessage) {
+      if (seenUserMessages.has(text)) {
+        htmlEl.style.display = 'none'
+        return
+      }
+      seenUserMessages.add(text)
+      lastUserMessage = text
+      assistantCount = 0
+    } else {
+      // This is an assistant message
+      assistantCount++
+      
+      // If we have more than one assistant response to the same user message, hide extras
+      if (assistantCount > 1) {
+        htmlEl.style.display = 'none'
+        return
+      }
+    }
+  })
+  
+  // Also check for duplicate text blocks within messages
+  const messageGroups = container.querySelectorAll('[class*="message--assistant"], [class*="message-assistant"]')
+  const seenContent = new Map<string, HTMLElement>()
   
   messageGroups.forEach((msg) => {
     const htmlEl = msg as HTMLElement
     
     if (containsFormElements(htmlEl)) return
+    if (htmlEl.style.display === 'none') return
     
-    const fullText = htmlEl.textContent?.trim() || ''
-    if (fullText.length < 50) return
+    const fullText = normalizeText(htmlEl.textContent || '')
+    if (fullText.length < 30) return
     
-    const phrase = fullText.substring(0, 150)
+    const startPhrase = fullText.substring(0, 100)
     
-    if (seenPhrases.has(phrase)) {
+    if (seenContent.has(startPhrase)) {
       htmlEl.style.display = 'none'
-    } else {
-      seenPhrases.set(phrase, htmlEl)
+      return
     }
+    
+    seenContent.set(startPhrase, htmlEl)
   })
 }
 
@@ -186,6 +231,19 @@ export function ChatWidget() {
   const [sessionId, setSessionId] = useState(() => generateSessionId())
   const chatContainerRef = useRef<HTMLDivElement>(null)
 
+  // Clear any stale chat data when component mounts
+  useEffect(() => {
+    try {
+      Object.keys(sessionStorage).forEach(key => {
+        if (key.includes('instantsearch') || key.includes('chat') || key.includes(AGENT_ID)) {
+          sessionStorage.removeItem(key)
+        }
+      })
+    } catch (e) {
+      // Ignore storage errors
+    }
+  }, [])
+
   useEffect(() => {
     if (!isOpen || !chatContainerRef.current) return
 
@@ -197,12 +255,11 @@ export function ChatWidget() {
 
     cleanup()
     
-    const intervalId = setInterval(cleanup, 200)
+    const intervalId = setInterval(cleanup, 500)
 
     const observer = new MutationObserver(() => {
       cleanup()
-      setTimeout(cleanup, 100)
-      setTimeout(cleanup, 300)
+      setTimeout(cleanup, 200)
     })
 
     observer.observe(chatContainerRef.current, {
@@ -360,9 +417,12 @@ export function ChatWidget() {
 
               {/* Algolia Chat Component */}
               <div ref={chatContainerRef} className="flex-1 overflow-hidden chat-container">
-                <InstantSearch searchClient={searchClient} indexName={COMPONENTS_INDEX}>
+                <InstantSearch 
+                  key={sessionId}
+                  searchClient={searchClient} 
+                  indexName={COMPONENTS_INDEX}
+                >
                   <Chat
-                    key={sessionId}
                     agentId={AGENT_ID}
                     messagesLoaderComponent={ChatLoader}
                     itemComponent={() => null}
