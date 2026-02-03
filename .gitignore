@@ -16,7 +16,8 @@ venv/
 .next/
 out/
 dist/
-build/
+/build/
+!/frontend/components/build/
 
 # Testing
 coverage/

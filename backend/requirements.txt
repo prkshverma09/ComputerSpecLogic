@@ -2,6 +2,7 @@
 # Data Processing
 pandas
 numpy
+Pillow
 
 # Web Scraping
 requests

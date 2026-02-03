@@ -1,0 +1,490 @@
+{
+  "cases": {
+    "case-nzxt-h7-flow": {
+      "name": "NZXT H7 Flow",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case-nzxt-h7-flow.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/11-146-361-04.jpg",
+      "source": "etl",
+      "processed_at": "2026-02-03T20:35:15Z"
+    },
+    "case-nzxt-h510-flow": {
+      "name": "NZXT H510 Flow",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case-nzxt-h510-flow.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/2AM-000T-001M2-15.jpg",
+      "source": "etl",
+      "processed_at": "2026-02-03T20:35:18Z"
+    },
+    "case-fractal-design-north": {
+      "name": "Fractal Design North",
+      "brand": "Fractal Design",
+      "image_url": "/component-images/cases/case-fractal-design-north.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/11-352-206-21.jpg",
+      "source": "etl",
+      "processed_at": "2026-02-03T20:35:21Z"
+    },
+    "case-fractal-design-meshify-2": {
+      "name": "Fractal Design Meshify 2",
+      "brand": "Fractal Design",
+      "image_url": "/component-images/cases/case-fractal-design-meshify-2.jpg",
+      "source_url": "https://www.fractal-design.com/app/uploads/2020/10/fa27ea90-e463-4a1c-a42c-932001cc3f7e-scaled.jpg",
+      "source": "etl",
+      "processed_at": "2026-02-03T20:35:24Z"
+    },
+    "case-corsair-4000d-airflow": {
+      "name": "Corsair 4000D Airflow",
+      "brand": "Corsair",
+      "image_url": "/component-images/cases/case-corsair-4000d-airflow.jpg",
+      "source_url": "https://res.cloudinary.com/corsair-pwa/image/upload/c_scale%2Cq_auto%2Cw_96/products/Cases/base-4000d-airflow-config/Gallery/4000D_AF_BLACK_01.png",
+      "source": "etl",
+      "processed_at": "2026-02-03T20:35:28Z"
+    },
+    "case-corsair-5000d-airflow": {
+      "name": "Corsair 5000D Airflow",
+      "brand": "Corsair",
+      "image_url": "/component-images/cases/case-corsair-5000d-airflow.jpg",
+      "source_url": "https://assets.corsair.com/image/upload/c_scale%2Cq_auto/products/Cases/base-5000d-airflow/Gallery/5000D_AF_WHITE_001.webp",
+      "source": "etl",
+      "processed_at": "2026-02-03T20:35:31Z"
+    },
+    "case-lian-li-o11-dynamic-evo": {
+      "name": "Lian Li O11 Dynamic EVO",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case-lian-li-o11-dynamic-evo.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/97f123a53cbb3ce24652396462da17d1.256p.jpg",
+      "source": "etl",
+      "processed_at": "2026-02-03T20:35:34Z"
+    },
+    "case-fractal-design-torrent": {
+      "name": "Fractal Design Torrent",
+      "brand": "Fractal Design",
+      "image_url": "/component-images/cases/case-fractal-design-torrent.jpg",
+      "source_url": "https://www.fractal-design.com/app/uploads/2021/06/Torrent-Black-Solid-AC-2-scaled.jpg",
+      "source": "etl",
+      "processed_at": "2026-02-03T20:35:38Z"
+    },
+    "case-nzxt-h1-v2": {
+      "name": "NZXT H1 V2",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case-nzxt-h1-v2.jpg",
+      "source_url": "https://m.media-amazon.com/images/I/41IbU563v5L.jpg",
+      "source": "etl",
+      "processed_at": "2026-02-03T20:35:40Z"
+    },
+    "case-cooler-master-nr200p": {
+      "name": "Cooler Master NR200P",
+      "brand": "Cooler Master",
+      "image_url": "/component-images/cases/case-cooler-master-nr200p.jpg",
+      "source_url": "https://m.media-amazon.com/images/I/41dtkS1rfAL.jpg",
+      "source": "etl",
+      "processed_at": "2026-02-03T20:35:44Z"
+    },
+    "case_0": {
+      "name": "Montech XR",
+      "brand": "Montech",
+      "image_url": "/component-images/cases/case_0.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/A0ZXS24071712PEB63E.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:06Z"
+    },
+    "case_1": {
+      "name": "Phanteks XT PRO",
+      "brand": "Phanteks",
+      "image_url": "/component-images/cases/case_1.jpg",
+      "source_url": "https://phanteks.com/wp-content/uploads/2024/04/01_XT-PRO-scaled.webp",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:15Z"
+    },
+    "case_2": {
+      "name": "NZXT H5 Flow (2024)",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case_2.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/11-146-365-04.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:22Z"
+    },
+    "case_3": {
+      "name": "Corsair 3500X ARGB",
+      "brand": "Corsair",
+      "image_url": "/component-images/cases/case_3.jpg",
+      "source_url": "https://assets.corsair.com/image/upload/c_scale%2Cq_auto%2Cw_96/products/Cases/3500x/3500x-argb/Black/gallery/3500X_ARGB_BLK_01.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:26Z"
+    },
+    "case_4": {
+      "name": "Cooler Master MasterBox Q300L",
+      "brand": "Cooler Master",
+      "image_url": "/component-images/cases/case_4.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/ec48e16ee4d6629045cfc4d71c649746.256p.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:29Z"
+    },
+    "case_5": {
+      "name": "Corsair 4000D Airflow",
+      "brand": "Corsair",
+      "image_url": "/component-images/cases/case_5.jpg",
+      "source_url": "https://res.cloudinary.com/corsair-pwa/image/upload/c_scale%2Cq_auto%2Cw_96/products/Cases/base-4000d-airflow-config/Gallery/4000D_AF_BLACK_01.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:32Z"
+    },
+    "case_6": {
+      "name": "Lian Li Lancool 207",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_6.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/2AM-000Z-000D7-01.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:38Z"
+    },
+    "case_7": {
+      "name": "NZXT H9 Flow (2023)",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case_7.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/61eb5534e35ce8af07f25ff28197862b.256p.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:41Z"
+    },
+    "case_8": {
+      "name": "Lian Li O11 VISION COMPACT",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_8.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/AFSTS241007xzfd6.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:46Z"
+    },
+    "case_9": {
+      "name": "Corsair 3500X ARGB",
+      "brand": "Corsair",
+      "image_url": "/component-images/cases/case_9.jpg",
+      "source_url": "https://assets.corsair.com/image/upload/c_scale%2Cq_auto%2Cw_96/products/Cases/3500x/gallery/CC-9011322-WW/CC-9011322-WW_01.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:49Z"
+    },
+    "case_10": {
+      "name": "Montech AIR 100 ARGB",
+      "brand": "Montech",
+      "image_url": "/component-images/cases/case_10.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/AK91S210615WnRJm.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:54Z"
+    },
+    "case_11": {
+      "name": "Montech AIR 903 MAX",
+      "brand": "Montech",
+      "image_url": "/component-images/cases/case_11.jpg",
+      "source_url": "https://m.media-amazon.com/images/I/519WrOWiOhL.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:29:57Z"
+    },
+    "case_12": {
+      "name": "Lian Li A3-mATX",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_12.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/4b279bc4cdfb4a3e52c9bfa879746ab5.256p.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:01Z"
+    },
+    "case_13": {
+      "name": "Fractal Design North",
+      "brand": "Fractal Design",
+      "image_url": "/component-images/cases/case_13.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/b27a7e4bc53387580b31da81c7df34ab.256p.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:05Z"
+    },
+    "case_14": {
+      "name": "HYTE Y70 Touch Infinite",
+      "brand": "HYTE",
+      "image_url": "/component-images/cases/case_14.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/11-737-019-06.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:09Z"
+    },
+    "case_15": {
+      "name": "Fractal Design North XL",
+      "brand": "Fractal Design",
+      "image_url": "/component-images/cases/case_15.jpg",
+      "source_url": "https://www.fractal-design.com/app/uploads/2022/12/North_KV_4_Chalk_Mesh-2560-1131x800.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:19Z"
+    },
+    "case_16": {
+      "name": "Lian Li O11 VISION COMPACT",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_16.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/AFSTS241007xzfd6.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:25Z"
+    },
+    "case_17": {
+      "name": "NZXT H5 Flow (2024)",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case_17.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/11-146-365-04.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:29Z"
+    },
+    "case_18": {
+      "name": "Lian Li A3-mATX",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_18.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/2AM-000Z-000D3-06.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:35Z"
+    },
+    "case_19": {
+      "name": "Phanteks XT PRO ULTRA",
+      "brand": "Phanteks",
+      "image_url": "/component-images/cases/case_19.jpg",
+      "source_url": "https://phanteks.com/wp-content/uploads/2024/04/01_XT-PRO-ULTRA_Black-scaled.webp",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:41Z"
+    },
+    "case_20": {
+      "name": "NZXT H9 Flow (2023)",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case_20.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/61eb5534e35ce8af07f25ff28197862b.256p.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:43Z"
+    },
+    "case_21": {
+      "name": "Montech XR",
+      "brand": "Montech",
+      "image_url": "/component-images/cases/case_21.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/A0ZXS24071712PEB63E.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:47Z"
+    },
+    "case_22": {
+      "name": "Lian Li O11D EVO RGB",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_22.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/97f123a53cbb3ce24652396462da17d1.256p.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:49Z"
+    },
+    "case_23": {
+      "name": "NZXT H6 Flow",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case_23.jpg",
+      "source_url": "http://nzxt.com/cdn/shop/files/iauAu6_4352029a-3f4a-4827-91e9-fe4aa4f5c796.png?v=1762528073&width=2048",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:53Z"
+    },
+    "case_24": {
+      "name": "Montech AIR 903 BASE",
+      "brand": "Montech",
+      "image_url": "/component-images/cases/case_24.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/AK91S2308110FABMJ07.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:30:56Z"
+    },
+    "case_25": {
+      "name": "HYTE Y70 Touch Infinite",
+      "brand": "HYTE",
+      "image_url": "/component-images/cases/case_25.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/11-737-019-06.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:00Z"
+    },
+    "case_26": {
+      "name": "NZXT H6 Flow",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case_26.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/21f390a2caf255ac942d9f4d4899adee.256p.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:03Z"
+    },
+    "case_27": {
+      "name": "Corsair FRAME 4000D RS ARGB",
+      "brand": "Corsair",
+      "image_url": "/component-images/cases/case_27.jpg",
+      "source_url": "https://assets.corsair.com/image/upload/c_scale%2Cq_auto%2Cw_96/products/Cases/frame-4000d/Content/FRAME-4000D-RS-ARGB/Gallery/CC-9011296-WW_01.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:06Z"
+    },
+    "case_28": {
+      "name": "NZXT H3 Flow",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case_28.jpg",
+      "source_url": "http://nzxt.com/cdn/shop/files/Etail_H3Flow_WH_Carousel_Hero_EN.png?v=1762528246&width=2048",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:09Z"
+    },
+    "case_29": {
+      "name": "Fractal Design Terra",
+      "brand": "Fractal Design",
+      "image_url": "/component-images/cases/case_29.jpg",
+      "source_url": "https://www.fractal-design.com/app/uploads/2023/05/Terra_KV_Jade_1-2560.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:11Z"
+    },
+    "case_30": {
+      "name": "Antec C5 ARGB",
+      "brand": "Antec",
+      "image_url": "/component-images/cases/case_30.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/6a9bc88580323656f4d8355143380eda.256p.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:16Z"
+    },
+    "case_31": {
+      "name": "Fractal Design Pop XL Air",
+      "brand": "Fractal Design",
+      "image_url": "/component-images/cases/case_31.jpg",
+      "source_url": "https://www.fractal-design.com/app/uploads/2022/06/PopXLAirVis_KV4_2560-1920x1080.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:20Z"
+    },
+    "case_32": {
+      "name": "Lian Li LANCOOL 217",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_32.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/AFSTS2504240EYWQL6E.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:26Z"
+    },
+    "case_33": {
+      "name": "Lian Li O11 Dynamic EVO XL",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_33.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/AFSTS230803Y7zHO.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:31Z"
+    },
+    "case_34": {
+      "name": "Montech KING 95 PRO",
+      "brand": "Montech",
+      "image_url": "/component-images/cases/case_34.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/11-970-005-14.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:34Z"
+    },
+    "case_35": {
+      "name": "Fractal Design Meshify C",
+      "brand": "Fractal Design",
+      "image_url": "/component-images/cases/case_35.jpg",
+      "source_url": "https://www.fractal-design.com/app/uploads/2019/06/Meshify-C-Solid_1.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:37Z"
+    },
+    "case_36": {
+      "name": "Cooler Master MasterBox NR200",
+      "brand": "Cooler Master",
+      "image_url": "/component-images/cases/case_36.jpg",
+      "source_url": "https://files.coolermaster.com/og-image/masterbox-nr200-1200x630.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:40Z"
+    },
+    "case_37": {
+      "name": "Okinos Aqua 3",
+      "brand": "Okinos",
+      "image_url": "/component-images/cases/case_37.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/BSTDD2507280ADIXNCF.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:45Z"
+    },
+    "case_38": {
+      "name": "Lian Li LANCOOL 216 RGB",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_38.jpg",
+      "source_url": "https://c1.neweggimages.com/WebResource/Themes/Nest/logos/logo_newegg_400400.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:48Z"
+    },
+    "case_39": {
+      "name": "HYTE Y70",
+      "brand": "HYTE",
+      "image_url": "/component-images/cases/case_39.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/11-737-014-01.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:53Z"
+    },
+    "case_40": {
+      "name": "Fractal Design Pop Air",
+      "brand": "Fractal Design",
+      "image_url": "/component-images/cases/case_40.jpg",
+      "source_url": "https://www.fractal-design.com/app/uploads/2022/06/PopAIRVIS_ATX_Overview_orange_2560-1920x1080.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:31:56Z"
+    },
+    "case_41": {
+      "name": "NZXT H7 Flow (2024)",
+      "brand": "NZXT",
+      "image_url": "/component-images/cases/case_41.jpg",
+      "source_url": "http://nzxt.com/cdn/shop/files/h7-flow-hero-white.png?v=1762528078&width=2048",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:32:00Z"
+    },
+    "case_42": {
+      "name": "MUSETEX Y6",
+      "brand": "MUSETEX",
+      "image_url": "/component-images/cases/case_42.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/BWYHS2411070JG0RM08.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:32:04Z"
+    },
+    "case_43": {
+      "name": "Corsair 3000D AIRFLOW",
+      "brand": "Corsair",
+      "image_url": "/component-images/cases/case_43.jpg",
+      "source_url": "https://res.cloudinary.com/corsair-pwa/image/upload/c_scale%2Cq_auto%2Cw_96/products/Cases/CC-9011251-WW/3000D_AF_BLACK_RENDER_01.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:32:07Z"
+    },
+    "case_44": {
+      "name": "Lian Li O11 Vision",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_44.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/71a5af072d1ec085a7f8efc90cc895ba.256p.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:32:11Z"
+    },
+    "case_45": {
+      "name": "Fractal Design North",
+      "brand": "Fractal Design",
+      "image_url": "/component-images/cases/case_45.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/11-352-206-21.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:32:13Z"
+    },
+    "case_46": {
+      "name": "HYTE Y70",
+      "brand": "HYTE",
+      "image_url": "/component-images/cases/case_46.jpg",
+      "source_url": "https://cdn11.bigcommerce.com/s-k28u1tc9ki/product_images/attribute_rule_images/82_source_1708009941.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:32:17Z"
+    },
+    "case_47": {
+      "name": "Lian Li O11D EVO RGB",
+      "brand": "Lian Li",
+      "image_url": "/component-images/cases/case_47.jpg",
+      "source_url": "http://cdna.pcpartpicker.com/static/forever/images/product/97f123a53cbb3ce24652396462da17d1.256p.jpg",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:32:19Z"
+    },
+    "case_48": {
+      "name": "Montech X3 Mesh",
+      "brand": "Montech",
+      "image_url": "/component-images/cases/case_48.jpg",
+      "source_url": "http://darkflashtech.com/cdn/shop/files/3_grande.png?v=1741839746",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:32:22Z"
+    },
+    "case_49": {
+      "name": "Cooler Master Elite 301 Lite",
+      "brand": "Cooler Master",
+      "image_url": "/component-images/cases/case_49.jpg",
+      "source_url": "https://c1.neweggimages.com/ProductImage/11-119-456-10.png",
+      "source": "pcpartpicker",
+      "processed_at": "2026-02-03T21:32:27Z"
+    }
+  },
+  "errors": [],
+  "stats": {
+    "total": 50,
+    "success": 50,
+    "failed": 0
+  }
+}

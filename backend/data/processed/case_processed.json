@@ -1,287 +1,297 @@
 [
   {
-    "objectID":"case-nzxt-h7-flow",
-    "component_type":"Case",
-    "brand":"NZXT",
-    "model":"H7 Flow",
-    "form_factor_support":[
+    "objectID": "case-nzxt-h7-flow",
+    "component_type": "Case",
+    "brand": "NZXT",
+    "model": "H7 Flow",
+    "form_factor_support": [
       "ATX",
       "Micro-ATX",
       "Mini-ITX"
     ],
-    "max_gpu_length_mm":400,
-    "max_cooler_height_mm":185,
-    "max_psu_length_mm":200,
-    "drive_bays_35":2,
-    "drive_bays_25":2,
-    "radiator_support":[
+    "max_gpu_length_mm": 400,
+    "max_cooler_height_mm": 185,
+    "max_psu_length_mm": 200,
+    "drive_bays_35": 2,
+    "drive_bays_25": 2,
+    "radiator_support": [
       "360",
       "280",
       "240"
     ],
-    "price_usd":129.0,
-    "performance_tier":"mid-range",
-    "compatibility_tags":[
+    "price_usd": 129.0,
+    "performance_tier": "mid-range",
+    "compatibility_tags": [
       "tall-cooler-support",
       "rad-360,280,240",
       "full-clearance",
       "supports-atx,micro-atx,mini-itx"
-    ]
+    ],
+    "image_url": "/component-images/cases/case-nzxt-h7-flow.jpg"
   },
   {
-    "objectID":"case-nzxt-h510-flow",
-    "component_type":"Case",
-    "brand":"NZXT",
-    "model":"H510 Flow",
-    "form_factor_support":[
+    "objectID": "case-nzxt-h510-flow",
+    "component_type": "Case",
+    "brand": "NZXT",
+    "model": "H510 Flow",
+    "form_factor_support": [
       "ATX",
       "Micro-ATX",
       "Mini-ITX"
     ],
-    "max_gpu_length_mm":381,
-    "max_cooler_height_mm":165,
-    "max_psu_length_mm":180,
-    "drive_bays_35":2,
-    "drive_bays_25":2,
-    "radiator_support":[
+    "max_gpu_length_mm": 381,
+    "max_cooler_height_mm": 165,
+    "max_psu_length_mm": 180,
+    "drive_bays_35": 2,
+    "drive_bays_25": 2,
+    "radiator_support": [
       "280",
       "240"
     ],
-    "price_usd":89.0,
-    "performance_tier":"mid-range",
-    "compatibility_tags":[
+    "price_usd": 89.0,
+    "performance_tier": "mid-range",
+    "compatibility_tags": [
       "rad-280,240",
       "full-clearance",
       "tower-cooler-support",
       "supports-atx,micro-atx,mini-itx"
-    ]
+    ],
+    "image_url": "/component-images/cases/case-nzxt-h510-flow.jpg"
   },
   {
-    "objectID":"case-fractal-design-north",
-    "component_type":"Case",
-    "brand":"Fractal Design",
-    "model":"North",
-    "form_factor_support":[
+    "objectID": "case-fractal-design-north",
+    "component_type": "Case",
+    "brand": "Fractal Design",
+    "model": "North",
+    "form_factor_support": [
       "ATX",
       "Micro-ATX",
       "Mini-ITX"
     ],
-    "max_gpu_length_mm":355,
-    "max_cooler_height_mm":170,
-    "max_psu_length_mm":200,
-    "drive_bays_35":2,
-    "drive_bays_25":4,
-    "radiator_support":[
+    "max_gpu_length_mm": 355,
+    "max_cooler_height_mm": 170,
+    "max_psu_length_mm": 200,
+    "drive_bays_35": 2,
+    "drive_bays_25": 4,
+    "radiator_support": [
       "360",
       "280"
     ],
-    "price_usd":149.0,
-    "performance_tier":"mid-range",
-    "compatibility_tags":[
+    "price_usd": 149.0,
+    "performance_tier": "mid-range",
+    "compatibility_tags": [
       "many-drive-bays",
       "tall-cooler-support",
       "rad-360,280",
       "extended-clearance",
       "supports-atx,micro-atx,mini-itx"
-    ]
+    ],
+    "image_url": "/component-images/cases/case-fractal-design-north.jpg"
   },
   {
-    "objectID":"case-fractal-design-meshify-2",
-    "component_type":"Case",
-    "brand":"Fractal Design",
-    "model":"Meshify 2",
-    "form_factor_support":[
+    "objectID": "case-fractal-design-meshify-2",
+    "component_type": "Case",
+    "brand": "Fractal Design",
+    "model": "Meshify 2",
+    "form_factor_support": [
       "ATX",
       "Micro-ATX",
       "Mini-ITX"
     ],
-    "max_gpu_length_mm":467,
-    "max_cooler_height_mm":185,
-    "max_psu_length_mm":250,
-    "drive_bays_35":6,
-    "drive_bays_25":4,
-    "radiator_support":[
+    "max_gpu_length_mm": 467,
+    "max_cooler_height_mm": 185,
+    "max_psu_length_mm": 250,
+    "drive_bays_35": 6,
+    "drive_bays_25": 4,
+    "radiator_support": [
       "360",
       "280",
       "240"
     ],
-    "price_usd":159.0,
-    "performance_tier":"mid-range",
-    "compatibility_tags":[
+    "price_usd": 159.0,
+    "performance_tier": "mid-range",
+    "compatibility_tags": [
       "full-clearance",
       "many-drive-bays",
       "rad-360,280,240",
       "tall-cooler-support",
       "supports-atx,micro-atx,mini-itx"
-    ]
+    ],
+    "image_url": "/component-images/cases/case-fractal-design-meshify-2.jpg"
   },
   {
-    "objectID":"case-corsair-4000d-airflow",
-    "component_type":"Case",
-    "brand":"Corsair",
-    "model":"4000D Airflow",
-    "form_factor_support":[
+    "objectID": "case-corsair-4000d-airflow",
+    "component_type": "Case",
+    "brand": "Corsair",
+    "model": "4000D Airflow",
+    "form_factor_support": [
       "ATX",
       "Micro-ATX",
       "Mini-ITX"
     ],
-    "max_gpu_length_mm":360,
-    "max_cooler_height_mm":170,
-    "max_psu_length_mm":180,
-    "drive_bays_35":2,
-    "drive_bays_25":2,
-    "radiator_support":[
+    "max_gpu_length_mm": 360,
+    "max_cooler_height_mm": 170,
+    "max_psu_length_mm": 180,
+    "drive_bays_35": 2,
+    "drive_bays_25": 2,
+    "radiator_support": [
       "360",
       "280",
       "240"
     ],
-    "price_usd":104.0,
-    "performance_tier":"mid-range",
-    "compatibility_tags":[
+    "price_usd": 104.0,
+    "performance_tier": "mid-range",
+    "compatibility_tags": [
       "tall-cooler-support",
       "rad-360,280,240",
       "extended-clearance",
       "supports-atx,micro-atx,mini-itx"
-    ]
+    ],
+    "image_url": "/component-images/cases/case-corsair-4000d-airflow.jpg"
   },
   {
-    "objectID":"case-corsair-5000d-airflow",
-    "component_type":"Case",
-    "brand":"Corsair",
-    "model":"5000D Airflow",
-    "form_factor_support":[
+    "objectID": "case-corsair-5000d-airflow",
+    "component_type": "Case",
+    "brand": "Corsair",
+    "model": "5000D Airflow",
+    "form_factor_support": [
       "ATX",
       "Micro-ATX",
       "Mini-ITX"
     ],
-    "max_gpu_length_mm":400,
-    "max_cooler_height_mm":170,
-    "max_psu_length_mm":225,
-    "drive_bays_35":4,
-    "drive_bays_25":2,
-    "radiator_support":[
+    "max_gpu_length_mm": 400,
+    "max_cooler_height_mm": 170,
+    "max_psu_length_mm": 225,
+    "drive_bays_35": 4,
+    "drive_bays_25": 2,
+    "radiator_support": [
       "360",
       "280",
       "240"
     ],
-    "price_usd":174.0,
-    "performance_tier":"mid-range",
-    "compatibility_tags":[
+    "price_usd": 174.0,
+    "performance_tier": "mid-range",
+    "compatibility_tags": [
       "full-clearance",
       "many-drive-bays",
       "rad-360,280,240",
       "tall-cooler-support",
       "supports-atx,micro-atx,mini-itx"
-    ]
+    ],
+    "image_url": "/component-images/cases/case-corsair-5000d-airflow.jpg"
   },
   {
-    "objectID":"case-lian-li-o11-dynamic-evo",
-    "component_type":"Case",
-    "brand":"Lian Li",
-    "model":"O11 Dynamic EVO",
-    "form_factor_support":[
+    "objectID": "case-lian-li-o11-dynamic-evo",
+    "component_type": "Case",
+    "brand": "Lian Li",
+    "model": "O11 Dynamic EVO",
+    "form_factor_support": [
       "ATX",
       "Micro-ATX",
       "Mini-ITX"
     ],
-    "max_gpu_length_mm":420,
-    "max_cooler_height_mm":167,
-    "max_psu_length_mm":200,
-    "drive_bays_35":2,
-    "drive_bays_25":2,
-    "radiator_support":[
+    "max_gpu_length_mm": 420,
+    "max_cooler_height_mm": 167,
+    "max_psu_length_mm": 200,
+    "drive_bays_35": 2,
+    "drive_bays_25": 2,
+    "radiator_support": [
       "360",
       "280",
       "240"
     ],
-    "price_usd":169.0,
-    "performance_tier":"mid-range",
-    "compatibility_tags":[
+    "price_usd": 169.0,
+    "performance_tier": "mid-range",
+    "compatibility_tags": [
       "rad-360,280,240",
       "full-clearance",
       "tower-cooler-support",
       "supports-atx,micro-atx,mini-itx"
-    ]
+    ],
+    "image_url": "/component-images/cases/case-lian-li-o11-dynamic-evo.jpg"
   },
   {
-    "objectID":"case-fractal-design-torrent",
-    "component_type":"Case",
-    "brand":"Fractal Design",
-    "model":"Torrent",
-    "form_factor_support":[
+    "objectID": "case-fractal-design-torrent",
+    "component_type": "Case",
+    "brand": "Fractal Design",
+    "model": "Torrent",
+    "form_factor_support": [
       "ATX",
       "Micro-ATX",
       "Mini-ITX"
     ],
-    "max_gpu_length_mm":461,
-    "max_cooler_height_mm":188,
-    "max_psu_length_mm":200,
-    "drive_bays_35":4,
-    "drive_bays_25":2,
-    "radiator_support":[
+    "max_gpu_length_mm": 461,
+    "max_cooler_height_mm": 188,
+    "max_psu_length_mm": 200,
+    "drive_bays_35": 4,
+    "drive_bays_25": 2,
+    "radiator_support": [
       "360",
       "280",
       "240"
     ],
-    "price_usd":189.0,
-    "performance_tier":"mid-range",
-    "compatibility_tags":[
+    "price_usd": 189.0,
+    "performance_tier": "mid-range",
+    "compatibility_tags": [
       "full-clearance",
       "many-drive-bays",
       "rad-360,280,240",
       "tall-cooler-support",
       "supports-atx,micro-atx,mini-itx"
-    ]
+    ],
+    "image_url": "/component-images/cases/case-fractal-design-torrent.jpg"
   },
   {
-    "objectID":"case-nzxt-h1-v2",
-    "component_type":"Case",
-    "brand":"NZXT",
-    "model":"H1 V2",
-    "form_factor_support":[
+    "objectID": "case-nzxt-h1-v2",
+    "component_type": "Case",
+    "brand": "NZXT",
+    "model": "H1 V2",
+    "form_factor_support": [
       "Mini-ITX"
     ],
-    "max_gpu_length_mm":324,
-    "max_cooler_height_mm":76,
-    "max_psu_length_mm":130,
-    "drive_bays_35":0,
-    "drive_bays_25":2,
-    "radiator_support":[
+    "max_gpu_length_mm": 324,
+    "max_cooler_height_mm": 76,
+    "max_psu_length_mm": 130,
+    "drive_bays_35": 0,
+    "drive_bays_25": 2,
+    "radiator_support": [
       "140"
     ],
-    "price_usd":399.0,
-    "performance_tier":"mid-range",
-    "compatibility_tags":[
+    "price_usd": 399.0,
+    "performance_tier": "mid-range",
+    "compatibility_tags": [
       "low-profile-only",
       "supports-mini-itx",
       "rad-140",
       "standard-clearance"
-    ]
+    ],
+    "image_url": "/component-images/cases/case-nzxt-h1-v2.jpg"
   },
   {
-    "objectID":"case-cooler-master-nr200p",
-    "component_type":"Case",
-    "brand":"Cooler Master",
-    "model":"NR200P",
-    "form_factor_support":[
+    "objectID": "case-cooler-master-nr200p",
+    "component_type": "Case",
+    "brand": "Cooler Master",
+    "model": "NR200P",
+    "form_factor_support": [
       "Mini-ITX"
     ],
-    "max_gpu_length_mm":330,
-    "max_cooler_height_mm":155,
-    "max_psu_length_mm":130,
-    "drive_bays_35":0,
-    "drive_bays_25":2,
-    "radiator_support":[
+    "max_gpu_length_mm": 330,
+    "max_cooler_height_mm": 155,
+    "max_psu_length_mm": 130,
+    "drive_bays_35": 0,
+    "drive_bays_25": 2,
+    "radiator_support": [
       "280",
       "240"
     ],
-    "price_usd":119.0,
-    "performance_tier":"mid-range",
-    "compatibility_tags":[
+    "price_usd": 119.0,
+    "performance_tier": "mid-range",
+    "compatibility_tags": [
       "rad-280,240",
       "supports-mini-itx",
       "tower-cooler-support",
       "standard-clearance"
-    ]
+    ],
+    "image_url": "/component-images/cases/case-cooler-master-nr200p.jpg"
   }
 ]

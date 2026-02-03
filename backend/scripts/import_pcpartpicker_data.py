@@ -20,6 +20,16 @@ ALGOLIA_APP_ID = os.getenv("ALGOLIA_APP_ID", "TD206SGSON")
 ALGOLIA_ADMIN_KEY = os.getenv("ALGOLIA_ADMIN_KEY", "69129e901a48616bc8a9cd602796894a")
 INDEX_NAME = "prod_components"
 DATA_DIR = Path(__file__).parent.parent / "data" / "pcpartpicker"
+MANIFEST_FILE = Path(__file__).parent.parent / "data" / "case_image_manifest.json"
+
+
+def load_image_manifest():
+    """Load case image manifest if available."""
+    if MANIFEST_FILE.exists():
+        with open(MANIFEST_FILE, "r") as f:
+            manifest = json.load(f)
+            return manifest.get("cases", {})
+    return {}
 
 def parse_price(price_str):
     """Parse price string to float."""
@@ -234,9 +244,10 @@ def process_psus(file_path):
     
     return records
 
-def process_cases(file_path):
+def process_cases(file_path, image_manifest=None):
     """Process case CSV file."""
     records = []
+    image_manifest = image_manifest or {}
     
     with open(file_path, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
@@ -287,8 +298,13 @@ def process_cases(file_path):
                 elif "micro" in type_lower:
                     max_gpu_length_mm = 320
             
+            object_id = f"case_{i}"
+            
+            image_data = image_manifest.get(object_id, {})
+            image_url = image_data.get("image_url")
+            
             record = {
-                "objectID": f"case_{i}",
+                "objectID": object_id,
                 "component_type": "Case",
                 "brand": brand,
                 "model": model,
@@ -300,12 +316,15 @@ def process_cases(file_path):
                 "max_cooler_height_mm": 165,  # Common default
                 "side_panel": side_panel or "Tempered Glass",
                 "color": color or None,
-                # Compatibility tags
                 "compatibility_tags": [
                     (case_type or "mid-tower").lower().replace(" ", "-"),
                     *[ff.lower() for ff in form_factor_support],
                 ],
             }
+            
+            if image_url:
+                record["image_url"] = image_url
+            
             records.append(record)
     
     return records
@@ -480,6 +499,10 @@ def main():
     # Initialize Algolia client
     client = SearchClientSync(ALGOLIA_APP_ID, ALGOLIA_ADMIN_KEY)
     
+    image_manifest = load_image_manifest()
+    if image_manifest:
+        print(f"\nLoaded image manifest with {len(image_manifest)} entries")
+    
     all_records = []
     
     # Process motherboards
@@ -502,8 +525,9 @@ def main():
     case_file = DATA_DIR / "case.csv"
     if case_file.exists():
         print(f"\nProcessing cases from {case_file}...")
-        cases = process_cases(case_file)
-        print(f"  Processed {len(cases)} cases")
+        cases = process_cases(case_file, image_manifest)
+        cases_with_images = sum(1 for c in cases if c.get("image_url"))
+        print(f"  Processed {len(cases)} cases ({cases_with_images} with images)")
         all_records.extend(cases)
     
     # Process coolers
