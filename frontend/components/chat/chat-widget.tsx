@@ -42,6 +42,9 @@ function cleanChatContent(container: HTMLElement) {
     return false
   }
 
+  const resultsPattern = /^\s*\d+\s+of\s+\d+\s+results?\s*$/i
+  const resultsInlinePattern = /\d+\s+of\s+\d+\s+results?/gi
+
   const allElements = container.querySelectorAll('*')
   
   allElements.forEach((el) => {
@@ -49,17 +52,18 @@ function cleanChatContent(container: HTMLElement) {
     
     if (isProtectedElement(htmlEl)) return
     
+    const fullText = htmlEl.textContent?.trim() || ''
     const ownText = Array.from(htmlEl.childNodes)
       .filter(n => n.nodeType === Node.TEXT_NODE)
       .map(n => n.textContent?.trim())
       .join('')
     
-    if (/^\d+\s+of\s+\d+\s+results?$/i.test(ownText)) {
+    if (resultsPattern.test(ownText) || resultsPattern.test(fullText)) {
       htmlEl.style.display = 'none'
       return
     }
     
-    if (/^View\s+all$/i.test(ownText)) {
+    if (/^View\s+all$/i.test(ownText) || /^View\s+all$/i.test(fullText)) {
       htmlEl.style.display = 'none'
       return
     }
@@ -84,9 +88,16 @@ function cleanChatContent(container: HTMLElement) {
   textNodes.forEach((textNode) => {
     if (textNode.textContent) {
       const original = textNode.textContent
-      if (/\d+\s+of\s+\d+\s+results?/i.test(original)) {
-        const cleaned = original.replace(/\d+\s+of\s+\d+\s+results?/gi, '')
-        textNode.textContent = cleaned
+      if (resultsInlinePattern.test(original)) {
+        if (resultsPattern.test(original.trim())) {
+          textNode.textContent = ''
+          const parent = textNode.parentElement
+          if (parent && !parent.textContent?.trim()) {
+            parent.style.display = 'none'
+          }
+        } else {
+          textNode.textContent = original.replace(resultsInlinePattern, '')
+        }
       }
     }
   })
@@ -467,6 +478,10 @@ export function ChatWidget() {
         .chat-container .ais-Stats,
         .chat-container [class*="Stats"],
         .chat-container [class*="stats"] {
+          display: none !important;
+        }
+        /* Hide elements containing "X of Y results" pattern - target by data attribute we'll add */
+        .chat-container [data-results-count="true"] {
           display: none !important;
         }
         /* Style the message content nicely */
