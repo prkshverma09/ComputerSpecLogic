@@ -20,13 +20,41 @@ import {
   Minimize2,
   Maximize2,
   Sparkles,
-  Loader2,
   RotateCcw,
   Lightbulb,
+  User,
 } from "lucide-react"
 
-// Generate a unique session ID
 const generateSessionId = () => `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+
+function AssistantAvatar() {
+  return (
+    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shrink-0">
+      <Sparkles className="h-4 w-4 text-white" />
+    </div>
+  )
+}
+
+function UserAvatar() {
+  return (
+    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center shrink-0">
+      <User className="h-4 w-4 text-white" />
+    </div>
+  )
+}
+
+function ChatLoader() {
+  return (
+    <div className="flex items-center gap-3 p-4">
+      <div className="flex gap-1">
+        <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+        <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+        <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+      </div>
+      <span className="text-sm text-muted-foreground">Thinking...</span>
+    </div>
+  )
+}
 
 function cleanChatContent(container: HTMLElement) {
   function isProtectedElement(el: HTMLElement): boolean {
@@ -36,7 +64,7 @@ function cleanChatContent(container: HTMLElement) {
     if (el.closest('textarea, input, button, select, form, [role="combobox"], [role="listbox"]')) {
       return true
     }
-    if (el.closest('.ais-Chat-prompt, [class*="prompt"]')) {
+    if (el.closest('.ais-Chat-prompt, .ais-ChatPrompt, [class*="prompt"]')) {
       return true
     }
     return false
@@ -44,6 +72,32 @@ function cleanChatContent(container: HTMLElement) {
 
   const resultsPattern = /^\s*\d+\s+of\s+\d+\s+results?\s*$/i
   const resultsInlinePattern = /\d+\s+of\s+\d+\s+results?/gi
+  const resultsStartPattern = /^\s*\d+\s+of\s+\d+\s+results?/i
+
+  // FIRST: Hide duplicate assistant messages (keep only the first one for each response)
+  const assistantMessages = container.querySelectorAll('[data-role="assistant"]')
+  const seenMessages = new Set<string>()
+  
+  assistantMessages.forEach((msg) => {
+    const htmlMsg = msg as HTMLElement
+    const content = htmlMsg.textContent?.trim() || ''
+    
+    // Clean the content for comparison (remove tool result prefixes)
+    const cleanedContent = content
+      .replace(/^\d+\s+of\s+\d+\s+results?\s*/i, '')
+      .replace(/^View\s+all\s*/i, '')
+      .substring(0, 100)
+      .toLowerCase()
+    
+    if (cleanedContent.length < 20) return
+    
+    if (seenMessages.has(cleanedContent)) {
+      // This is a duplicate - hide it
+      htmlMsg.style.setProperty('display', 'none', 'important')
+    } else {
+      seenMessages.add(cleanedContent)
+    }
+  })
 
   const allElements = container.querySelectorAll('*')
   
@@ -66,6 +120,37 @@ function cleanChatContent(container: HTMLElement) {
     if (/^View\s+all$/i.test(ownText) || /^View\s+all$/i.test(fullText)) {
       htmlEl.style.display = 'none'
       return
+    }
+  })
+
+  // Hide empty list items (from itemComponent returning empty)
+  const listItems = container.querySelectorAll('li, ol, ul')
+  listItems.forEach((item) => {
+    const htmlItem = item as HTMLElement
+    if (isProtectedElement(htmlItem)) return
+    
+    const textContent = htmlItem.textContent?.trim() || ''
+    const hasVisibleContent = htmlItem.querySelector('img, svg, video, canvas, iframe')
+    
+    if (!textContent && !hasVisibleContent) {
+      htmlItem.style.display = 'none'
+    }
+  })
+
+  // Hide numbered lists that only contain numbers (empty item content)
+  const orderedLists = container.querySelectorAll('ol')
+  orderedLists.forEach((ol) => {
+    const htmlOl = ol as HTMLElement
+    if (isProtectedElement(htmlOl)) return
+    
+    const items = htmlOl.querySelectorAll('li')
+    const allEmpty = Array.from(items).every(li => {
+      const text = li.textContent?.trim() || ''
+      return !text || /^\d+\.?\s*$/.test(text)
+    })
+    
+    if (allEmpty && items.length > 0) {
+      htmlOl.style.display = 'none'
     }
   })
 
@@ -101,137 +186,61 @@ function cleanChatContent(container: HTMLElement) {
       }
     }
   })
-
-  removeDuplicateMessages(container)
 }
 
-function removeDuplicateMessages(container: HTMLElement) {
-  function containsFormElements(el: HTMLElement): boolean {
-    return el.querySelector('textarea, input, button, form, [role="combobox"]') !== null
-  }
-  
-  function normalizeText(text: string): string {
-    return text.replace(/\s+/g, ' ').trim().toLowerCase()
-  }
-  
-  // Find all article elements which are message containers in Algolia Chat
-  const articles = container.querySelectorAll('article')
-  const seenUserMessages = new Set<string>()
-  let lastUserMessage = ''
-  let assistantCount = 0
-  
-  articles.forEach((article) => {
-    const htmlEl = article as HTMLElement
-    if (htmlEl.style.display === 'none') return
-    
-    const text = normalizeText(htmlEl.textContent || '')
-    if (text.length < 20) return
-    
-    // Check if this is a user message (typically shorter, no lists)
-    const hasLists = htmlEl.querySelector('ul, ol')
-    const isShort = text.length < 200
-    const isUserMessage = isShort && !hasLists
-    
-    if (isUserMessage) {
-      if (seenUserMessages.has(text)) {
-        htmlEl.style.display = 'none'
-        return
-      }
-      seenUserMessages.add(text)
-      lastUserMessage = text
-      assistantCount = 0
-    } else {
-      // This is an assistant message
-      assistantCount++
-      
-      // If we have more than one assistant response to the same user message, hide extras
-      if (assistantCount > 1) {
-        htmlEl.style.display = 'none'
-        return
-      }
-    }
-  })
-  
-  // Also check for duplicate text blocks within messages
-  const messageGroups = container.querySelectorAll('[class*="message--assistant"], [class*="message-assistant"]')
-  const seenContent = new Map<string, HTMLElement>()
-  
-  messageGroups.forEach((msg) => {
-    const htmlEl = msg as HTMLElement
-    
-    if (containsFormElements(htmlEl)) return
-    if (htmlEl.style.display === 'none') return
-    
-    const fullText = normalizeText(htmlEl.textContent || '')
-    if (fullText.length < 30) return
-    
-    const startPhrase = fullText.substring(0, 100)
-    
-    if (seenContent.has(startPhrase)) {
-      htmlEl.style.display = 'none'
-      return
-    }
-    
-    seenContent.set(startPhrase, htmlEl)
-  })
-}
 
-/**
- * Custom loading component for chat messages
- */
-function ChatLoader() {
-  return (
-    <div className="flex items-center gap-2 p-4 text-muted-foreground">
-      <Loader2 className="h-4 w-4 animate-spin text-primary" />
-      <span className="text-sm">Thinking...</span>
-    </div>
-  )
-}
-
-interface SuggestedPrompt {
+interface QuickPrompt {
   id: string
   label: string
   prompt: string
 }
 
-const suggestedPrompts: SuggestedPrompt[] = [
+const QUICK_PROMPTS: QuickPrompt[] = [
   {
     id: "gaming-cpu",
     label: "CPU for gaming PC",
-    prompt: "I'm building a gaming PC. What Intel CPUs do you have that would be good for gaming?",
+    prompt: "What Intel CPUs do you have for gaming?",
   },
   {
     id: "gpu-for-build",
     label: "GPU for my build",
-    prompt: "I need a GPU for my PC build. What NVIDIA graphics cards do you have available?",
+    prompt: "What NVIDIA graphics cards do you have?",
   },
   {
     id: "compatible-mobo",
     label: "Find a motherboard",
-    prompt: "I'm looking for a motherboard for my PC build. What motherboards do you have? Show me the socket types.",
+    prompt: "What motherboards are available?",
   },
   {
     id: "psu-for-build",
     label: "PSU for my system",
-    prompt: "I need a power supply for my PC build. What PSUs do you have and what wattage are they?",
+    prompt: "What power supplies do you have?",
   },
   {
     id: "cooling-solution",
     label: "Cooling for my CPU",
-    prompt: "I need cooling for my PC build. What CPU coolers do you have available?",
+    prompt: "What CPU coolers do you have?",
   },
 ]
 
-/**
- * Chat Widget Component using Algolia Agent Studio
- */
+let globalSuggestionClickHandler: ((suggestion: string) => void) | null = null
+
+function CustomSuggestions({ onSuggestionClick }: { suggestions?: string[], onSuggestionClick?: (suggestion: string) => void }) {
+  useEffect(() => {
+    if (onSuggestionClick) {
+      globalSuggestionClickHandler = onSuggestionClick
+    }
+  }, [onSuggestionClick])
+  
+  return null
+}
+
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
   const [sessionId, setSessionId] = useState(() => generateSessionId())
   const chatContainerRef = useRef<HTMLDivElement>(null)
 
-  // Clear any stale chat data when component mounts
   useEffect(() => {
     try {
       Object.keys(sessionStorage).forEach(key => {
@@ -274,9 +283,7 @@ export function ChatWidget() {
     }
   }, [isOpen, sessionId])
 
-  // Clear chat by clearing sessionStorage and generating new session ID
   const clearChat = useCallback(() => {
-    // Clear Algolia's sessionStorage for chat messages
     try {
       Object.keys(sessionStorage).forEach(key => {
         if (key.includes('instantsearch-chat') || key.includes(AGENT_ID)) {
@@ -286,34 +293,47 @@ export function ChatWidget() {
     } catch (e) {
       // Ignore storage errors
     }
-    // Generate new session ID to start fresh conversation
     setSessionId(generateSessionId())
   }, [])
 
-  // Handle prompt selection from dropdown
-  const handlePromptSelect = (promptId: string) => {
-    const selectedPrompt = suggestedPrompts.find(p => p.id === promptId)
-    if (selectedPrompt) {
-      // Small delay to ensure dropdown closes first
-      setTimeout(() => {
-        const textarea = document.querySelector('[class*="ais-Chat"] textarea') as HTMLTextAreaElement
-        if (textarea) {
-          textarea.value = selectedPrompt.prompt
-          textarea.dispatchEvent(new Event('input', { bubbles: true }))
-          textarea.focus()
-        }
-      }, 50)
-    }
-  }
+  const handlePromptSelect = useCallback((promptId: string) => {
+    const selectedPrompt = QUICK_PROMPTS.find((p) => p.id === promptId)
+    if (!selectedPrompt) return
 
-  // Don't render if no agent configured
+    if (globalSuggestionClickHandler) {
+      globalSuggestionClickHandler(selectedPrompt.prompt)
+      return
+    }
+    
+    const chatContainer = chatContainerRef.current
+    if (!chatContainer) return
+
+    const textarea = chatContainer.querySelector<HTMLTextAreaElement>(
+      ".ais-ChatPrompt-textarea"
+    )
+    if (!textarea) return
+
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+      window.HTMLTextAreaElement.prototype,
+      'value'
+    )?.set
+    
+    if (nativeInputValueSetter) {
+      nativeInputValueSetter.call(textarea, selectedPrompt.prompt)
+    } else {
+      textarea.value = selectedPrompt.prompt
+    }
+    
+    textarea.dispatchEvent(new Event('input', { bubbles: true }))
+    textarea.focus()
+  }, [])
+
   if (!AGENT_ID) {
     return null
   }
 
   return (
     <>
-      {/* Chat Toggle Button */}
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
@@ -324,35 +344,33 @@ export function ChatWidget() {
         </Button>
       )}
 
-      {/* Chat Window */}
       {isOpen && (
         <div
           className={cn(
-            "fixed z-50 bg-background border rounded-xl shadow-2xl transition-all duration-300 overflow-hidden",
+            "fixed z-50 bg-background border rounded-2xl shadow-2xl transition-all duration-300 overflow-hidden",
             isMinimized
               ? "bottom-4 right-4 w-72 h-14"
-              : "bottom-4 right-4 w-[400px] h-[600px] max-h-[80vh]"
+              : "bottom-4 right-4 w-[420px] h-[620px] max-h-[85vh]"
           )}
         >
-          {/* Custom Header */}
-          <div className="flex items-center justify-between p-3 border-b bg-background">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+          <div className="flex items-center justify-between px-4 py-3 border-b bg-gradient-to-r from-background to-muted/30">
+            <div className="flex items-center gap-3">
+              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-sm">
                 <Sparkles className="h-4 w-4 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="text-sm font-medium">PC Build Assistant</h3>
+                <h3 className="text-sm font-semibold">PC Build Assistant</h3>
                 {!isMinimized && (
                   <p className="text-xs text-muted-foreground">Powered by Algolia AI</p>
                 )}
               </div>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5">
               {!isMinimized && (
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8"
+                  className="h-8 w-8 rounded-full hover:bg-muted"
                   onClick={clearChat}
                   title="New chat"
                 >
@@ -362,7 +380,7 @@ export function ChatWidget() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 rounded-full hover:bg-muted"
                 onClick={() => setIsMinimized(!isMinimized)}
               >
                 {isMinimized ? (
@@ -374,7 +392,7 @@ export function ChatWidget() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 rounded-full hover:bg-muted"
                 onClick={() => setIsOpen(false)}
               >
                 <X className="h-4 w-4" />
@@ -382,40 +400,25 @@ export function ChatWidget() {
             </div>
           </div>
 
-          {/* Chat Content */}
           {!isMinimized && (
             <div className="h-[calc(100%-60px)] flex flex-col">
-              {/* Quick Questions Dropdown */}
-              <div className="p-2 border-b bg-muted/20 relative z-[60]">
+              <div className="p-3 border-b bg-muted/20">
                 <Select onValueChange={handlePromptSelect}>
-                  <SelectTrigger className="w-full h-9 text-xs bg-background">
-                    <div className="flex items-center gap-2">
-                      <Lightbulb className="h-3.5 w-3.5 text-muted-foreground" />
-                      <SelectValue placeholder="Quick questions - select a topic" />
+                  <SelectTrigger className="w-full h-9 text-sm bg-background">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Lightbulb className="h-4 w-4" />
+                      <SelectValue placeholder="Quick questions..." />
                     </div>
                   </SelectTrigger>
-                  <SelectContent 
-                    className="max-h-[300px]"
-                    position="popper"
-                    side="bottom"
-                    align="start"
-                    sideOffset={4}
-                    avoidCollisions={true}
-                  >
-                    {suggestedPrompts.map((prompt) => (
-                      <SelectItem 
-                        key={prompt.id} 
-                        value={prompt.id}
-                        className="text-xs py-2 cursor-pointer"
-                      >
+                  <SelectContent>
+                    {QUICK_PROMPTS.map((prompt) => (
+                      <SelectItem key={prompt.id} value={prompt.id}>
                         {prompt.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
-
-              {/* Algolia Chat Component */}
               <div ref={chatContainerRef} className="flex-1 overflow-hidden chat-container">
                 <InstantSearch 
                   key={sessionId}
@@ -425,25 +428,32 @@ export function ChatWidget() {
                   <Chat
                     agentId={AGENT_ID}
                     messagesLoaderComponent={ChatLoader}
-                    itemComponent={() => null}
+                    assistantMessageLeadingComponent={AssistantAvatar}
+                    userMessageLeadingComponent={UserAvatar}
+                    itemComponent={() => <></>}
+                    suggestionsComponent={CustomSuggestions}
                     classNames={{
-                      root: "h-full flex flex-col",
-                      container: "h-full flex flex-col",
+                      root: "ais-Chat-root h-full flex flex-col",
+                      container: "ais-Chat-container h-full flex flex-col",
                       header: {
                         root: "hidden",
                       },
                       messages: {
-                        root: "flex-1 overflow-hidden",
-                        content: "p-3 space-y-3",
-                        scroll: "h-full overflow-y-auto",
+                        root: "ais-Chat-messages flex-1 overflow-hidden",
+                        content: "ais-Chat-messages-content p-4",
+                        scroll: "ais-Chat-messages-scroll h-full overflow-y-auto",
                       },
                       message: {
-                        root: "max-w-[85%] rounded-lg p-3 text-sm",
+                        root: "ais-Chat-message",
+                        container: "ais-Chat-message-container",
+                        leading: "ais-Chat-message-leading",
+                        content: "ais-Chat-message-content",
+                        message: "ais-Chat-message-text",
                       },
                       prompt: {
-                        root: "p-3 border-t",
-                        textarea: "w-full min-h-[40px] max-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none",
-                        submit: "bg-primary text-primary-foreground rounded-md px-3 py-1.5 text-sm font-medium hover:bg-primary/90 disabled:opacity-50",
+                        root: "ais-Chat-prompt p-3 border-t bg-background",
+                        textarea: "ais-Chat-prompt-textarea",
+                        submit: "ais-Chat-prompt-submit",
                       },
                       toggleButton: {
                         root: "hidden",
@@ -454,7 +464,7 @@ export function ChatWidget() {
                           title: "PC Build Assistant",
                         },
                         prompt: {
-                          textareaPlaceholder: "Ask about PC builds, compatibility, or recommendations...",
+                          textareaPlaceholder: "Ask about PC builds, compatibility...",
                           disclaimer: "",
                         },
                         messages: {
@@ -468,348 +478,10 @@ export function ChatWidget() {
           )}
         </div>
       )}
-
-      {/* Global styles for chat */}
-      <style jsx global>{`
-        /* ============================================
-           BASE LAYOUT
-           ============================================ */
-        .chat-container .ais-Chat {
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          font-family: inherit;
-        }
-        .chat-container .ais-Chat-messages {
-          flex: 1;
-          overflow-y: auto;
-          scroll-behavior: smooth;
-        }
-        .chat-container .ais-Chat-messages-content {
-          padding: 1rem;
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        }
-
-        /* ============================================
-           MESSAGE BUBBLES - USER
-           ============================================ */
-        .chat-container .ais-Chat-message--user {
-          background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.9) 100%);
-          color: hsl(var(--primary-foreground));
-          margin-left: auto;
-          max-width: 85%;
-          border-radius: 16px 16px 4px 16px;
-          padding: 0.75rem 1rem;
-          box-shadow: 0 2px 8px hsl(var(--primary) / 0.25);
-          font-size: 14px;
-          line-height: 1.5;
-        }
-
-        /* ============================================
-           MESSAGE BUBBLES - ASSISTANT
-           ============================================ */
-        .chat-container .ais-Chat-message--assistant {
-          background: hsl(var(--card));
-          border: 1px solid hsl(var(--border));
-          max-width: 95%;
-          border-radius: 16px 16px 16px 4px;
-          padding: 1rem 1.25rem;
-          box-shadow: 0 1px 3px hsl(var(--foreground) / 0.05);
-          font-size: 14px;
-          line-height: 1.65;
-          color: hsl(var(--foreground));
-        }
-
-        /* ============================================
-           MARKDOWN - TYPOGRAPHY
-           ============================================ */
-        .chat-container .ais-Chat-message--assistant p {
-          margin-bottom: 0.875rem;
-        }
-        .chat-container .ais-Chat-message--assistant p:last-child {
-          margin-bottom: 0;
-        }
-        .chat-container .ais-Chat-message--assistant strong {
-          font-weight: 700;
-          color: hsl(var(--foreground));
-        }
-        .chat-container .ais-Chat-message--assistant em {
-          font-style: italic;
-        }
-
-        /* ============================================
-           MARKDOWN - LISTS (CRITICAL FIX)
-           ============================================ */
-        .chat-container .ais-Chat-message--assistant ul {
-          list-style-type: disc;
-          padding-left: 1.5rem;
-          margin: 0.75rem 0;
-        }
-        .chat-container .ais-Chat-message--assistant ol {
-          list-style-type: decimal;
-          padding-left: 1.5rem;
-          margin: 0.75rem 0;
-        }
-        .chat-container .ais-Chat-message--assistant li {
-          margin-bottom: 0.5rem;
-          padding-left: 0.25rem;
-        }
-        .chat-container .ais-Chat-message--assistant li:last-child {
-          margin-bottom: 0;
-        }
-        /* Nested lists */
-        .chat-container .ais-Chat-message--assistant ul ul,
-        .chat-container .ais-Chat-message--assistant ol ul {
-          list-style-type: circle;
-          margin: 0.5rem 0;
-        }
-        .chat-container .ais-Chat-message--assistant ul ol,
-        .chat-container .ais-Chat-message--assistant ol ol {
-          list-style-type: lower-alpha;
-          margin: 0.5rem 0;
-        }
-
-        /* ============================================
-           MARKDOWN - CODE
-           ============================================ */
-        .chat-container .ais-Chat-message--assistant code {
-          font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-          font-size: 0.875em;
-          background: hsl(var(--muted));
-          padding: 0.125rem 0.375rem;
-          border-radius: 4px;
-          border: 1px solid hsl(var(--border));
-        }
-        .chat-container .ais-Chat-message--assistant pre {
-          background: hsl(var(--muted));
-          border: 1px solid hsl(var(--border));
-          border-radius: 8px;
-          padding: 0.75rem 1rem;
-          margin: 0.75rem 0;
-          overflow-x: auto;
-        }
-        .chat-container .ais-Chat-message--assistant pre code {
-          background: transparent;
-          padding: 0;
-          border: none;
-          font-size: 0.8125rem;
-        }
-
-        /* ============================================
-           MARKDOWN - LINKS
-           ============================================ */
-        .chat-container .ais-Chat-message--assistant a {
-          color: hsl(var(--primary));
-          text-decoration: underline;
-          text-underline-offset: 2px;
-        }
-        .chat-container .ais-Chat-message--assistant a:hover {
-          text-decoration-thickness: 2px;
-        }
-
-        /* ============================================
-           MARKDOWN - BLOCKQUOTES
-           ============================================ */
-        .chat-container .ais-Chat-message--assistant blockquote {
-          border-left: 3px solid hsl(var(--primary));
-          padding-left: 1rem;
-          margin: 0.75rem 0;
-          color: hsl(var(--muted-foreground));
-          font-style: italic;
-        }
-
-        /* ============================================
-           MARKDOWN - HEADINGS (if any)
-           ============================================ */
-        .chat-container .ais-Chat-message--assistant h1,
-        .chat-container .ais-Chat-message--assistant h2,
-        .chat-container .ais-Chat-message--assistant h3,
-        .chat-container .ais-Chat-message--assistant h4 {
-          font-weight: 700;
-          margin-top: 1rem;
-          margin-bottom: 0.5rem;
-        }
-        .chat-container .ais-Chat-message--assistant h1:first-child,
-        .chat-container .ais-Chat-message--assistant h2:first-child,
-        .chat-container .ais-Chat-message--assistant h3:first-child {
-          margin-top: 0;
-        }
-
-        /* ============================================
-           PRODUCT HIGHLIGHTING
-           ============================================ */
-        .chat-container .ais-Chat-message--assistant strong:first-of-type {
-          color: hsl(var(--primary));
-        }
-
-        /* ============================================
-           MESSAGE ACTIONS
-           ============================================ */
-        .chat-container [class*="message-actions"],
-        .chat-container [class*="Message-actions"] {
-          margin-top: 0.75rem;
-          padding-top: 0.5rem;
-          border-top: 1px solid hsl(var(--border) / 0.5);
-          display: flex;
-          gap: 0.5rem;
-        }
-        .chat-container [class*="message-actions"] button,
-        .chat-container [class*="Message-actions"] button {
-          padding: 0.25rem 0.5rem;
-          border-radius: 6px;
-          font-size: 12px;
-          color: hsl(var(--muted-foreground));
-          transition: all 0.15s ease;
-        }
-        .chat-container [class*="message-actions"] button:hover,
-        .chat-container [class*="Message-actions"] button:hover {
-          background: hsl(var(--muted));
-          color: hsl(var(--foreground));
-        }
-
-        /* ============================================
-           INPUT AREA - PROMPT
-           ============================================ */
-        .chat-container .ais-Chat-prompt {
-          border-top: 1px solid hsl(var(--border));
-          background: hsl(var(--background));
-          padding: 0.75rem 1rem;
-        }
-        .chat-container .ais-Chat-prompt textarea {
-          width: 100%;
-          min-height: 44px;
-          max-height: 120px;
-          padding: 0.625rem 0.875rem;
-          border: 1.5px solid hsl(var(--border));
-          border-radius: 12px;
-          background: hsl(var(--background));
-          color: hsl(var(--foreground));
-          font-size: 14px;
-          line-height: 1.5;
-          resize: none;
-          transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-        .chat-container .ais-Chat-prompt textarea:focus {
-          outline: none;
-          border-color: hsl(var(--primary));
-          box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
-        }
-        .chat-container .ais-Chat-prompt textarea::placeholder {
-          color: hsl(var(--muted-foreground));
-        }
-
-        /* ============================================
-           INPUT AREA - SUBMIT BUTTON
-           ============================================ */
-        .chat-container .ais-Chat-prompt button[type="submit"],
-        .chat-container .ais-Chat-prompt-submit {
-          background: hsl(var(--primary));
-          color: hsl(var(--primary-foreground));
-          border: none;
-          border-radius: 10px;
-          padding: 0.5rem 1rem;
-          font-size: 14px;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-        .chat-container .ais-Chat-prompt button[type="submit"]:hover:not(:disabled),
-        .chat-container .ais-Chat-prompt-submit:hover:not(:disabled) {
-          background: hsl(var(--primary) / 0.9);
-          transform: translateY(-1px);
-        }
-        .chat-container .ais-Chat-prompt button[type="submit"]:disabled,
-        .chat-container .ais-Chat-prompt-submit:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-          transform: none;
-        }
-
-        /* ============================================
-           HIDE UNWANTED ELEMENTS
-           ============================================ */
-        .chat-container .ais-Chat-messages-scrollToBottom,
-        .chat-container [class*="scrollToBottom"] {
-          display: none !important;
-        }
-        .chat-container .ais-Chat-prompt-footer,
-        .chat-container [class*="disclaimer"],
-        .chat-container [class*="footer"]:not(.ais-Chat-message-footer) {
-          display: none !important;
-        }
-        .chat-container [class*="toolCall"],
-        .chat-container [class*="tool-call"],
-        .chat-container [class*="ToolCall"],
-        .chat-container [class*="tool_call"],
-        .chat-container [class*="toolResult"],
-        .chat-container [class*="tool-result"],
-        .chat-container [class*="ToolResult"],
-        .chat-container [class*="toolUse"],
-        .chat-container [class*="tool-use"],
-        .chat-container [data-tool],
-        .chat-container [data-tool-call],
-        .chat-container [data-tool-result] {
-          display: none !important;
-        }
-        .chat-container details,
-        .chat-container summary {
-          display: none !important;
-        }
-        .chat-container [class*="results-count"],
-        .chat-container [class*="resultsCount"],
-        .chat-container [class*="view-all"],
-        .chat-container [class*="viewAll"],
-        .chat-container [class*="ViewAll"],
-        .chat-container [class*="showMore"],
-        .chat-container [class*="show-more"],
-        .chat-container a[href*="view-all"],
-        .chat-container a[href*="search"]:not(textarea) {
-          display: none !important;
-        }
-        .chat-container .ais-Stats,
-        .chat-container [class*="Stats"],
-        .chat-container [class*="stats"] {
-          display: none !important;
-        }
-        .chat-container [data-results-count="true"] {
-          display: none !important;
-        }
-
-        /* ============================================
-           LOADING STATE
-           ============================================ */
-        .chat-container [class*="loader"],
-        .chat-container [class*="Loader"] {
-          padding: 1rem;
-          color: hsl(var(--muted-foreground));
-        }
-
-        /* ============================================
-           SCROLLBAR STYLING
-           ============================================ */
-        .chat-container .ais-Chat-messages::-webkit-scrollbar {
-          width: 6px;
-        }
-        .chat-container .ais-Chat-messages::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .chat-container .ais-Chat-messages::-webkit-scrollbar-thumb {
-          background: hsl(var(--border));
-          border-radius: 3px;
-        }
-        .chat-container .ais-Chat-messages::-webkit-scrollbar-thumb:hover {
-          background: hsl(var(--muted-foreground) / 0.5);
-        }
-      `}</style>
     </>
   )
 }
 
-/**
- * Build Context Provider for chat - provides current build info to agent
- */
 export function useBuildContextForChat() {
   const { build, totalPrice, totalTdp, validationResult, componentCount } = useBuildStore()
 

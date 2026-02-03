@@ -204,117 +204,585 @@
   background-size: 200% 100%;
 }
 
-/* Algolia Chat Widget Styling */
-.ais-Chat {
-  @apply h-full flex flex-col;
+/* ============================================
+   ALGOLIA CHAT WIDGET STYLES
+   ============================================ */
+
+/* Base Chat Layout */
+.chat-container .ais-Chat,
+.chat-container .ais-Chat-root,
+.chat-container [class*="ais-Chat-root"] {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  font-family: inherit !important;
 }
 
-.ais-Chat-container {
-  @apply h-full flex flex-col;
+.chat-container .ais-Chat-container,
+.chat-container [class*="ais-Chat-container"] {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-.ais-Chat-header {
-  @apply hidden; /* Using custom header */
+.chat-container .ais-Chat-messages,
+.chat-container [class*="ais-Chat-messages"] {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  scroll-behavior: smooth !important;
 }
 
-.ais-Chat-messages {
-  @apply flex-1 overflow-hidden;
+.chat-container .ais-Chat-messages-content,
+.chat-container [class*="ais-Chat-messages-content"] {
+  padding: 1rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
 }
 
-.ais-Chat-messages-content {
-  @apply p-3;
+.chat-container .ais-Chat-messages-scroll,
+.chat-container [class*="ais-Chat-messages-scroll"] {
+  height: 100% !important;
+  overflow-y: auto !important;
 }
 
-.ais-Chat-messages-scroll {
-  @apply h-full overflow-y-auto;
+/* ============================================
+   MESSAGE CONTAINER LAYOUT
+   ============================================ */
+.chat-container .ais-ChatMessage {
+  display: flex !important;
+  gap: 0.75rem !important;
+  align-items: flex-start !important;
+  margin-bottom: 1rem !important;
 }
 
-.ais-Chat-message {
-  @apply max-w-[85%] rounded-lg p-3 text-sm mb-3;
+.chat-container .ais-ChatMessage-container {
+  display: flex !important;
+  gap: 0.75rem !important;
+  align-items: flex-start !important;
+  width: 100% !important;
 }
 
-.ais-Chat-message--user {
-  @apply bg-primary text-primary-foreground ml-auto;
+.chat-container .ais-ChatMessage-leading {
+  flex-shrink: 0 !important;
 }
 
-.ais-Chat-message--assistant {
-  @apply bg-muted;
+.chat-container .ais-ChatMessage-content {
+  flex: 1 !important;
+  min-width: 0 !important;
 }
 
-.ais-Chat-prompt {
-  @apply p-3 border-t flex items-end gap-2;
+/* ============================================
+   USER MESSAGE STYLES (using data-role attribute)
+   ============================================ */
+.chat-container [data-role="user"] {
+  flex-direction: row-reverse !important;
 }
 
-.ais-Chat-prompt-textarea {
-  @apply flex-1 min-h-[40px] max-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none;
+.chat-container [data-role="user"] .ais-ChatMessage-container {
+  flex-direction: row-reverse !important;
 }
 
-.ais-Chat-prompt-submit {
-  @apply bg-primary text-primary-foreground rounded-md px-3 py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-50 shrink-0;
+.chat-container [data-role="user"] .ais-ChatMessage-message {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.85) 100%) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border-radius: 1.25rem 1.25rem 0.25rem 1.25rem !important;
+  padding: 0.875rem 1rem !important;
+  box-shadow: 0 2px 12px hsl(var(--primary) / 0.25) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
 }
 
-.ais-Chat-toggleButton {
-  @apply hidden; /* Using custom toggle */
+/* ============================================
+   ASSISTANT MESSAGE STYLES (using data-role attribute)
+   ============================================ */
+.chat-container [data-role="assistant"] .ais-ChatMessage-message {
+  background: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 1.25rem 1.25rem 1.25rem 0.25rem !important;
+  padding: 1rem 1.25rem !important;
+  box-shadow: 0 1px 4px hsl(var(--foreground) / 0.03) !important;
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+  color: hsl(var(--foreground)) !important;
 }
 
-/* Chat scrollbar */
-.ais-Chat-messages-scroll::-webkit-scrollbar {
+/* Dark mode assistant messages */
+.dark .chat-container [data-role="assistant"] .ais-ChatMessage-message {
+  background: hsl(var(--muted) / 0.5) !important;
+}
+
+/* ============================================
+   MESSAGE TEXT TYPOGRAPHY
+   ============================================ */
+.chat-container .ais-ChatMessage-message p {
+  margin-bottom: 0.75rem !important;
+}
+
+.chat-container .ais-ChatMessage-message p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.chat-container [data-role="assistant"] .ais-ChatMessage-message strong,
+.chat-container [data-role="assistant"] .ais-ChatMessage-message b {
+  font-weight: 600 !important;
+  color: hsl(var(--primary)) !important;
+}
+
+.chat-container .ais-ChatMessage-message em {
+  font-style: italic !important;
+}
+
+/* ============================================
+   MESSAGE TEXT LISTS
+   ============================================ */
+.chat-container .ais-ChatMessage-message ul {
+  list-style-type: disc !important;
+  padding-left: 1.25rem !important;
+  margin: 0.625rem 0 !important;
+}
+
+.chat-container .ais-ChatMessage-message ol {
+  list-style-type: decimal !important;
+  padding-left: 1.25rem !important;
+  margin: 0.625rem 0 !important;
+}
+
+.chat-container .ais-ChatMessage-message li {
+  margin-bottom: 0.375rem !important;
+  padding-left: 0.25rem !important;
+  line-height: 1.5 !important;
+}
+
+.chat-container .ais-ChatMessage-message li:last-child {
+  margin-bottom: 0 !important;
+}
+
+.chat-container .ais-ChatMessage-message li::marker {
+  color: hsl(var(--primary) / 0.7) !important;
+}
+
+/* Nested lists */
+.chat-container .ais-ChatMessage-message ul ul,
+.chat-container .ais-ChatMessage-message ol ul {
+  list-style-type: circle !important;
+  margin: 0.375rem 0 !important;
+}
+
+/* ============================================
+   MESSAGE TEXT CODE
+   ============================================ */
+.chat-container .ais-ChatMessage-message code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace !important;
+  font-size: 0.8125em !important;
+  background: hsl(var(--muted)) !important;
+  padding: 0.125rem 0.375rem !important;
+  border-radius: 0.25rem !important;
+  border: 1px solid hsl(var(--border)) !important;
+}
+
+.chat-container .ais-ChatMessage-message pre {
+  background: hsl(var(--muted)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+  margin: 0.75rem 0 !important;
+  overflow-x: auto !important;
+}
+
+.chat-container .ais-ChatMessage-message pre code {
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  font-size: 0.8125rem !important;
+}
+
+/* ============================================
+   MESSAGE LINKS
+   ============================================ */
+.chat-container .ais-ChatMessage-message a {
+  color: hsl(var(--primary)) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+
+.chat-container .ais-ChatMessage-message a:hover {
+  text-decoration-thickness: 2px !important;
+}
+
+/* ============================================
+   CHAT INPUT AREA
+   ============================================ */
+.chat-container .ais-ChatPrompt {
+  border-top: 1px solid hsl(var(--border)) !important;
+  background: hsl(var(--background)) !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.chat-container .ais-ChatPrompt-body {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-end !important;
+  gap: 0.75rem !important;
+}
+
+.chat-container .ais-ChatPrompt-textarea {
+  flex: 1 !important;
+  min-height: 44px !important;
+  max-height: 120px !important;
+  padding: 0.75rem 1rem !important;
+  border: 1.5px solid hsl(var(--border)) !important;
+  border-radius: 0.75rem !important;
+  background: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  resize: none !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.chat-container .ais-ChatPrompt-textarea:focus {
+  outline: none !important;
+  border-color: hsl(var(--primary)) !important;
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1) !important;
+}
+
+.chat-container .ais-ChatPrompt-textarea::placeholder {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Submit Button */
+.chat-container .ais-ChatPrompt-submit {
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.chat-container .ais-ChatPrompt-submit svg {
+  width: 20px !important;
+  height: 20px !important;
+  stroke: currentColor !important;
+  stroke-width: 2.5 !important;
+}
+
+.chat-container .ais-ChatPrompt-submit:hover:not(:disabled) {
+  background: hsl(var(--primary) / 0.9) !important;
+  transform: translateY(-1px) !important;
+}
+
+.chat-container .ais-ChatPrompt-submit:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* ============================================
+   HIDE EMPTY LIST ITEMS (from tool results)
+   ============================================ */
+.chat-container .ais-ChatMessage-message ol:empty,
+.chat-container .ais-ChatMessage-message ul:empty,
+.chat-container .ais-ChatMessage-message li:empty {
+  display: none !important;
+}
+
+/* Hide lists that only contain empty items */
+.chat-container .ais-ChatMessage-message ol:has(li:empty):not(:has(li:not(:empty))) {
+  display: none !important;
+}
+
+/* ============================================
+   HIDE UNWANTED ELEMENTS
+   ============================================ */
+.chat-container .ais-Chat-messages-scrollToBottom,
+.chat-container [class*="scrollToBottom"] {
+  display: none !important;
+}
+
+.chat-container .ais-Chat-prompt-footer,
+.chat-container [class*="disclaimer"],
+.chat-container [class*="footer"]:not(.ais-Chat-message-footer) {
+  display: none !important;
+}
+
+.chat-container [class*="toolCall"],
+.chat-container [class*="tool-call"],
+.chat-container [class*="ToolCall"],
+.chat-container [class*="tool_call"],
+.chat-container [class*="toolResult"],
+.chat-container [class*="tool-result"],
+.chat-container [class*="ToolResult"],
+.chat-container [class*="toolUse"],
+.chat-container [class*="tool-use"],
+.chat-container [data-tool],
+.chat-container [data-tool-call],
+.chat-container [data-tool-result] {
+  display: none !important;
+}
+
+.chat-container details,
+.chat-container summary {
+  display: none !important;
+}
+
+.chat-container [class*="results-count"],
+.chat-container [class*="resultsCount"],
+.chat-container [class*="view-all"],
+.chat-container [class*="viewAll"],
+.chat-container [class*="ViewAll"],
+.chat-container [class*="showMore"],
+.chat-container [class*="show-more"],
+.chat-container a[href*="view-all"],
+.chat-container a[href*="search"]:not(textarea) {
+  display: none !important;
+}
+
+.chat-container .ais-Stats,
+.chat-container [class*="Stats"],
+.chat-container [class*="stats"] {
+  display: none !important;
+}
+
+/* ============================================
+   CHAT SCROLLBAR
+   ============================================ */
+.chat-container .ais-Chat-messages::-webkit-scrollbar {
   width: 6px;
 }
 
-.ais-Chat-messages-scroll::-webkit-scrollbar-track {
+.chat-container .ais-Chat-messages::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.ais-Chat-messages-scroll::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--muted-foreground) / 0.3);
+.chat-container .ais-Chat-messages::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.2);
   border-radius: 3px;
 }
 
-.ais-Chat-messages-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(var(--muted-foreground) / 0.5);
+.chat-container .ais-Chat-messages::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
 }
 
-/* Chat Loading Indicator */
-.ais-Chat-messages-loader,
-.ais-Chat .ais-Chat-loader,
-[class*="ais-Chat"] [class*="loader"] {
-  @apply flex items-center justify-center p-4;
+/* ============================================
+   CUSTOM CHAT CLASSES (for custom components)
+   ============================================ */
+
+/* User Message Bubble */
+.chat-message-user {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.85) 100%);
+  color: hsl(var(--primary-foreground));
+  box-shadow: 0 2px 12px hsl(var(--primary) / 0.25);
 }
 
-.ais-Chat-messages-loader svg,
-.ais-Chat .ais-Chat-loader svg,
-[class*="ais-Chat"] [class*="loader"] svg {
-  @apply w-6 h-6 animate-spin text-primary;
+/* Assistant Message Bubble */
+.chat-message-assistant {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  box-shadow: 0 1px 4px hsl(var(--foreground) / 0.03);
 }
 
-/* Fix oversized loading spinner */
-.ais-Chat svg[class*="loader"],
-.ais-Chat [class*="loading"] svg,
-.ais-Chat-messages svg:not([class]) {
-  @apply !w-6 !h-6 !max-w-6 !max-h-6;
-  stroke: hsl(var(--primary));
-  stroke-width: 2;
+/* Dark mode adjustments */
+.dark .chat-message-assistant {
+  background: hsl(var(--muted) / 0.5);
+  border-color: hsl(var(--border) / 0.5);
 }
 
-/* Loading animation for assistant messages */
-.ais-Chat-message--assistant.ais-Chat-message--loading {
-  @apply animate-pulse;
+/* ============================================
+   CHAT MARKDOWN STYLES (for custom components)
+   ============================================ */
+
+.chat-markdown {
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
 
-/* Loading dots animation */
-.ais-Chat-loading-dots {
-  @apply flex gap-1 items-center justify-center p-4;
+.chat-markdown > *:first-child {
+  margin-top: 0 !important;
 }
 
-.ais-Chat-loading-dots span {
-  @apply w-2 h-2 rounded-full bg-primary animate-bounce;
+.chat-markdown > *:last-child {
+  margin-bottom: 0 !important;
 }
 
-.ais-Chat-loading-dots span:nth-child(2) {
-  animation-delay: 0.1s;
+/* Price and spec highlighting */
+.chat-markdown strong {
+  font-weight: 600;
+  color: hsl(var(--primary));
 }
 
-.ais-Chat-loading-dots span:nth-child(3) {
-  animation-delay: 0.2s;
+/* Lists styling */
+.chat-markdown ul,
+.chat-markdown ol {
+  padding-left: 1.25rem;
+  margin: 0.75rem 0;
+}
+
+.chat-markdown li {
+  margin-bottom: 0.375rem;
+  line-height: 1.5;
+}
+
+.chat-markdown li:last-child {
+  margin-bottom: 0;
+}
+
+.chat-markdown li::marker {
+  color: hsl(var(--primary) / 0.7);
+}
+
+/* Code blocks */
+.chat-markdown code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+}
+
+.chat-markdown pre code {
+  display: block;
+  padding: 0.75rem 1rem;
+  background: hsl(var(--muted));
+  border-radius: 0.5rem;
+}
+
+/* Inline code */
+.chat-markdown :not(pre) > code {
+  background: hsl(var(--muted));
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.8125em;
+}
+
+/* Links */
+.chat-markdown a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.chat-markdown a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Blockquotes */
+.chat-markdown blockquote {
+  border-left: 3px solid hsl(var(--primary) / 0.5);
+  padding-left: 1rem;
+  margin: 0.75rem 0;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+/* Tables */
+.chat-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.8125rem;
+}
+
+.chat-markdown th,
+.chat-markdown td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.chat-markdown th {
+  background: hsl(var(--muted));
+  font-weight: 600;
+}
+
+.chat-markdown tr:nth-child(even) {
+  background: hsl(var(--muted) / 0.3);
+}
+
+/* Headings in chat */
+.chat-markdown h1,
+.chat-markdown h2,
+.chat-markdown h3,
+.chat-markdown h4 {
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.chat-markdown h1:first-child,
+.chat-markdown h2:first-child,
+.chat-markdown h3:first-child,
+.chat-markdown h4:first-child {
+  margin-top: 0;
+}
+
+.chat-markdown h1 {
+  font-size: 1.125rem;
+}
+
+.chat-markdown h2 {
+  font-size: 1rem;
+}
+
+.chat-markdown h3 {
+  font-size: 0.9375rem;
+}
+
+/* Horizontal rules */
+.chat-markdown hr {
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+  margin: 1rem 0;
+}
+
+/* ============================================
+   CHAT SCROLLBAR
+   ============================================ */
+
+.chat-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted-foreground) / 0.2);
+  border-radius: 3px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground) / 0.4);
+}
+
+/* ============================================
+   TYPING ANIMATION
+   ============================================ */
+
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-typing-bounce {
+  animation: typing-bounce 1.4s ease-in-out infinite;
 }

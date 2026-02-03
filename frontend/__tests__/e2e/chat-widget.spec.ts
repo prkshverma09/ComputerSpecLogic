@@ -28,7 +28,7 @@ test.describe("Chat Widget", () => {
     await chatButton.click();
 
     // Check for quick questions dropdown
-    await expect(page.getByText("Quick questions - select a topic")).toBeVisible();
+    await expect(page.getByText("Quick questions...")).toBeVisible();
     
     // Open dropdown and check options
     const dropdown = page.getByRole("combobox");
@@ -48,7 +48,7 @@ test.describe("Chat Widget", () => {
 
     // Chat header should still be visible but content should be hidden
     await expect(page.getByText("PC Build Assistant")).toBeVisible();
-    await expect(page.getByText("Quick questions - select a topic")).not.toBeVisible();
+    await expect(page.getByText("Quick questions...")).not.toBeVisible();
   });
 
   test("should maximize minimized chat window", async ({ page }) => {
@@ -64,7 +64,7 @@ test.describe("Chat Widget", () => {
     await maximizeButton.click();
 
     // Content should be visible again
-    await expect(page.getByText("Quick questions - select a topic")).toBeVisible();
+    await expect(page.getByText("Quick questions...")).toBeVisible();
   });
 
   test("should close chat window", async ({ page }) => {

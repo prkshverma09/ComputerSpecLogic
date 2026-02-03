@@ -6,21 +6,17 @@ test.describe("Chat Widget Loading", () => {
     await page.waitForLoadState("networkidle");
     
     // Open chat widget by clicking the floating button
-    const chatToggle = page.locator('button.fixed.bottom-4.right-4');
+    const chatToggle = page.locator('button:has(svg[class*="lucide-message-circle"])');
     await chatToggle.click();
     
-    // Wait for chat window to appear (fixed position element with chat content)
-    const chatWindow = page.locator('.fixed.z-50.bg-background.border.rounded-xl');
-    await expect(chatWindow).toBeVisible({ timeout: 5000 });
-    
-    // Verify chat header is visible
-    await expect(page.getByRole('heading', { name: 'PC Build Assistant' })).toBeVisible();
+    // Wait for chat window to appear via heading
+    await expect(page.getByRole('heading', { name: 'PC Build Assistant' })).toBeVisible({ timeout: 5000 });
     
     // Take screenshot of open chat
     await page.screenshot({ path: "chat-open.png", fullPage: true });
     
     // Find textarea and type a message
-    const textarea = page.locator('textarea');
+    const textarea = page.locator('.chat-container textarea');
     await textarea.fill("What CPUs do you have under $200?");
     
     // Submit the message
@@ -40,11 +36,15 @@ test.describe("Chat Widget Loading", () => {
     await page.waitForLoadState("networkidle");
     
     // Open chat
-    const chatToggle = page.locator('button').filter({ has: page.locator('.lucide-message-circle') });
+    const chatToggle = page.locator('button:has(svg[class*="lucide-message-circle"])');
     await chatToggle.click();
     
-    // Check that any SVG in the chat is reasonably sized
-    const chatSvgs = page.locator('.chat-container svg');
+    // Wait for chat window
+    await expect(page.getByRole('heading', { name: 'PC Build Assistant' })).toBeVisible();
+    
+    // Check that any SVG in the chat container is reasonably sized
+    const chatContainer = page.locator('.chat-container');
+    const chatSvgs = chatContainer.locator('svg');
     const count = await chatSvgs.count();
     
     for (let i = 0; i < count; i++) {
