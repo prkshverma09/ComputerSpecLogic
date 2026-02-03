@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react"
+import { InstantSearch } from "react-instantsearch"
 import { Chat } from "react-instantsearch"
 import { useBuildStore } from "@/stores/build-store"
-import { AGENT_ID } from "@/lib/algolia"
+import { searchClient, COMPONENTS_INDEX, AGENT_ID } from "@/lib/algolia"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -348,47 +349,49 @@ export function ChatWidget() {
 
               {/* Algolia Chat Component */}
               <div ref={chatContainerRef} className="flex-1 overflow-hidden chat-container">
-                <Chat
-                  key={sessionId}
-                  agentId={AGENT_ID}
-                  messagesLoaderComponent={ChatLoader}
-                  itemComponent={() => null}
-                  classNames={{
-                    root: "h-full flex flex-col",
-                    container: "h-full flex flex-col",
-                    header: {
-                      root: "hidden",
-                    },
-                    messages: {
-                      root: "flex-1 overflow-hidden",
-                      content: "p-3 space-y-3",
-                      scroll: "h-full overflow-y-auto",
-                    },
-                    message: {
-                      root: "max-w-[85%] rounded-lg p-3 text-sm",
-                    },
-                    prompt: {
-                      root: "p-3 border-t",
-                      textarea: "w-full min-h-[40px] max-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none",
-                      submit: "bg-primary text-primary-foreground rounded-md px-3 py-1.5 text-sm font-medium hover:bg-primary/90 disabled:opacity-50",
-                    },
-                    toggleButton: {
-                      root: "hidden",
-                    },
-                  }}
-                  translations={{
+                <InstantSearch searchClient={searchClient} indexName={COMPONENTS_INDEX}>
+                  <Chat
+                    key={sessionId}
+                    agentId={AGENT_ID}
+                    messagesLoaderComponent={ChatLoader}
+                    itemComponent={() => null}
+                    classNames={{
+                      root: "h-full flex flex-col",
+                      container: "h-full flex flex-col",
                       header: {
-                        title: "PC Build Assistant",
-                      },
-                      prompt: {
-                        textareaPlaceholder: "Ask about PC builds, compatibility, or recommendations...",
-                        disclaimer: "", // Remove disclaimer text
+                        root: "hidden",
                       },
                       messages: {
-                        loaderText: "Thinking...",
+                        root: "flex-1 overflow-hidden",
+                        content: "p-3 space-y-3",
+                        scroll: "h-full overflow-y-auto",
+                      },
+                      message: {
+                        root: "max-w-[85%] rounded-lg p-3 text-sm",
+                      },
+                      prompt: {
+                        root: "p-3 border-t",
+                        textarea: "w-full min-h-[40px] max-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none",
+                        submit: "bg-primary text-primary-foreground rounded-md px-3 py-1.5 text-sm font-medium hover:bg-primary/90 disabled:opacity-50",
+                      },
+                      toggleButton: {
+                        root: "hidden",
                       },
                     }}
-                />
+                    translations={{
+                        header: {
+                          title: "PC Build Assistant",
+                        },
+                        prompt: {
+                          textareaPlaceholder: "Ask about PC builds, compatibility, or recommendations...",
+                          disclaimer: "",
+                        },
+                        messages: {
+                          loaderText: "Thinking...",
+                        },
+                      }}
+                  />
+                </InstantSearch>
               </div>
             </div>
           )}
