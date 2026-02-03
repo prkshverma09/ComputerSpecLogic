@@ -34,8 +34,11 @@ Spec-Logic combines Algolia's lightning-fast structured search with AI-powered e
 ### Key Features
 
 - **Smart Compatibility Checking**: When you select a CPU, only compatible motherboards appear
+- **Advanced Filtering & Sorting**: Filter components by brand, price range, and type-specific attributes (CPU socket, GPU VRAM, motherboard form factor). Sort by price for budget optimization
+- **Visual Case Preview**: Selected case displays with product imagery in the build summary sidebar
 - **Real-time PSU Calculator**: Accurate power calculations with 1.5x safety margins and transient spike handling
 - **Physical Clearance Validation**: GPU length and cooler height checks against case dimensions
+- **Intelligent Chat Input**: Combobox-style input with suggested queries and natural language processing
 - **Export & Share**: Export builds to PCPartPicker format, Reddit markdown, or shareable links
 
 ## Demo
@@ -55,9 +58,10 @@ Spec-Logic combines Algolia's lightning-fast structured search with AI-powered e
 <!-- Suggested screenshots:
 1. Homepage showing the clean UI
 2. Build page with component search and compatibility badges
-3. Chat widget interaction
-4. Build summary sidebar with power meter
-5. Export page
+3. Component selection dialog with filter/sort toolbar
+4. Chat widget with combobox input showing suggested queries
+5. Build summary sidebar with case image and power meter
+6. Export page
 -->
 
 **Homepage**
@@ -99,7 +103,7 @@ The index includes:
 - **Motherboards**: Socket, form factor, memory type support
 - **RAM**: DDR type, speed, capacity
 - **PSUs**: Wattage, efficiency rating
-- **Cases**: Max GPU length, max cooler height, form factor support
+- **Cases**: Max GPU length, max cooler height, form factor support, product images
 - **Coolers**: Height, socket support, TDP rating
 
 ### Retrieval-Enhanced Workflow
@@ -224,6 +228,7 @@ With Algolia's speed, this happens before the user even finishes processing the 
 | **Search** | Algolia InstantSearch, Agent Studio |
 | **State** | Zustand with localStorage persistence |
 | **Backend** | Python ETL pipeline for data ingestion |
+| **Testing** | Vitest (unit), Playwright (E2E), pytest (backend) |
 | **Hosting** | Vercel |
 
 ## What's Next
