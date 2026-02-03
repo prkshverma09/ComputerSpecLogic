@@ -5,6 +5,7 @@ import { useBuildStore } from "@/stores/build-store"
 import { BuildSummarySidebar } from "@/components/build/build-summary-sidebar"
 import { BuildComponentList } from "@/components/build/build-component-list"
 import { ComponentSelectionDialog } from "@/components/build/component-selection-dialog"
+import { ChatWidget } from "@/components/chat/chat-widget"
 import { ComponentType } from "@/types/components"
 
 export default function BuildPage() {
@@ -45,6 +46,9 @@ export default function BuildPage() {
         onClose={() => setIsDialogOpen(false)}
         category={selectedCategory}
       />
+
+      {/* Chat Widget */}
+      <ChatWidget />
     </div>
   )
 }
