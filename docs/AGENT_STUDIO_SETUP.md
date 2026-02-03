@@ -24,7 +24,7 @@ The chatbot can work in two modes:
 2. Configure the tool:
    - **Index**: Select `prod_components`
    - **Description**: Enter the following:
-   
+
    ```
    PC components database with CPUs, GPUs, motherboards, RAM, power supplies, cases, and coolers. Each component has: brand, model, component_type, price_usd, socket, form_factor, memory_type, tdp_watts, wattage, vram_gb, cores, threads, speed_mhz, capacity_gb, and compatibility attributes.
    ```
@@ -44,7 +44,7 @@ The chatbot can work in two modes:
      }
    }
    ```
-   
+
    > **Note:** Setting `hitsPerPage` to 5 limits results, allowing the AI to focus on the best matches rather than overwhelming users with options.
 
 4. Click **Add tool** to save

@@ -3,7 +3,7 @@ import { Build, ValidationResult, ValidationIssue, ComponentType } from "@/types
 
 /**
  * POST /api/build/validate
- * 
+ *
  * Validates a PC build for compatibility issues.
  */
 export async function POST(request: NextRequest) {
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       case: "Case",
       cooler: "Cooler",
     }
-    
+
     Object.entries(componentTypeMap).forEach(([key, type]) => {
       if (!components[key as keyof Build]) {
         missingComponents.push(type)
