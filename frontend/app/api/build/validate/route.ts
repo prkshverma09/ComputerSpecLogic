@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { Build, ValidationResult, ValidationIssue } from "@/types/components"
+import { Build, ValidationResult, ValidationIssue, ComponentType } from "@/types/components"
 
 /**
  * POST /api/build/validate
@@ -19,13 +19,22 @@ export async function POST(request: NextRequest) {
     }
 
     const issues: ValidationIssue[] = []
-    const missingComponents: string[] = []
+    const missingComponents: ComponentType[] = []
 
     // Check for missing components
-    const componentTypes = ["cpu", "motherboard", "gpu", "ram", "psu", "case", "cooler"]
-    componentTypes.forEach((type) => {
-      if (!components[type as keyof Build]) {
-        missingComponents.push(type.toUpperCase())
+    const componentTypeMap: Record<string, ComponentType> = {
+      cpu: "CPU",
+      motherboard: "Motherboard",
+      gpu: "GPU",
+      ram: "RAM",
+      psu: "PSU",
+      case: "Case",
+      cooler: "Cooler",
+    }
+    
+    Object.entries(componentTypeMap).forEach(([key, type]) => {
+      if (!components[key as keyof Build]) {
+        missingComponents.push(type)
       }
     })
 
@@ -48,13 +57,14 @@ export async function POST(request: NextRequest) {
 
     // RAM ↔ Motherboard Memory Type
     if (ram && motherboard) {
-      if (ram.memory_type !== motherboard.memory_type) {
+      const supportedMemoryTypes = motherboard.memory_type || []
+      if (!supportedMemoryTypes.includes(ram.memory_type)) {
         issues.push({
           type: "error",
           code: "MEMORY_TYPE_MISMATCH",
-          message: `RAM type (${ram.memory_type}) doesn't match motherboard support (${motherboard.memory_type})`,
+          message: `RAM type (${ram.memory_type}) doesn't match motherboard support (${supportedMemoryTypes.join(", ")})`,
           affectedComponents: ["RAM", "Motherboard"],
-          suggestion: `Select ${motherboard.memory_type} RAM`,
+          suggestion: `Select ${supportedMemoryTypes.join(" or ")} RAM`,
         })
       }
     }

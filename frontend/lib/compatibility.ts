@@ -13,6 +13,7 @@ import type {
   PSU,
   Case,
   Cooler,
+  Storage,
 } from "@/types/components";
 
 /**
@@ -26,17 +27,29 @@ function normalizeToArray(value: string | string[] | undefined): string[] {
 }
 
 /**
+ * Normalize a string for comparison (lowercase, remove hyphens/spaces variations)
+ */
+function normalizeForComparison(str: string): string {
+  return str.toLowerCase().replace(/[-\s]/g, '');
+}
+
+/**
  * Helper to check if a value is in a list (handles both string and array)
+ * Also handles variations like "Micro-ATX" vs "Micro ATX"
+ * Uses exact match after normalization to avoid "ATX" matching "Micro-ATX"
  */
 function isValueInList(list: string | string[] | undefined, value: string): boolean {
   if (!value) return false;
   const normalizedList = normalizeToArray(list);
   if (normalizedList.length === 0) return true; // If no restrictions, allow
-  return normalizedList.some(item => 
-    item.toLowerCase() === value.toLowerCase() ||
-    item.toLowerCase().includes(value.toLowerCase()) ||
-    value.toLowerCase().includes(item.toLowerCase())
-  );
+  
+  const normalizedValue = normalizeForComparison(value);
+  
+  return normalizedList.some(item => {
+    const normalizedItem = normalizeForComparison(item);
+    // Exact match after normalization (handles "Micro-ATX" vs "Micro ATX")
+    return normalizedItem === normalizedValue;
+  });
 }
 
 /**
@@ -71,6 +84,8 @@ export function checkComponentCompatibility(
       return checkCaseCompatibility(component as Case, build);
     case "Cooler":
       return checkCoolerCompatibility(component as Cooler, build);
+    case "Storage":
+      return checkStorageCompatibility(component as Storage, build);
     default:
       return { status: "unknown" };
   }
@@ -88,7 +103,7 @@ function checkCPUCompatibility(
     if (cpu.socket !== build.motherboard.socket) {
       return {
         status: "incompatible",
-        message: `Socket mismatch: CPU uses ${cpu.socket}, motherboard has ${build.motherboard.socket}`,
+        message: `Socket mismatch: This CPU uses ${cpu.socket}, but your motherboard (${build.motherboard.model}) has ${build.motherboard.socket}`,
       };
     }
   }
@@ -98,7 +113,7 @@ function checkCPUCompatibility(
     if (!isValueInList(build.cooler.socket_support, cpu.socket)) {
       return {
         status: "warning",
-        message: `Cooler may not support ${cpu.socket} socket. Please verify compatibility.`,
+        message: `Your cooler (${build.cooler.model}) may not support ${cpu.socket} socket`,
       };
     }
   }
@@ -119,7 +134,7 @@ function checkGPUCompatibility(
       const diff = gpu.length_mm - build.case.max_gpu_length_mm;
       return {
         status: "incompatible",
-        message: `GPU is ${diff}mm too long for case (${gpu.length_mm}mm vs ${build.case.max_gpu_length_mm}mm max)`,
+        message: `Too long: This GPU is ${gpu.length_mm}mm, but your case (${build.case.model}) only fits ${build.case.max_gpu_length_mm}mm (${diff}mm over)`,
       };
     }
 
@@ -128,7 +143,7 @@ function checkGPUCompatibility(
     if (margin < 20) {
       return {
         status: "warning",
-        message: `Tight fit: only ${margin}mm clearance for GPU`,
+        message: `Tight fit: Only ${margin}mm clearance in your case (${build.case.model})`,
       };
     }
   }
@@ -138,7 +153,7 @@ function checkGPUCompatibility(
     if (build.psu.wattage < gpu.recommended_psu_watts) {
       return {
         status: "warning",
-        message: `PSU may be insufficient. GPU recommends ${gpu.recommended_psu_watts}W, you have ${build.psu.wattage}W`,
+        message: `Your PSU (${build.psu.model}, ${build.psu.wattage}W) may be insufficient. This GPU recommends ${gpu.recommended_psu_watts}W`,
       };
     }
   }
@@ -158,7 +173,7 @@ function checkMotherboardCompatibility(
     if (motherboard.socket !== build.cpu.socket) {
       return {
         status: "incompatible",
-        message: `Socket mismatch: Motherboard has ${motherboard.socket}, CPU uses ${build.cpu.socket}`,
+        message: `Socket mismatch: This motherboard has ${motherboard.socket}, but your CPU (${build.cpu.model}) uses ${build.cpu.socket}`,
       };
     }
   }
@@ -168,7 +183,7 @@ function checkMotherboardCompatibility(
     if (!isValueInList(motherboard.memory_type, build.ram.memory_type)) {
       return {
         status: "incompatible",
-        message: `Memory mismatch: Motherboard supports ${formatArrayValues(motherboard.memory_type)}, RAM is ${build.ram.memory_type}`,
+        message: `Memory mismatch: This motherboard supports ${formatArrayValues(motherboard.memory_type)}, but your RAM (${build.ram.model}) is ${build.ram.memory_type}`,
       };
     }
   }
@@ -178,7 +193,7 @@ function checkMotherboardCompatibility(
     if (!isValueInList(build.case.form_factor_support, motherboard.form_factor)) {
       return {
         status: "incompatible",
-        message: `Case does not support ${motherboard.form_factor} motherboards`,
+        message: `Form factor mismatch: This ${motherboard.form_factor} motherboard won't fit in your case (${build.case.model})`,
       };
     }
   }
@@ -198,7 +213,7 @@ function checkRAMCompatibility(
     if (!isValueInList(build.motherboard.memory_type, ram.memory_type)) {
       return {
         status: "incompatible",
-        message: `Memory type mismatch: Motherboard supports ${formatArrayValues(build.motherboard.memory_type)}, RAM is ${ram.memory_type}`,
+        message: `Memory mismatch: This ${ram.memory_type} RAM won't work with your motherboard (${build.motherboard.model}) which supports ${formatArrayValues(build.motherboard.memory_type)}`,
       };
     }
   }
@@ -208,7 +223,7 @@ function checkRAMCompatibility(
     if (!isValueInList(build.cpu.memory_type, ram.memory_type)) {
       return {
         status: "incompatible",
-        message: `CPU does not support ${ram.memory_type} memory`,
+        message: `Memory mismatch: Your CPU (${build.cpu.model}) doesn't support ${ram.memory_type} memory`,
       };
     }
   }
@@ -229,14 +244,15 @@ function checkPSUCompatibility(
 
   if (psu.wattage < requiredWattage) {
     const deficit = requiredWattage - psu.wattage;
+    const components = [];
+    if (build.cpu) components.push(build.cpu.model);
+    if (build.gpu) components.push(build.gpu.model);
+    const componentStr = components.length > 0 ? ` for your ${components.join(" + ")}` : "";
     return {
       status: "warning",
-      message: `PSU may be insufficient. Recommended: ${requiredWattage}W, Selected: ${psu.wattage}W (${deficit}W short)`,
+      message: `Insufficient wattage: This ${psu.wattage}W PSU is ${deficit}W below the recommended ${requiredWattage}W${componentStr}`,
     };
   }
-
-  // Check case PSU length (if available)
-  // This would require PSU length data which isn't always available
 
   return { status: "compatible" };
 }
@@ -248,14 +264,13 @@ function checkCaseCompatibility(
   caseComponent: Case,
   build: Build
 ): { status: CompatibilityStatus; message?: string } {
-  const issues: string[] = [];
-
   // Check GPU clearance
   if (build.gpu) {
     if (build.gpu.length_mm > caseComponent.max_gpu_length_mm) {
+      const diff = build.gpu.length_mm - caseComponent.max_gpu_length_mm;
       return {
         status: "incompatible",
-        message: `Case cannot fit GPU (${build.gpu.length_mm}mm vs ${caseComponent.max_gpu_length_mm}mm max)`,
+        message: `GPU won't fit: Your GPU (${build.gpu.model}) is ${build.gpu.length_mm}mm, but this case only fits ${caseComponent.max_gpu_length_mm}mm (${diff}mm over)`,
       };
     }
   }
@@ -263,9 +278,10 @@ function checkCaseCompatibility(
   // Check cooler clearance
   if (build.cooler) {
     if (build.cooler.height_mm > caseComponent.max_cooler_height_mm) {
+      const diff = build.cooler.height_mm - caseComponent.max_cooler_height_mm;
       return {
         status: "incompatible",
-        message: `Case cannot fit cooler (${build.cooler.height_mm}mm vs ${caseComponent.max_cooler_height_mm}mm max)`,
+        message: `Cooler won't fit: Your cooler (${build.cooler.model}) is ${build.cooler.height_mm}mm tall, but this case only fits ${caseComponent.max_cooler_height_mm}mm (${diff}mm over)`,
       };
     }
   }
@@ -275,7 +291,7 @@ function checkCaseCompatibility(
     if (!isValueInList(caseComponent.form_factor_support, build.motherboard.form_factor)) {
       return {
         status: "incompatible",
-        message: `Case does not support ${build.motherboard.form_factor} motherboards`,
+        message: `Form factor mismatch: Your motherboard (${build.motherboard.model}) is ${build.motherboard.form_factor}, which this case doesn't support`,
       };
     }
   }
@@ -295,7 +311,7 @@ function checkCoolerCompatibility(
     if (!isValueInList(cooler.socket_support, build.cpu.socket)) {
       return {
         status: "incompatible",
-        message: `Cooler does not support ${build.cpu.socket} socket`,
+        message: `Socket mismatch: This cooler doesn't support ${build.cpu.socket} socket used by your CPU (${build.cpu.model})`,
       };
     }
   }
@@ -306,7 +322,7 @@ function checkCoolerCompatibility(
       const diff = cooler.height_mm - build.case.max_cooler_height_mm;
       return {
         status: "incompatible",
-        message: `Cooler is ${diff}mm too tall for case (${cooler.height_mm}mm vs ${build.case.max_cooler_height_mm}mm max)`,
+        message: `Too tall: This ${cooler.height_mm}mm cooler won't fit in your case (${build.case.model}) which allows ${build.case.max_cooler_height_mm}mm max (${diff}mm over)`,
       };
     }
 
@@ -315,7 +331,7 @@ function checkCoolerCompatibility(
     if (margin < 10) {
       return {
         status: "warning",
-        message: `Tight fit: only ${margin}mm clearance for cooler`,
+        message: `Tight fit: Only ${margin}mm clearance in your case (${build.case.model})`,
       };
     }
   }
@@ -326,11 +342,33 @@ function checkCoolerCompatibility(
     if (cooler.tdp_rating < cpuTdp) {
       return {
         status: "warning",
-        message: `Cooler TDP rating (${cooler.tdp_rating}W) is lower than CPU TDP (${cpuTdp}W)`,
+        message: `May run hot: This cooler is rated for ${cooler.tdp_rating}W, but your CPU (${build.cpu.model}) draws ${cpuTdp}W`,
       };
     }
   }
 
+  return { status: "compatible" };
+}
+
+/**
+ * Check storage compatibility
+ */
+function checkStorageCompatibility(
+  storage: Storage,
+  build: Build
+): { status: CompatibilityStatus; message?: string } {
+  // Check if motherboard has M.2 slots for NVMe drives
+  if (build.motherboard && storage.form_factor === "M.2-2280") {
+    const m2Slots = build.motherboard.m2_slots || 0;
+    if (m2Slots === 0) {
+      return {
+        status: "warning",
+        message: `M.2 slot availability unknown: Verify your motherboard (${build.motherboard.model}) has M.2 slots`,
+      };
+    }
+  }
+
+  // Storage is generally compatible with all builds
   return { status: "compatible" };
 }
 

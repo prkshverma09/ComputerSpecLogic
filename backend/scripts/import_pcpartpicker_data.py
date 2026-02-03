@@ -267,6 +267,8 @@ def process_cases(file_path):
                     form_factor_support = ["E-ATX", "ATX", "Micro-ATX", "Mini-ITX"]
                 elif "mid" in type_lower:
                     form_factor_support = ["ATX", "Micro-ATX", "Mini-ITX"]
+                elif "microatx" in type_lower or "micro atx" in type_lower or "micro-atx" in type_lower:
+                    form_factor_support = ["Micro-ATX", "Mini-ITX"]
                 elif "mini" in type_lower or "itx" in type_lower:
                     form_factor_support = ["Mini-ITX"]
                 elif "micro" in type_lower:
@@ -381,6 +383,95 @@ def process_coolers(file_path):
     
     return records
 
+
+def process_storage(file_path):
+    """Process storage (SSD/HDD) CSV file."""
+    records = []
+    
+    with open(file_path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for i, row in enumerate(reader):
+            if i >= 500:  # Limit to 500 records
+                break
+                
+            name = row.get('name', '').strip()
+            if not name:
+                continue
+                
+            price = parse_price(row.get('price'))
+            if not price or price <= 0:
+                continue
+            
+            storage_type = row.get('type', '').strip()
+            capacity = parse_int(row.get('capacity'))
+            interface = row.get('interface', '').strip()
+            form_factor = row.get('form_factor', '').strip()
+            cache_mb = parse_int(row.get('cache_mb'))
+            rpm = parse_int(row.get('rpm'))
+            read_speed = parse_int(row.get('read_speed'))
+            write_speed = parse_int(row.get('write_speed'))
+            
+            brand = extract_brand(name)
+            model = name.replace(brand, '').strip()
+            
+            # Determine performance tier
+            performance_tier = "budget"
+            if storage_type == "SSD":
+                if "PCIe 5.0" in interface:
+                    performance_tier = "enthusiast"
+                elif "PCIe 4.0" in interface and read_speed and read_speed >= 7000:
+                    performance_tier = "high-end"
+                elif "PCIe 4.0" in interface:
+                    performance_tier = "mid-range"
+                elif "PCIe 3.0" in interface:
+                    performance_tier = "mid-range"
+                else:
+                    performance_tier = "budget"
+            else:  # HDD
+                if capacity and capacity >= 10000:
+                    performance_tier = "high-capacity"
+                elif rpm and rpm >= 7200:
+                    performance_tier = "performance"
+                else:
+                    performance_tier = "budget"
+            
+            # Format capacity for display
+            capacity_display = ""
+            if capacity:
+                if capacity >= 1000:
+                    capacity_display = f"{capacity // 1000}TB"
+                else:
+                    capacity_display = f"{capacity}GB"
+            
+            record = {
+                "objectID": f"storage_{i}",
+                "component_type": "Storage",
+                "brand": brand,
+                "model": model,
+                "name": name,
+                "price_usd": price,
+                "storage_type": storage_type,
+                "capacity_gb": capacity,
+                "capacity_display": capacity_display,
+                "interface": interface,
+                "form_factor": form_factor,
+                "cache_mb": cache_mb,
+                "rpm": rpm,
+                "read_speed_mbps": read_speed,
+                "write_speed_mbps": write_speed,
+                "performance_tier": performance_tier,
+                # Compatibility tags
+                "compatibility_tags": [
+                    storage_type.lower() if storage_type else "ssd",
+                    interface.lower().replace(" ", "-") if interface else "sata",
+                    form_factor.lower() if form_factor else "2.5",
+                    performance_tier,
+                ],
+            }
+            records.append(record)
+    
+    return records
+
 def main():
     print("=" * 60)
     print("PCPartPicker Data Import")
@@ -422,6 +513,14 @@ def main():
         coolers = process_coolers(cooler_file)
         print(f"  Processed {len(coolers)} coolers")
         all_records.extend(coolers)
+    
+    # Process storage (SSDs and HDDs)
+    storage_file = DATA_DIR / "storage.csv"
+    if storage_file.exists():
+        print(f"\nProcessing storage from {storage_file}...")
+        storage = process_storage(storage_file)
+        print(f"  Processed {len(storage)} storage devices")
+        all_records.extend(storage)
     
     print(f"\n{'=' * 60}")
     print(f"Total records to index: {len(all_records)}")

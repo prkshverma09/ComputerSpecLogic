@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useCallback } from "react"
+import { useState, useMemo, useCallback, useEffect, useRef } from "react"
 import { Chat } from "react-instantsearch"
 import { useBuildStore } from "@/stores/build-store"
 import { AGENT_ID } from "@/lib/algolia"
@@ -26,6 +26,98 @@ import {
 
 // Generate a unique session ID
 const generateSessionId = () => `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+
+function cleanChatContent(container: HTMLElement) {
+  function isProtectedElement(el: HTMLElement): boolean {
+    if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT' || el.tagName === 'BUTTON') {
+      return true
+    }
+    if (el.closest('textarea, input, button, select, form, [role="combobox"], [role="listbox"]')) {
+      return true
+    }
+    if (el.closest('.ais-Chat-prompt, [class*="prompt"]')) {
+      return true
+    }
+    return false
+  }
+
+  const allElements = container.querySelectorAll('*')
+  
+  allElements.forEach((el) => {
+    const htmlEl = el as HTMLElement
+    
+    if (isProtectedElement(htmlEl)) return
+    
+    const ownText = Array.from(htmlEl.childNodes)
+      .filter(n => n.nodeType === Node.TEXT_NODE)
+      .map(n => n.textContent?.trim())
+      .join('')
+    
+    if (/^\d+\s+of\s+\d+\s+results?$/i.test(ownText)) {
+      htmlEl.style.display = 'none'
+      return
+    }
+    
+    if (/^View\s+all$/i.test(ownText)) {
+      htmlEl.style.display = 'none'
+      return
+    }
+  })
+
+  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
+    acceptNode: (node) => {
+      const parent = node.parentElement
+      if (parent && isProtectedElement(parent)) {
+        return NodeFilter.FILTER_REJECT
+      }
+      return NodeFilter.FILTER_ACCEPT
+    }
+  })
+  
+  const textNodes: Text[] = []
+  let node: Text | null
+  while ((node = walker.nextNode() as Text | null)) {
+    textNodes.push(node)
+  }
+  
+  textNodes.forEach((textNode) => {
+    if (textNode.textContent) {
+      const original = textNode.textContent
+      if (/\d+\s+of\s+\d+\s+results?/i.test(original)) {
+        const cleaned = original.replace(/\d+\s+of\s+\d+\s+results?/gi, '')
+        textNode.textContent = cleaned
+      }
+    }
+  })
+
+  removeDuplicateMessages(container)
+}
+
+function removeDuplicateMessages(container: HTMLElement) {
+  function containsFormElements(el: HTMLElement): boolean {
+    return el.querySelector('textarea, input, button, form, [role="combobox"]') !== null
+  }
+  
+  const messageGroups = container.querySelectorAll('[class*="message--assistant"]')
+  const seenPhrases = new Map<string, HTMLElement>()
+  
+  messageGroups.forEach((msg) => {
+    const htmlEl = msg as HTMLElement
+    
+    if (containsFormElements(htmlEl)) return
+    
+    const fullText = htmlEl.textContent?.trim() || ''
+    if (fullText.length < 50) return
+    
+    const phrase = fullText.substring(0, 150)
+    
+    if (seenPhrases.has(phrase)) {
+      htmlEl.style.display = 'none'
+    } else {
+      seenPhrases.set(phrase, htmlEl)
+    }
+  })
+}
 
 /**
  * Custom loading component for chat messages
@@ -80,6 +172,38 @@ export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
   const [sessionId, setSessionId] = useState(() => generateSessionId())
+  const chatContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!isOpen || !chatContainerRef.current) return
+
+    const cleanup = () => {
+      if (chatContainerRef.current) {
+        cleanChatContent(chatContainerRef.current)
+      }
+    }
+
+    cleanup()
+    
+    const intervalId = setInterval(cleanup, 200)
+
+    const observer = new MutationObserver(() => {
+      cleanup()
+      setTimeout(cleanup, 100)
+      setTimeout(cleanup, 300)
+    })
+
+    observer.observe(chatContainerRef.current, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    })
+
+    return () => {
+      observer.disconnect()
+      clearInterval(intervalId)
+    }
+  }, [isOpen, sessionId])
 
   // Clear chat by clearing sessionStorage and generating new session ID
   const clearChat = useCallback(() => {
@@ -193,20 +317,27 @@ export function ChatWidget() {
           {!isMinimized && (
             <div className="h-[calc(100%-60px)] flex flex-col">
               {/* Quick Questions Dropdown */}
-              <div className="p-2 border-b bg-muted/20">
+              <div className="p-2 border-b bg-muted/20 relative z-[60]">
                 <Select onValueChange={handlePromptSelect}>
-                  <SelectTrigger className="w-full h-9 text-xs">
+                  <SelectTrigger className="w-full h-9 text-xs bg-background">
                     <div className="flex items-center gap-2">
                       <Lightbulb className="h-3.5 w-3.5 text-muted-foreground" />
                       <SelectValue placeholder="Quick questions - select a topic" />
                     </div>
                   </SelectTrigger>
-                  <SelectContent className="max-h-[300px]">
+                  <SelectContent 
+                    className="max-h-[300px]"
+                    position="popper"
+                    side="bottom"
+                    align="start"
+                    sideOffset={4}
+                    avoidCollisions={true}
+                  >
                     {suggestedPrompts.map((prompt) => (
                       <SelectItem 
                         key={prompt.id} 
                         value={prompt.id}
-                        className="text-xs py-2"
+                        className="text-xs py-2 cursor-pointer"
                       >
                         {prompt.label}
                       </SelectItem>
@@ -216,35 +347,36 @@ export function ChatWidget() {
               </div>
 
               {/* Algolia Chat Component */}
-              <div className="flex-1 overflow-hidden chat-container">
+              <div ref={chatContainerRef} className="flex-1 overflow-hidden chat-container">
                 <Chat
                   key={sessionId}
                   agentId={AGENT_ID}
                   messagesLoaderComponent={ChatLoader}
-                    classNames={{
-                      root: "h-full flex flex-col",
-                      container: "h-full flex flex-col",
-                      header: {
-                        root: "hidden", // Hide Algolia header, we use our custom one
-                      },
-                      messages: {
-                        root: "flex-1 overflow-hidden",
-                        content: "p-3 space-y-3",
-                        scroll: "h-full overflow-y-auto",
-                      },
-                      message: {
-                        root: "max-w-[85%] rounded-lg p-3 text-sm",
-                      },
-                      prompt: {
-                        root: "p-3 border-t",
-                        textarea: "w-full min-h-[40px] max-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none",
-                        submit: "bg-primary text-primary-foreground rounded-md px-3 py-1.5 text-sm font-medium hover:bg-primary/90 disabled:opacity-50",
-                      },
-                      toggleButton: {
-                        root: "hidden", // We use our custom toggle
-                      },
-                    }}
-                    translations={{
+                  itemComponent={() => null}
+                  classNames={{
+                    root: "h-full flex flex-col",
+                    container: "h-full flex flex-col",
+                    header: {
+                      root: "hidden",
+                    },
+                    messages: {
+                      root: "flex-1 overflow-hidden",
+                      content: "p-3 space-y-3",
+                      scroll: "h-full overflow-y-auto",
+                    },
+                    message: {
+                      root: "max-w-[85%] rounded-lg p-3 text-sm",
+                    },
+                    prompt: {
+                      root: "p-3 border-t",
+                      textarea: "w-full min-h-[40px] max-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none",
+                      submit: "bg-primary text-primary-foreground rounded-md px-3 py-1.5 text-sm font-medium hover:bg-primary/90 disabled:opacity-50",
+                    },
+                    toggleButton: {
+                      root: "hidden",
+                    },
+                  }}
+                  translations={{
                       header: {
                         title: "PC Build Assistant",
                       },
@@ -295,6 +427,59 @@ export function ChatWidget() {
         .chat-container [class*="disclaimer"],
         .chat-container [class*="footer"]:not(.ais-Chat-message-footer) {
           display: none !important;
+        }
+        /* Hide the entire tool call display section (Arguments, Results, etc) */
+        .chat-container [class*="toolCall"],
+        .chat-container [class*="tool-call"],
+        .chat-container [class*="ToolCall"],
+        .chat-container [class*="tool_call"],
+        .chat-container [class*="toolResult"],
+        .chat-container [class*="tool-result"],
+        .chat-container [class*="ToolResult"],
+        .chat-container [class*="toolUse"],
+        .chat-container [class*="tool-use"],
+        .chat-container [data-tool],
+        .chat-container [data-tool-call],
+        .chat-container [data-tool-result] {
+          display: none !important;
+        }
+        /* Hide details/summary elements that wrap tool calls */
+        .chat-container details,
+        .chat-container summary {
+          display: none !important;
+        }
+        /* Hide "X of Y results" and "View All" elements */
+        .chat-container [class*="results-count"],
+        .chat-container [class*="resultsCount"],
+        .chat-container [class*="view-all"],
+        .chat-container [class*="viewAll"],
+        .chat-container [class*="ViewAll"],
+        .chat-container [class*="showMore"],
+        .chat-container [class*="show-more"],
+        .chat-container a[href*="view-all"],
+        .chat-container a[href*="search"]:not(textarea) {
+          display: none !important;
+        }
+        /* Hide stats */
+        .chat-container .ais-Stats,
+        .chat-container [class*="Stats"],
+        .chat-container [class*="stats"] {
+          display: none !important;
+        }
+        /* Style the message content nicely */
+        .chat-container .ais-Chat-message--assistant p {
+          margin-bottom: 0.5rem;
+        }
+        .chat-container .ais-Chat-message--assistant ul,
+        .chat-container .ais-Chat-message--assistant ol {
+          margin-left: 1rem;
+          margin-bottom: 0.5rem;
+        }
+        .chat-container .ais-Chat-message--assistant li {
+          margin-bottom: 0.25rem;
+        }
+        .chat-container .ais-Chat-message--assistant strong {
+          font-weight: 600;
         }
       `}</style>
     </>

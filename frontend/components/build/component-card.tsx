@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { CompatibilityBadge } from "./compatibility-badge"
 import { cn, formatPrice, getComponentIcon } from "@/lib/utils"
 import { Component, CompatibilityStatus, ComponentType } from "@/types/components"
-import { Plus, Check, Cpu, Monitor, CircuitBoard, MemoryStick, Zap, Box, Fan } from "lucide-react"
+import { Plus, Check, Cpu, Monitor, CircuitBoard, MemoryStick, Zap, Box, Fan, AlertCircle, HardDrive } from "lucide-react"
 
 interface ComponentCardProps {
   component: Component
@@ -26,6 +26,7 @@ const componentIcons: Record<ComponentType, React.ElementType> = {
   PSU: Zap,
   Case: Box,
   Cooler: Fan,
+  Storage: HardDrive,
 }
 
 function getKeySpecs(component: Component): { label: string; value: string }[] {
@@ -46,7 +47,12 @@ function getKeySpecs(component: Component): { label: string; value: string }[] {
     case "Motherboard":
       if (component.socket) specs.push({ label: "Socket", value: component.socket })
       if (component.form_factor) specs.push({ label: "Form", value: component.form_factor })
-      if (component.memory_type) specs.push({ label: "Memory", value: component.memory_type })
+      if (component.memory_type) {
+        const memType = Array.isArray(component.memory_type) 
+          ? component.memory_type.join("/") 
+          : component.memory_type
+        specs.push({ label: "Memory", value: memType })
+      }
       break
     case "RAM":
       if (component.memory_type) specs.push({ label: "Type", value: component.memory_type })
@@ -59,7 +65,12 @@ function getKeySpecs(component: Component): { label: string; value: string }[] {
       if (component.modular) specs.push({ label: "Modular", value: component.modular })
       break
     case "Case":
-      if (component.form_factor) specs.push({ label: "Form", value: component.form_factor })
+      if (component.form_factor_support) {
+        const ffSupport = Array.isArray(component.form_factor_support) 
+          ? component.form_factor_support.join("/") 
+          : component.form_factor_support
+        specs.push({ label: "Form", value: ffSupport })
+      }
       if (component.max_gpu_length_mm) specs.push({ label: "GPU Clear", value: `${component.max_gpu_length_mm}mm` })
       if (component.max_cooler_height_mm) specs.push({ label: "Cooler Clear", value: `${component.max_cooler_height_mm}mm` })
       break
@@ -67,6 +78,13 @@ function getKeySpecs(component: Component): { label: string; value: string }[] {
       if (component.cooler_type) specs.push({ label: "Type", value: component.cooler_type })
       if (component.height_mm) specs.push({ label: "Height", value: `${component.height_mm}mm` })
       if (component.tdp_rating) specs.push({ label: "TDP Rating", value: `${component.tdp_rating}W` })
+      break
+    case "Storage":
+      if (component.storage_type) specs.push({ label: "Type", value: component.storage_type })
+      if (component.capacity_display) specs.push({ label: "Capacity", value: component.capacity_display })
+      else if (component.capacity_gb) specs.push({ label: "Capacity", value: `${component.capacity_gb}GB` })
+      if (component.interface) specs.push({ label: "Interface", value: component.interface })
+      if (component.read_speed_mbps) specs.push({ label: "Read", value: `${component.read_speed_mbps} MB/s` })
       break
   }
   
@@ -140,6 +158,18 @@ export function ComponentCard({
             </div>
           ))}
         </div>
+
+        {/* Incompatibility Warning */}
+        {isIncompatible && warningMessage && (
+          <div className="mb-3 p-2 rounded-md bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+              <p className="text-xs font-medium text-red-700 dark:text-red-400 leading-tight">
+                {warningMessage}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Price and Action */}
         <div className="flex items-center justify-between pt-2 border-t">

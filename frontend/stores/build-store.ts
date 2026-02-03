@@ -11,6 +11,7 @@ import type {
   PSU,
   Case,
   Cooler,
+  Storage,
   ValidationResult,
   ActiveFilters,
 } from "@/types/components";
@@ -57,6 +58,7 @@ const emptyBuild: Build = {
   psu: null,
   case: null,
   cooler: null,
+  storage: null,
 };
 
 /**
@@ -237,3 +239,4 @@ export const selectRAM = (state: BuildState) => state.build.ram;
 export const selectPSU = (state: BuildState) => state.build.psu;
 export const selectCase = (state: BuildState) => state.build.case;
 export const selectCooler = (state: BuildState) => state.build.cooler;
+export const selectStorage = (state: BuildState) => state.build.storage;

@@ -244,11 +244,25 @@ def process_intel_cpus(filepath: Path, limit: int = 100) -> list:
             tdp = 125
         
         # Determine socket based on generation
+        # - 10th gen (10xxx) = LGA1200
+        # - 11th gen (11xxx) = LGA1200
+        # - 12th gen (12xxx) = LGA1700
+        # - 13th gen (13xxx) = LGA1700
+        # - 14th gen (14xxx) = LGA1700
+        # - Core Ultra = LGA1851
         product = str(row['product']) if pd.notna(row.get('product')) else ''
-        if 'Ultra' in product or '14' in product or '13' in product:
+        if 'Ultra' in product:
+            socket = 'LGA1851'
+        elif '-14' in product or ' 14' in product:
             socket = 'LGA1700'
-        elif '12' in product or '11' in product:
+        elif '-13' in product or ' 13' in product:
             socket = 'LGA1700'
+        elif '-12' in product or ' 12' in product:
+            socket = 'LGA1700'
+        elif '-11' in product or ' 11' in product:
+            socket = 'LGA1200'
+        elif '-10' in product or ' 10' in product:
+            socket = 'LGA1200'
         else:
             socket = 'LGA1200'
         
@@ -292,7 +306,7 @@ def process_intel_cpus(filepath: Path, limit: int = 100) -> list:
             'base_clock_ghz': base_clock,
             'boost_clock_ghz': boost_clock,
             'tdp_watts': tdp,
-            'memory_type': 'DDR5' if socket == 'LGA1700' else 'DDR4',
+            'memory_type': ['DDR4', 'DDR5'] if socket == 'LGA1700' else 'DDR4',
             'integrated_graphics': pd.notna(row.get('integratedG')) and 'N/A' not in str(row.get('integratedG')),
             'price_usd': price,
             'launch_year': int(str(row['releaseDate'])[:4]) if pd.notna(row.get('releaseDate')) else None,
@@ -303,89 +317,125 @@ def process_intel_cpus(filepath: Path, limit: int = 100) -> list:
     return records
 
 
-def process_ram(filepath: Path, limit: int = 100) -> list:
+def process_ram(filepath: Path, ddr4_limit: int = 150, ddr5_limit: int = 50) -> list:
     """
     Process RAM benchmarks from Kaggle dataset.
     
-    Filters to DDR4 and DDR5 modules.
+    Imports a balanced mix of DDR4 and DDR5 modules.
+    DDR4 is more common for older systems, so we import more of it.
     """
     logger.info(f"Processing RAM from {filepath}")
     
     df = pd.read_csv(filepath)
     
-    # Filter to DDR4 and DDR5
-    df = df[df['gen'].isin(['DDR4', 'DDR5'])].copy()
-    
     # Filter to entries with valid data
     df = df[df['memoryName'].notna()].copy()
     df = df[df['readUncached'].notna()].copy()
+    df = df[df['gen'].isin(['DDR4', 'DDR5'])].copy()
     
-    # Sort by performance and take top entries
-    df = df.sort_values('readUncached', ascending=False).head(limit)
+    import re
     
     records = []
-    for _, row in df.iterrows():
-        name = row['memoryName']
-        gen = row['gen']
-        
-        # Parse capacity from name
-        capacity_gb = 16  # Default
-        if '64GB' in name:
-            capacity_gb = 64
-        elif '32GB' in name:
-            capacity_gb = 32
-        elif '16GB' in name:
-            capacity_gb = 16
-        elif '8GB' in name:
-            capacity_gb = 8
-        
-        # Parse speed from name (e.g., F5-6400 = 6400 MHz)
-        speed_mhz = 3200  # Default
-        import re
-        speed_match = re.search(r'(\d{4,5})', name)
-        if speed_match:
-            speed_mhz = int(speed_match.group(1))
-        
-        # Parse brand
-        brand = 'Generic'
-        if 'Kingston' in name:
-            brand = 'Kingston'
-        elif 'G Skill' in name or 'G.Skill' in name:
-            brand = 'G.Skill'
-        elif 'Corsair' in name:
-            brand = 'Corsair'
-        elif 'Crucial' in name:
-            brand = 'Crucial'
-        elif 'Samsung' in name:
-            brand = 'Samsung'
-        elif 'TeamGroup' in name or 'Team' in name:
-            brand = 'TeamGroup'
-        
-        # Price estimation
-        price = row.get('price')
-        if pd.isna(price) or price == 0:
-            if gen == 'DDR5':
-                price = 89 + (capacity_gb - 16) * 3 + (speed_mhz - 5600) * 0.02
-            else:
-                price = 49 + (capacity_gb - 16) * 2 + (speed_mhz - 3200) * 0.01
-        
-        record = {
-            'objectID': f"ram-{brand.lower()}-{gen.lower()}-{speed_mhz}-{capacity_gb}gb-{len(records)}",
-            'component_type': 'RAM',
-            'brand': brand,
-            'model': name[:80],  # Truncate long names
-            'memory_type': gen,
-            'capacity_gb': capacity_gb,
-            'speed_mhz': speed_mhz,
-            'modules': 1,
-            'latency': int(row['latency']) if pd.notna(row.get('latency')) else None,
-            'read_speed': float(row['readUncached']) if pd.notna(row.get('readUncached')) else None,
-            'write_speed': float(row['write']) if pd.notna(row.get('write')) else None,
-            'price_usd': float(price) if pd.notna(price) else 79,
-        }
-        records.append(record)
+    seen_models = set()  # Track unique models to avoid duplicates
     
-    logger.info(f"Processed {len(records)} RAM records")
+    # Process DDR4 and DDR5 separately to ensure balance
+    for gen, limit in [('DDR4', ddr4_limit), ('DDR5', ddr5_limit)]:
+        gen_df = df[df['gen'] == gen].copy()
+        
+        # Sort by performance within each generation
+        gen_df = gen_df.sort_values('readUncached', ascending=False).head(limit * 2)  # Get more to filter duplicates
+        
+        count = 0
+        for _, row in gen_df.iterrows():
+            if count >= limit:
+                break
+                
+            name = row['memoryName']
+            
+            # Parse capacity from name
+            capacity_gb = 16  # Default
+            if '64GB' in name:
+                capacity_gb = 64
+            elif '32GB' in name:
+                capacity_gb = 32
+            elif '16GB' in name:
+                capacity_gb = 16
+            elif '8GB' in name:
+                capacity_gb = 8
+            
+            # Parse speed from name (e.g., F5-6400 = 6400 MHz, 3200 = 3200 MHz)
+            speed_mhz = 3200 if gen == 'DDR4' else 5600  # Default by gen
+            speed_match = re.search(r'(\d{4,5})', name)
+            if speed_match:
+                parsed_speed = int(speed_match.group(1))
+                # Validate the speed is reasonable
+                if gen == 'DDR4' and 2133 <= parsed_speed <= 5000:
+                    speed_mhz = parsed_speed
+                elif gen == 'DDR5' and 4800 <= parsed_speed <= 8000:
+                    speed_mhz = parsed_speed
+            
+            # Parse brand
+            brand = 'Generic'
+            name_lower = name.lower()
+            if 'kingston' in name_lower:
+                brand = 'Kingston'
+            elif 'g skill' in name_lower or 'g.skill' in name_lower or 'gskill' in name_lower:
+                brand = 'G.Skill'
+            elif 'corsair' in name_lower:
+                brand = 'Corsair'
+            elif 'crucial' in name_lower:
+                brand = 'Crucial'
+            elif 'samsung' in name_lower:
+                brand = 'Samsung'
+            elif 'teamgroup' in name_lower or 'team group' in name_lower:
+                brand = 'TeamGroup'
+            elif 'patriot' in name_lower:
+                brand = 'Patriot Memory (PDP Systems)'
+            elif 'a-data' in name_lower or 'adata' in name_lower:
+                brand = 'ADATA'
+            elif 'v-color' in name_lower:
+                brand = 'V-Color Technology Inc.'
+            elif 'apacer' in name_lower:
+                brand = 'Apacer Technology'
+            elif 'mushkin' in name_lower:
+                brand = 'Mushkin'
+            elif 'pny' in name_lower:
+                brand = 'PNY'
+            
+            # Create unique key to avoid duplicates
+            unique_key = f"{brand}-{gen}-{speed_mhz}-{capacity_gb}"
+            if unique_key in seen_models:
+                continue
+            seen_models.add(unique_key)
+            
+            # Price estimation
+            price = row.get('price')
+            if pd.isna(price) or price == 0:
+                if gen == 'DDR5':
+                    price = 89 + (capacity_gb - 16) * 3 + (speed_mhz - 5600) * 0.02
+                else:
+                    price = 49 + (capacity_gb - 16) * 2 + (speed_mhz - 3200) * 0.01
+            
+            record = {
+                'objectID': f"ram-{brand.lower().replace(' ', '-').replace('.', '')}-{gen.lower()}-{speed_mhz}-{capacity_gb}gb-{len(records)}",
+                'component_type': 'RAM',
+                'brand': brand,
+                'model': name[:80],  # Truncate long names
+                'memory_type': gen,
+                'capacity_gb': capacity_gb,
+                'speed_mhz': speed_mhz,
+                'modules': 1,
+                'latency': int(row['latency']) if pd.notna(row.get('latency')) else None,
+                'read_speed': float(row['readUncached']) if pd.notna(row.get('readUncached')) else None,
+                'write_speed': float(row['write']) if pd.notna(row.get('write')) else None,
+                'price_usd': float(price) if pd.notna(price) else 79,
+            }
+            records.append(record)
+            count += 1
+        
+        logger.info(f"  - Processed {count} {gen} RAM records")
+    
+    logger.info(f"Processed {len(records)} total RAM records")
     return records
 
 
@@ -437,10 +487,10 @@ def main():
         intel_records = process_intel_cpus(intel_file, limit=80)
         all_records.extend(intel_records)
     
-    # Process RAM
+    # Process RAM (balanced mix of DDR4 and DDR5)
     ram_file = KAGGLE_DATA_DIR / "RAM_Benchmarks_megalist.csv"
     if ram_file.exists():
-        ram_records = process_ram(ram_file, limit=100)
+        ram_records = process_ram(ram_file, ddr4_limit=150, ddr5_limit=50)
         all_records.extend(ram_records)
     
     # Add compatibility tags

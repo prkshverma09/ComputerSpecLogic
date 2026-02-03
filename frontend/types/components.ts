@@ -9,7 +9,8 @@ export type ComponentType =
   | "RAM"
   | "PSU"
   | "Case"
-  | "Cooler";
+  | "Cooler"
+  | "Storage";
 
 export type CompatibilityStatus =
   | "compatible"
@@ -49,7 +50,7 @@ export interface CPU extends BaseComponent {
   threads: number;
   base_clock_ghz?: number;
   boost_clock_ghz?: number;
-  memory_type: string[];
+  memory_type: string | string[];
   pcie_version?: string;
   integrated_graphics: boolean;
   release_date?: string;
@@ -139,9 +140,25 @@ export interface Cooler extends BaseComponent {
 }
 
 /**
+ * Storage component (SSD/HDD)
+ */
+export interface Storage extends BaseComponent {
+  component_type: "Storage";
+  storage_type: "SSD" | "HDD";
+  capacity_gb: number;
+  capacity_display?: string;
+  interface: string;
+  form_factor: string;
+  cache_mb?: number;
+  rpm?: number;
+  read_speed_mbps?: number;
+  write_speed_mbps?: number;
+}
+
+/**
  * Union type for all components
  */
-export type Component = CPU | GPU | Motherboard | RAM | PSU | Case | Cooler;
+export type Component = CPU | GPU | Motherboard | RAM | PSU | Case | Cooler | Storage;
 
 /**
  * Build state containing selected components
@@ -154,6 +171,7 @@ export interface Build {
   psu: PSU | null;
   case: Case | null;
   cooler: Cooler | null;
+  storage: Storage | null;
 }
 
 /**
@@ -260,6 +278,6 @@ export interface ComponentWithStatus {
 /**
  * Algolia hit with highlight info
  */
-export interface AlgoliaHit extends Component {
+export type AlgoliaHit = Component & {
   _highlightResult?: Record<string, { value: string; matchLevel: string }>;
 }
