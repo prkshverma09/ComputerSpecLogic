@@ -471,38 +471,274 @@ export function ChatWidget() {
 
       {/* Global styles for chat */}
       <style jsx global>{`
+        /* ============================================
+           BASE LAYOUT
+           ============================================ */
         .chat-container .ais-Chat {
           height: 100%;
           display: flex;
           flex-direction: column;
+          font-family: inherit;
         }
         .chat-container .ais-Chat-messages {
           flex: 1;
           overflow-y: auto;
+          scroll-behavior: smooth;
         }
+        .chat-container .ais-Chat-messages-content {
+          padding: 1rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        /* ============================================
+           MESSAGE BUBBLES - USER
+           ============================================ */
         .chat-container .ais-Chat-message--user {
-          background-color: hsl(var(--primary));
+          background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.9) 100%);
           color: hsl(var(--primary-foreground));
           margin-left: auto;
+          max-width: 85%;
+          border-radius: 16px 16px 4px 16px;
+          padding: 0.75rem 1rem;
+          box-shadow: 0 2px 8px hsl(var(--primary) / 0.25);
+          font-size: 14px;
+          line-height: 1.5;
         }
+
+        /* ============================================
+           MESSAGE BUBBLES - ASSISTANT
+           ============================================ */
         .chat-container .ais-Chat-message--assistant {
-          background-color: hsl(var(--muted));
+          background: hsl(var(--card));
+          border: 1px solid hsl(var(--border));
+          max-width: 95%;
+          border-radius: 16px 16px 16px 4px;
+          padding: 1rem 1.25rem;
+          box-shadow: 0 1px 3px hsl(var(--foreground) / 0.05);
+          font-size: 14px;
+          line-height: 1.65;
+          color: hsl(var(--foreground));
         }
+
+        /* ============================================
+           MARKDOWN - TYPOGRAPHY
+           ============================================ */
+        .chat-container .ais-Chat-message--assistant p {
+          margin-bottom: 0.875rem;
+        }
+        .chat-container .ais-Chat-message--assistant p:last-child {
+          margin-bottom: 0;
+        }
+        .chat-container .ais-Chat-message--assistant strong {
+          font-weight: 700;
+          color: hsl(var(--foreground));
+        }
+        .chat-container .ais-Chat-message--assistant em {
+          font-style: italic;
+        }
+
+        /* ============================================
+           MARKDOWN - LISTS (CRITICAL FIX)
+           ============================================ */
+        .chat-container .ais-Chat-message--assistant ul {
+          list-style-type: disc;
+          padding-left: 1.5rem;
+          margin: 0.75rem 0;
+        }
+        .chat-container .ais-Chat-message--assistant ol {
+          list-style-type: decimal;
+          padding-left: 1.5rem;
+          margin: 0.75rem 0;
+        }
+        .chat-container .ais-Chat-message--assistant li {
+          margin-bottom: 0.5rem;
+          padding-left: 0.25rem;
+        }
+        .chat-container .ais-Chat-message--assistant li:last-child {
+          margin-bottom: 0;
+        }
+        /* Nested lists */
+        .chat-container .ais-Chat-message--assistant ul ul,
+        .chat-container .ais-Chat-message--assistant ol ul {
+          list-style-type: circle;
+          margin: 0.5rem 0;
+        }
+        .chat-container .ais-Chat-message--assistant ul ol,
+        .chat-container .ais-Chat-message--assistant ol ol {
+          list-style-type: lower-alpha;
+          margin: 0.5rem 0;
+        }
+
+        /* ============================================
+           MARKDOWN - CODE
+           ============================================ */
+        .chat-container .ais-Chat-message--assistant code {
+          font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 0.875em;
+          background: hsl(var(--muted));
+          padding: 0.125rem 0.375rem;
+          border-radius: 4px;
+          border: 1px solid hsl(var(--border));
+        }
+        .chat-container .ais-Chat-message--assistant pre {
+          background: hsl(var(--muted));
+          border: 1px solid hsl(var(--border));
+          border-radius: 8px;
+          padding: 0.75rem 1rem;
+          margin: 0.75rem 0;
+          overflow-x: auto;
+        }
+        .chat-container .ais-Chat-message--assistant pre code {
+          background: transparent;
+          padding: 0;
+          border: none;
+          font-size: 0.8125rem;
+        }
+
+        /* ============================================
+           MARKDOWN - LINKS
+           ============================================ */
+        .chat-container .ais-Chat-message--assistant a {
+          color: hsl(var(--primary));
+          text-decoration: underline;
+          text-underline-offset: 2px;
+        }
+        .chat-container .ais-Chat-message--assistant a:hover {
+          text-decoration-thickness: 2px;
+        }
+
+        /* ============================================
+           MARKDOWN - BLOCKQUOTES
+           ============================================ */
+        .chat-container .ais-Chat-message--assistant blockquote {
+          border-left: 3px solid hsl(var(--primary));
+          padding-left: 1rem;
+          margin: 0.75rem 0;
+          color: hsl(var(--muted-foreground));
+          font-style: italic;
+        }
+
+        /* ============================================
+           MARKDOWN - HEADINGS (if any)
+           ============================================ */
+        .chat-container .ais-Chat-message--assistant h1,
+        .chat-container .ais-Chat-message--assistant h2,
+        .chat-container .ais-Chat-message--assistant h3,
+        .chat-container .ais-Chat-message--assistant h4 {
+          font-weight: 700;
+          margin-top: 1rem;
+          margin-bottom: 0.5rem;
+        }
+        .chat-container .ais-Chat-message--assistant h1:first-child,
+        .chat-container .ais-Chat-message--assistant h2:first-child,
+        .chat-container .ais-Chat-message--assistant h3:first-child {
+          margin-top: 0;
+        }
+
+        /* ============================================
+           PRODUCT HIGHLIGHTING
+           ============================================ */
+        .chat-container .ais-Chat-message--assistant strong:first-of-type {
+          color: hsl(var(--primary));
+        }
+
+        /* ============================================
+           MESSAGE ACTIONS
+           ============================================ */
+        .chat-container [class*="message-actions"],
+        .chat-container [class*="Message-actions"] {
+          margin-top: 0.75rem;
+          padding-top: 0.5rem;
+          border-top: 1px solid hsl(var(--border) / 0.5);
+          display: flex;
+          gap: 0.5rem;
+        }
+        .chat-container [class*="message-actions"] button,
+        .chat-container [class*="Message-actions"] button {
+          padding: 0.25rem 0.5rem;
+          border-radius: 6px;
+          font-size: 12px;
+          color: hsl(var(--muted-foreground));
+          transition: all 0.15s ease;
+        }
+        .chat-container [class*="message-actions"] button:hover,
+        .chat-container [class*="Message-actions"] button:hover {
+          background: hsl(var(--muted));
+          color: hsl(var(--foreground));
+        }
+
+        /* ============================================
+           INPUT AREA - PROMPT
+           ============================================ */
         .chat-container .ais-Chat-prompt {
           border-top: 1px solid hsl(var(--border));
+          background: hsl(var(--background));
+          padding: 0.75rem 1rem;
         }
-        /* Hide scroll-to-bottom button */
+        .chat-container .ais-Chat-prompt textarea {
+          width: 100%;
+          min-height: 44px;
+          max-height: 120px;
+          padding: 0.625rem 0.875rem;
+          border: 1.5px solid hsl(var(--border));
+          border-radius: 12px;
+          background: hsl(var(--background));
+          color: hsl(var(--foreground));
+          font-size: 14px;
+          line-height: 1.5;
+          resize: none;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .chat-container .ais-Chat-prompt textarea:focus {
+          outline: none;
+          border-color: hsl(var(--primary));
+          box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+        }
+        .chat-container .ais-Chat-prompt textarea::placeholder {
+          color: hsl(var(--muted-foreground));
+        }
+
+        /* ============================================
+           INPUT AREA - SUBMIT BUTTON
+           ============================================ */
+        .chat-container .ais-Chat-prompt button[type="submit"],
+        .chat-container .ais-Chat-prompt-submit {
+          background: hsl(var(--primary));
+          color: hsl(var(--primary-foreground));
+          border: none;
+          border-radius: 10px;
+          padding: 0.5rem 1rem;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .chat-container .ais-Chat-prompt button[type="submit"]:hover:not(:disabled),
+        .chat-container .ais-Chat-prompt-submit:hover:not(:disabled) {
+          background: hsl(var(--primary) / 0.9);
+          transform: translateY(-1px);
+        }
+        .chat-container .ais-Chat-prompt button[type="submit"]:disabled,
+        .chat-container .ais-Chat-prompt-submit:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        /* ============================================
+           HIDE UNWANTED ELEMENTS
+           ============================================ */
         .chat-container .ais-Chat-messages-scrollToBottom,
         .chat-container [class*="scrollToBottom"] {
           display: none !important;
         }
-        /* Hide disclaimer/footer */
         .chat-container .ais-Chat-prompt-footer,
         .chat-container [class*="disclaimer"],
         .chat-container [class*="footer"]:not(.ais-Chat-message-footer) {
           display: none !important;
         }
-        /* Hide the entire tool call display section (Arguments, Results, etc) */
         .chat-container [class*="toolCall"],
         .chat-container [class*="tool-call"],
         .chat-container [class*="ToolCall"],
@@ -517,12 +753,10 @@ export function ChatWidget() {
         .chat-container [data-tool-result] {
           display: none !important;
         }
-        /* Hide details/summary elements that wrap tool calls */
         .chat-container details,
         .chat-container summary {
           display: none !important;
         }
-        /* Hide "X of Y results" and "View All" elements */
         .chat-container [class*="results-count"],
         .chat-container [class*="resultsCount"],
         .chat-container [class*="view-all"],
@@ -534,30 +768,39 @@ export function ChatWidget() {
         .chat-container a[href*="search"]:not(textarea) {
           display: none !important;
         }
-        /* Hide stats */
         .chat-container .ais-Stats,
         .chat-container [class*="Stats"],
         .chat-container [class*="stats"] {
           display: none !important;
         }
-        /* Hide elements containing "X of Y results" pattern - target by data attribute we'll add */
         .chat-container [data-results-count="true"] {
           display: none !important;
         }
-        /* Style the message content nicely */
-        .chat-container .ais-Chat-message--assistant p {
-          margin-bottom: 0.5rem;
+
+        /* ============================================
+           LOADING STATE
+           ============================================ */
+        .chat-container [class*="loader"],
+        .chat-container [class*="Loader"] {
+          padding: 1rem;
+          color: hsl(var(--muted-foreground));
         }
-        .chat-container .ais-Chat-message--assistant ul,
-        .chat-container .ais-Chat-message--assistant ol {
-          margin-left: 1rem;
-          margin-bottom: 0.5rem;
+
+        /* ============================================
+           SCROLLBAR STYLING
+           ============================================ */
+        .chat-container .ais-Chat-messages::-webkit-scrollbar {
+          width: 6px;
         }
-        .chat-container .ais-Chat-message--assistant li {
-          margin-bottom: 0.25rem;
+        .chat-container .ais-Chat-messages::-webkit-scrollbar-track {
+          background: transparent;
         }
-        .chat-container .ais-Chat-message--assistant strong {
-          font-weight: 600;
+        .chat-container .ais-Chat-messages::-webkit-scrollbar-thumb {
+          background: hsl(var(--border));
+          border-radius: 3px;
+        }
+        .chat-container .ais-Chat-messages::-webkit-scrollbar-thumb:hover {
+          background: hsl(var(--muted-foreground) / 0.5);
         }
       `}</style>
     </>
