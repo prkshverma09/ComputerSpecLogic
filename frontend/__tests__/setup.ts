@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
 
+// Mock scrollIntoView for jsdom
+Element.prototype.scrollIntoView = vi.fn();
+
 // Mock localStorage for zustand persist middleware
 const localStorageMock = (() => {
   let store: Record<string, string> = {};

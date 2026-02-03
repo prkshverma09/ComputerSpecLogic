@@ -6,13 +6,7 @@ import { Chat } from "react-instantsearch"
 import { useBuildStore } from "@/stores/build-store"
 import { searchClient, COMPONENTS_INDEX, AGENT_ID } from "@/lib/algolia"
 import { Button } from "@/components/ui/button"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { ChatComboboxInput, QuickPrompt } from "@/components/chat/chat-combobox-input"
 import { cn } from "@/lib/utils"
 import {
   MessageCircle,
@@ -21,7 +15,6 @@ import {
   Maximize2,
   Sparkles,
   RotateCcw,
-  Lightbulb,
   User,
 } from "lucide-react"
 
@@ -189,12 +182,6 @@ function cleanChatContent(container: HTMLElement) {
 }
 
 
-interface QuickPrompt {
-  id: string
-  label: string
-  prompt: string
-}
-
 const QUICK_PROMPTS: QuickPrompt[] = [
   {
     id: "gaming-cpu",
@@ -296,12 +283,11 @@ export function ChatWidget() {
     setSessionId(generateSessionId())
   }, [])
 
-  const handlePromptSelect = useCallback((promptId: string) => {
-    const selectedPrompt = QUICK_PROMPTS.find((p) => p.id === promptId)
-    if (!selectedPrompt) return
+  const handleComboboxSubmit = useCallback((message: string) => {
+    if (!message.trim()) return
 
     if (globalSuggestionClickHandler) {
-      globalSuggestionClickHandler(selectedPrompt.prompt)
+      globalSuggestionClickHandler(message)
       return
     }
 
@@ -319,13 +305,26 @@ export function ChatWidget() {
     )?.set
 
     if (nativeInputValueSetter) {
-      nativeInputValueSetter.call(textarea, selectedPrompt.prompt)
+      nativeInputValueSetter.call(textarea, message)
     } else {
-      textarea.value = selectedPrompt.prompt
+      textarea.value = message
     }
 
     textarea.dispatchEvent(new Event('input', { bubbles: true }))
-    textarea.focus()
+
+    setTimeout(() => {
+      const submitButton = chatContainer.querySelector<HTMLButtonElement>(
+        ".ais-ChatPrompt-submit, button[type='submit']"
+      )
+      if (submitButton && !submitButton.disabled) {
+        submitButton.click()
+      } else {
+        const form = textarea.closest('form')
+        if (form) {
+          form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
+        }
+      }
+    }, 50)
   }, [])
 
   if (!AGENT_ID) {
@@ -402,23 +401,6 @@ export function ChatWidget() {
 
           {!isMinimized && (
             <div className="h-[calc(100%-60px)] flex flex-col">
-              <div className="p-3 border-b bg-muted/20">
-                <Select onValueChange={handlePromptSelect}>
-                  <SelectTrigger className="w-full h-9 text-sm bg-background">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Lightbulb className="h-4 w-4" />
-                      <SelectValue placeholder="Quick questions..." />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {QUICK_PROMPTS.map((prompt) => (
-                      <SelectItem key={prompt.id} value={prompt.id}>
-                        {prompt.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
               <div ref={chatContainerRef} className="flex-1 overflow-hidden chat-container">
                 <InstantSearch
                   key={sessionId}
@@ -451,7 +433,7 @@ export function ChatWidget() {
                         message: "ais-Chat-message-text",
                       },
                       prompt: {
-                        root: "ais-Chat-prompt p-3 border-t bg-background",
+                        root: "ais-Chat-prompt hidden",
                         textarea: "ais-Chat-prompt-textarea",
                         submit: "ais-Chat-prompt-submit",
                       },
@@ -473,6 +455,13 @@ export function ChatWidget() {
                       }}
                   />
                 </InstantSearch>
+              </div>
+              <div className="p-3 border-t bg-background">
+                <ChatComboboxInput
+                  presets={QUICK_PROMPTS}
+                  onSubmit={handleComboboxSubmit}
+                  placeholder="Ask about PC builds, compatibility..."
+                />
               </div>
             </div>
           )}
