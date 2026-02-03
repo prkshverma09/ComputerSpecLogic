@@ -70,8 +70,14 @@ Spec-Logic combines Algolia's lightning-fast structured search with AI-powered e
 **Build Configuration with Compatibility Checking**
 ![Build Page](<!-- TODO: Add screenshot URL -->)
 
-**AI Chat Assistant**
-![Chat Widget](<!-- TODO: Add screenshot URL -->)
+**Filter & Sort Toolbar**
+![Filter Sort Toolbar](<!-- TODO: Add screenshot URL showing brand/price filters -->)
+
+**Build Summary with Case Image**
+![Build Summary Sidebar](<!-- TODO: Add screenshot URL showing case image in sidebar -->)
+
+**AI Chat Assistant with Combobox Input**
+![Chat Widget](<!-- TODO: Add screenshot URL showing combobox with suggestions -->)
 
 ## How I Used Algolia Agent Studio
 
@@ -233,10 +239,11 @@ With Algolia's speed, this happens before the user even finishes processing the 
 
 ## What's Next
 
+- **Image Enrichment for All Components**: Extend product imagery to CPUs, GPUs, motherboards, and other component types
 - **Price Tracking**: Alerts when build components drop in price
-- **Benchmark Integration**: Show estimated FPS for popular games
-- **Community Builds**: Browse and fork popular configurations
-- **AR Preview**: Visualize the build in your actual case
+- **Benchmark Integration**: Show estimated FPS for popular games based on CPU/GPU combination
+- **Community Builds**: Browse and fork popular configurations from other users
+- **Build Comparison**: Side-by-side comparison of multiple saved builds
 
 ---
 
