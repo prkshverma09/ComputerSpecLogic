@@ -16,8 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from algoliasearch.search.client import SearchClientSync
 
 # Configuration
-ALGOLIA_APP_ID = os.getenv("ALGOLIA_APP_ID", "TD206SGSON")
-ALGOLIA_ADMIN_KEY = os.getenv("ALGOLIA_ADMIN_KEY", "69129e901a48616bc8a9cd602796894a")
+ALGOLIA_APP_ID = os.getenv("ALGOLIA_APP_ID")
+ALGOLIA_ADMIN_KEY = os.getenv("ALGOLIA_ADMIN_KEY")
 INDEX_NAME = "prod_components"
 DATA_DIR = Path(__file__).parent.parent / "data" / "pcpartpicker"
 MANIFEST_FILE = Path(__file__).parent.parent / "data" / "case_image_manifest.json"
@@ -496,6 +496,10 @@ def main():
     print("PCPartPicker Data Import")
     print("=" * 60)
     
+    if not ALGOLIA_APP_ID or not ALGOLIA_ADMIN_KEY:
+        print("Error: ALGOLIA_APP_ID and ALGOLIA_ADMIN_KEY environment variables are required.")
+        sys.exit(1)
+
     # Initialize Algolia client
     client = SearchClientSync(ALGOLIA_APP_ID, ALGOLIA_ADMIN_KEY)
     
