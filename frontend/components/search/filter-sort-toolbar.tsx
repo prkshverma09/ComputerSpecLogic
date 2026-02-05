@@ -17,8 +17,6 @@ interface FilterSortToolbarProps {
 
 const SORT_OPTIONS = [
   { label: "Relevance", value: "prod_components" },
-  { label: "Price: Low to High", value: "prod_components_price_asc" },
-  { label: "Price: High to Low", value: "prod_components_price_desc" },
 ]
 
 const COMPONENT_SPECIFIC_FILTERS: Record<ComponentType, string[]> = {
@@ -185,13 +183,12 @@ function PriceFilter() {
 }
 
 function SortSelect() {
+  const [isOpen, setIsOpen] = useState(false)
   const { currentRefinement, options, refine, canRefine } = useSortBy({
     items: SORT_OPTIONS,
   })
 
-  const [isOpen, setIsOpen] = useState(false)
-
-  if (!canRefine) return null
+  if (SORT_OPTIONS.length <= 1 || !canRefine || options.length <= 1) return null
 
   const currentOption = options.find((o) => o.value === currentRefinement)
   const isDefaultSort = currentRefinement === "prod_components"
