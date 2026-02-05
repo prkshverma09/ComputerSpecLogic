@@ -1,10 +1,11 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useBuildStore } from "@/stores/build-store"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { AlertCircle, CheckCircle2, Box } from "lucide-react"
+import { AlertCircle, CheckCircle2, Box, Share2, Printer } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
@@ -124,13 +125,26 @@ export function BuildSummarySidebar() {
         )}
       </CardContent>
 
-      <CardFooter>
+      <CardFooter className="flex gap-2">
         <Button
-          className="w-full h-12 text-lg font-bold"
-          disabled={!isValid}
+          asChild
+          className="flex-1 h-12 font-semibold"
+          disabled={componentCount === 0}
           size="lg"
         >
-          CONTINUE
+          <Link href="/export">
+            <Share2 className="h-4 w-4 mr-2" />
+            Share
+          </Link>
+        </Button>
+        <Button
+          variant="outline"
+          className="h-12"
+          size="lg"
+          onClick={() => window.print()}
+          disabled={componentCount === 0}
+        >
+          <Printer className="h-4 w-4" />
         </Button>
       </CardFooter>
     </Card>
