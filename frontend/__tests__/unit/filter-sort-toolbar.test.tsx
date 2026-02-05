@@ -83,10 +83,10 @@ describe("FilterSortToolbar", () => {
       expect(screen.getByRole("button", { name: /price/i })).toBeInTheDocument()
     })
 
-    it("should render sort dropdown", () => {
+    it("should not render sort dropdown when only one sort option exists", () => {
       renderWithInstantSearch(<FilterSortToolbar componentType="CPU" />)
       
-      expect(screen.getByRole("button", { name: /sort/i })).toBeInTheDocument()
+      expect(screen.queryByRole("button", { name: /sort/i })).not.toBeInTheDocument()
     })
   })
 
@@ -223,48 +223,15 @@ describe("FilterSortToolbar", () => {
   })
 
   describe("Sorting", () => {
-    it("should open sort dropdown when clicked", async () => {
-      const user = userEvent.setup()
+    it("should not render sort dropdown when SORT_OPTIONS has only one option", () => {
       renderWithInstantSearch(<FilterSortToolbar componentType="CPU" />)
       
-      const sortButton = screen.getByRole("button", { name: /sort/i })
-      await user.click(sortButton)
-      
-      await waitFor(() => {
-        expect(screen.getByText("Relevance")).toBeInTheDocument()
-        expect(screen.getByText("Price: Low to High")).toBeInTheDocument()
-        expect(screen.getByText("Price: High to Low")).toBeInTheDocument()
-      })
+      expect(screen.queryByRole("button", { name: /sort/i })).not.toBeInTheDocument()
     })
 
-    it("should call refine when sort option is selected", async () => {
-      const refineMock = vi.fn()
+    it("should not render sort dropdown even when useSortBy returns multiple options (SORT_OPTIONS takes precedence)", () => {
       mockUseSortBy.mockReturnValue({
         currentRefinement: "prod_components",
-        options: [
-          { label: "Relevance", value: "prod_components" },
-          { label: "Price: Low to High", value: "prod_components_price_asc" },
-          { label: "Price: High to Low", value: "prod_components_price_desc" },
-        ],
-        refine: refineMock,
-        canRefine: true,
-      })
-
-      const user = userEvent.setup()
-      renderWithInstantSearch(<FilterSortToolbar componentType="CPU" />)
-      
-      const sortButton = screen.getByRole("button", { name: /sort/i })
-      await user.click(sortButton)
-      
-      const lowToHighOption = await screen.findByText("Price: Low to High")
-      await user.click(lowToHighOption)
-      
-      expect(refineMock).toHaveBeenCalledWith("prod_components_price_asc")
-    })
-
-    it("should show current sort selection", () => {
-      mockUseSortBy.mockReturnValue({
-        currentRefinement: "prod_components_price_asc",
         options: [
           { label: "Relevance", value: "prod_components" },
           { label: "Price: Low to High", value: "prod_components_price_asc" },
@@ -276,7 +243,7 @@ describe("FilterSortToolbar", () => {
 
       renderWithInstantSearch(<FilterSortToolbar componentType="CPU" />)
       
-      expect(screen.getByText(/low to high/i)).toBeInTheDocument()
+      expect(screen.queryByRole("button", { name: /sort/i })).not.toBeInTheDocument()
     })
   })
 
