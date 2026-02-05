@@ -3,7 +3,7 @@ title: "Spec-Logic: AI-Powered PC Building with Algolia Agent Studio"
 published: false
 description: "An intelligent PC building assistant that uses Algolia Agent Studio to provide real-time compatibility checking and proactive guidance without requiring back-and-forth dialogue."
 tags: algolia, ai, nextjs, typescript
-cover_image: <!-- TODO: Add cover image URL - generated image at /Users/paverma/.cursor/projects/Users-paverma-PersonalProjects-ComputerSpecLogic/assets/cover-image.png -->
+cover_image: https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/screenshots/cover-image.png
 ---
 
 *This is a submission for the [Algolia Agent Studio Challenge](https://dev.to/challenges/algolia): Consumer-Facing Non-Conversational Experiences*
@@ -55,24 +55,24 @@ Spec-Logic combines Algolia's lightning-fast structured search with AI-powered e
 ### Screenshots
 
 **Homepage**
-![Homepage](./assets/Homepage.png)
+![Homepage](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/Homepage.png)
 
 **Build Configuration with Compatibility Checking**
-![Build Page](./assets/build_page.png)
+![Build Page](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/build_page.png)
 
 **Component Selection Modal**
-![Component Selection Modal](./assets/Component_Selection_Modal.png)
+![Component Selection Modal](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/Component_Selection_Modal.png)
 
 **Filter & Sort Toolbar**
-![Filter Sort Toolbar](./assets/Filter_Sort_Toolbar.png)
+![Filter Sort Toolbar](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/Filter_Sort_Toolbar.png)
 
 **Build Summary with Case Image**
-![Build Summary Sidebar](./assets/Build_Summary_Sidebar.png)
+![Build Summary Sidebar](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/Build_Summary_Sidebar.png)
 
 **AI Chat Assistant with Combobox Input**
-![Empty Chat Widget](./assets/Empty_Chat_Box.png)
+![Empty Chat Widget](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/Empty_Chat_Box.png)
 
-![Chat Widget with Query and Response](./assets/Chat_Widget_With_Query.png)
+![Chat Widget with Query and Response](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/Chat_Widget_With_Query.png)
 
 ## How I Used Algolia Agent Studio
 
