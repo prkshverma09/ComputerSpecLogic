@@ -7,7 +7,6 @@ import { searchClient, COMPONENTS_INDEX } from "@/lib/algolia"
 import { SearchBox } from "@/components/search/search-box"
 import { FilterSortToolbar } from "@/components/search/filter-sort-toolbar"
 import { ResultsGrid } from "@/components/search/results-grid"
-import { Pagination } from "@/components/search/pagination"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface ComponentSelectionDialogProps {
@@ -37,9 +36,6 @@ export function ComponentSelectionDialog({ isOpen, onClose, category }: Componen
           <ScrollArea className="flex-1">
             <div className="p-6">
               <ResultsGrid onSelection={onClose} />
-              <div className="mt-8">
-                <Pagination />
-              </div>
             </div>
           </ScrollArea>
         </InstantSearch>
