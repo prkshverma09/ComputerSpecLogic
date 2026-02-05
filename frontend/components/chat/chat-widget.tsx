@@ -219,7 +219,7 @@ function CustomSuggestions({ onSuggestionClick }: { suggestions?: string[], onSu
     }
   }, [onSuggestionClick])
 
-  return null
+  return <></>
 }
 
 export function ChatWidget() {
