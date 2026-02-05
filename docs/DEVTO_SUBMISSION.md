@@ -44,7 +44,7 @@ Spec-Logic combines Algolia's lightning-fast structured search with AI-powered e
 ## Demo
 
 <!-- TODO: Add your live demo URL -->
-🔗 **Live Demo**: [https://your-vercel-deployment.vercel.app](https://your-vercel-deployment.vercel.app)
+🔗 **Live Demo**: [https://computer-spec-logic.vercel.app/](https://computer-spec-logic.vercel.app/)
 
 <!-- TODO: Add your GitHub repo URL -->
 📦 **GitHub Repository**: [https://github.com/prkshverma09/ComputerSpecLogic](https://github.com/prkshverma09/ComputerSpecLogic)
@@ -70,6 +70,8 @@ Spec-Logic combines Algolia's lightning-fast structured search with AI-powered e
 **Build Configuration with Compatibility Checking**
 ![Build Page](<!-- TODO: Add screenshot URL -->)
 
+![Component Selection Modal](<!-- TODO: Add screenshot URL -->)
+
 **Filter & Sort Toolbar**
 ![Filter Sort Toolbar](<!-- TODO: Add screenshot URL showing brand/price filters -->)
 
@@ -77,7 +79,9 @@ Spec-Logic combines Algolia's lightning-fast structured search with AI-powered e
 ![Build Summary Sidebar](<!-- TODO: Add screenshot URL showing case image in sidebar -->)
 
 **AI Chat Assistant with Combobox Input**
-![Chat Widget](<!-- TODO: Add screenshot URL showing combobox with suggestions -->)
+![Empty Chat Widget](<!-- TODO: Add screenshot URL showing chat widget -->)
+
+![Chat Widget with Query and Response](<!-- TODO: Add screenshot URL showing combobox with suggestions -->)
 
 ## How I Used Algolia Agent Studio
 
@@ -162,7 +166,7 @@ You are Spec-Logic, an expert PC building assistant.
 
 3. **GPU ↔ Case**: gpu_length_mm MUST be < case.max_gpu_length_mm
 
-4. **PSU Calculation**: 
+4. **PSU Calculation**:
    - Calculate: (CPU TDP + GPU TDP + 100W base) × 1.5 safety margin
    - For RTX 4090/4080: add additional 150W for transient spikes
 
