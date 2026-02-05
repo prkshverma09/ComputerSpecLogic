@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { Build, ValidationResult, ValidationIssue, ComponentType } from "@/types/components"
+import { rateLimit, getClientIP, createRateLimitHeaders } from "@/lib/rate-limit"
+
+const MAX_REQUEST_SIZE = 100 * 1024
 
 /**
  * POST /api/build/validate
@@ -8,12 +11,42 @@ import { Build, ValidationResult, ValidationIssue, ComponentType } from "@/types
  */
 export async function POST(request: NextRequest) {
   try {
+    const clientIP = getClientIP(request)
+    const rateLimitResult = rateLimit(`validate:${clientIP}`, {
+      maxRequests: 30,
+      windowMs: 60 * 1000,
+    })
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: createRateLimitHeaders(rateLimitResult) }
+      )
+    }
+
+    const contentLength = request.headers.get("content-length")
+    if (contentLength && parseInt(contentLength, 10) > MAX_REQUEST_SIZE) {
+      return NextResponse.json(
+        { error: "Request body too large" },
+        { status: 413 }
+      )
+    }
+
     const body = await request.json()
     const { components } = body as { components: Partial<Build> }
 
-    if (!components || typeof components !== "object") {
+    if (!components || typeof components !== "object" || Array.isArray(components)) {
       return NextResponse.json(
         { error: "Invalid request body. Expected { components: {...} }" },
+        { status: 400 }
+      )
+    }
+
+    const allowedKeys = ["cpu", "motherboard", "gpu", "ram", "psu", "case", "cooler", "storage"]
+    const componentKeys = Object.keys(components)
+    if (componentKeys.some(key => !allowedKeys.includes(key))) {
+      return NextResponse.json(
+        { error: "Invalid component keys in request" },
         { status: 400 }
       )
     }

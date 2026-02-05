@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { rateLimit, getClientIP, createRateLimitHeaders } from "@/lib/rate-limit"
 
 interface PSUCalculateRequest {
   cpu: { tdp_watts: number; max_tdp_watts?: number }
@@ -21,6 +22,8 @@ interface PSUCalculateResponse {
   notes: string[]
 }
 
+const MAX_TDP_WATTS = 2000
+
 /**
  * POST /api/psu/calculate
  * 
@@ -28,11 +31,38 @@ interface PSUCalculateResponse {
  */
 export async function POST(request: NextRequest) {
   try {
+    const clientIP = getClientIP(request)
+    const rateLimitResult = rateLimit(`psu:${clientIP}`, {
+      maxRequests: 60,
+      windowMs: 60 * 1000,
+    })
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: createRateLimitHeaders(rateLimitResult) }
+      )
+    }
+
     const body = (await request.json()) as PSUCalculateRequest
 
     if (!body.cpu || typeof body.cpu.tdp_watts !== "number") {
       return NextResponse.json(
         { error: "CPU TDP is required" },
+        { status: 400 }
+      )
+    }
+
+    if (body.cpu.tdp_watts < 0 || body.cpu.tdp_watts > MAX_TDP_WATTS) {
+      return NextResponse.json(
+        { error: "Invalid CPU TDP value" },
+        { status: 400 }
+      )
+    }
+
+    if (body.gpu && (typeof body.gpu.tdp_watts !== "number" || body.gpu.tdp_watts < 0 || body.gpu.tdp_watts > MAX_TDP_WATTS)) {
+      return NextResponse.json(
+        { error: "Invalid GPU TDP value" },
         { status: 400 }
       )
     }

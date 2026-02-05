@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
 import { Build, Component } from "@/types/components"
+import { rateLimit, getClientIP, createRateLimitHeaders } from "@/lib/rate-limit"
 
 interface ExportRequest {
   build: Partial<Build>
   format: "pcpartpicker" | "reddit" | "json" | "link"
 }
+
+const MAX_REQUEST_SIZE = 100 * 1024
+const MAX_BUILD_JSON_SIZE = 50 * 1024
+const VALID_FORMATS = ["pcpartpicker", "reddit", "json", "link"] as const
 
 /**
  * POST /api/build/export
@@ -13,19 +18,49 @@ interface ExportRequest {
  */
 export async function POST(request: NextRequest) {
   try {
+    const clientIP = getClientIP(request)
+    const rateLimitResult = rateLimit(`export:${clientIP}`, {
+      maxRequests: 20,
+      windowMs: 60 * 1000,
+    })
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: createRateLimitHeaders(rateLimitResult) }
+      )
+    }
+
+    const contentLength = request.headers.get("content-length")
+    if (contentLength && parseInt(contentLength, 10) > MAX_REQUEST_SIZE) {
+      return NextResponse.json(
+        { error: "Request body too large" },
+        { status: 413 }
+      )
+    }
+
     const body = (await request.json()) as ExportRequest
     const { build, format } = body
 
-    if (!build || typeof build !== "object") {
+    if (!build || typeof build !== "object" || Array.isArray(build)) {
       return NextResponse.json(
         { error: "Build object is required" },
         { status: 400 }
       )
     }
 
-    if (!format || !["pcpartpicker", "reddit", "json", "link"].includes(format)) {
+    if (!format || !VALID_FORMATS.includes(format as typeof VALID_FORMATS[number])) {
       return NextResponse.json(
         { error: "Valid format is required (pcpartpicker, reddit, json, link)" },
+        { status: 400 }
+      )
+    }
+
+    const allowedKeys = ["cpu", "motherboard", "gpu", "ram", "psu", "case", "cooler", "storage"]
+    const buildKeys = Object.keys(build)
+    if (buildKeys.some(key => !allowedKeys.includes(key))) {
+      return NextResponse.json(
+        { error: "Invalid build keys in request" },
         { status: 400 }
       )
     }
@@ -68,7 +103,14 @@ export async function POST(request: NextRequest) {
         formatted = JSON.stringify({ components: build, totalPrice }, null, 2)
         break
       case "link":
-        const encoded = Buffer.from(JSON.stringify(build)).toString("base64url")
+        const buildJson = JSON.stringify(build)
+        if (buildJson.length > MAX_BUILD_JSON_SIZE) {
+          return NextResponse.json(
+            { error: "Build data too large for link format" },
+            { status: 400 }
+          )
+        }
+        const encoded = Buffer.from(buildJson).toString("base64url")
         shareUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/build?state=${encoded}`
         formatted = shareUrl
         break

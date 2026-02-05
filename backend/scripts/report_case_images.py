@@ -103,23 +103,43 @@ def generate_report(manifest, verbose=False):
     return "\n".join(report)
 
 
+def validate_output_path(output_path: str) -> Path:
+    """Validate and resolve output path, ensuring it's within allowed directories."""
+    resolved = Path(output_path).resolve()
+    allowed_dirs = [
+        DATA_DIR.resolve(),
+        Path(__file__).parent.resolve(),
+    ]
+    if not any(str(resolved).startswith(str(allowed)) for allowed in allowed_dirs):
+        raise ValueError(
+            f"Output path must be within data/ or scripts/ directory. "
+            f"Got: {resolved}"
+        )
+    return resolved
+
+
 def main():
     parser = argparse.ArgumentParser(description="Generate case image status report")
     parser.add_argument("--verbose", "-v", action="store_true", help="Show details for cases with images too")
-    parser.add_argument("--output", "-o", help="Output file path (default: stdout)")
+    parser.add_argument("--output", "-o", help="Output file path (must be within data/ or scripts/ directory)")
     args = parser.parse_args()
     
     manifest = load_manifest()
     report = generate_report(manifest, args.verbose)
     
     if args.output:
-        with open(args.output, "w") as f:
-            f.write(report)
-        print(f"Report saved to {args.output}")
+        try:
+            output_path = validate_output_path(args.output)
+            with open(output_path, "w", encoding="utf-8") as f:
+                f.write(report)
+            print(f"Report saved to {output_path}")
+        except ValueError as e:
+            print(f"Error: {e}", file=sys.stderr)
+            sys.exit(1)
     else:
         print(report)
     
-    with open(REPORT_FILE, "w") as f:
+    with open(REPORT_FILE, "w", encoding="utf-8") as f:
         f.write(report)
     print(f"\nReport also saved to: {REPORT_FILE}")
 

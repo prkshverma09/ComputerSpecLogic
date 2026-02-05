@@ -1,28 +1,29 @@
 # Spec-Logic Backend - Python ETL Pipeline
+
 # Data Processing
-pandas
-numpy
-Pillow
+pandas==2.2.0
+numpy==1.26.4
+Pillow==10.2.0
 
 # Web Scraping
-requests
-beautifulsoup4
-lxml
+requests==2.31.0
+beautifulsoup4==4.12.3
+lxml==5.1.0
 
 # Algolia
-algoliasearch
+algoliasearch==3.0.0
 
 # Environment
-python-dotenv
+python-dotenv==1.0.1
 
 # Testing
-pytest
-pytest-mock
-pytest-cov
-responses  # For mocking HTTP requests
+pytest==8.0.0
+pytest-mock==3.12.0
+pytest-cov==4.1.0
+responses==0.24.1
 
 # Code Quality
-black
-flake8
-isort
-mypy
+black==24.1.1
+flake8==7.0.0
+isort==5.13.2
+mypy==1.8.0
