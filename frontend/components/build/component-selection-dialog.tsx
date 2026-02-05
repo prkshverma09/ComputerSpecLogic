@@ -35,7 +35,7 @@ export function ComponentSelectionDialog({ isOpen, onClose, category }: Componen
 
           <ScrollArea className="flex-1">
             <div className="p-6">
-              <ResultsGrid onSelection={onClose} />
+              <ResultsGrid onSelection={onClose} hideIncompatible={true} />
             </div>
           </ScrollArea>
         </InstantSearch>

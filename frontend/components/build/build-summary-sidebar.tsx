@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useBuildStore } from "@/stores/build-store"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { AlertCircle, CheckCircle2, Box, Share2, Printer } from "lucide-react"
+import { AlertCircle, CheckCircle2, Box, Share2, Printer, Trash2 } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
@@ -14,7 +14,8 @@ export function BuildSummarySidebar() {
     build,
     totalPrice,
     validationResult,
-    componentCount
+    componentCount,
+    clearBuild
   } = useBuildStore()
 
   // Required components for a functional PC
@@ -125,27 +126,39 @@ export function BuildSummarySidebar() {
         )}
       </CardContent>
 
-      <CardFooter className="flex gap-2">
-        <Button
-          asChild
-          className="flex-1 h-12 font-semibold"
-          disabled={componentCount === 0}
-          size="lg"
-        >
-          <Link href="/export">
-            <Share2 className="h-4 w-4 mr-2" />
-            Share
-          </Link>
-        </Button>
-        <Button
-          variant="outline"
-          className="h-12"
-          size="lg"
-          onClick={() => window.print()}
-          disabled={componentCount === 0}
-        >
-          <Printer className="h-4 w-4" />
-        </Button>
+      <CardFooter className="flex flex-col gap-2">
+        <div className="flex gap-2 w-full">
+          <Button
+            asChild
+            className="flex-1 h-12 font-semibold"
+            disabled={componentCount === 0}
+            size="lg"
+          >
+            <Link href="/export">
+              <Share2 className="h-4 w-4 mr-2" />
+              Share
+            </Link>
+          </Button>
+          <Button
+            variant="outline"
+            className="h-12"
+            size="lg"
+            onClick={() => window.print()}
+            disabled={componentCount === 0}
+          >
+            <Printer className="h-4 w-4" />
+          </Button>
+        </div>
+        {componentCount > 0 && (
+          <Button
+            variant="ghost"
+            className="w-full text-muted-foreground hover:text-destructive"
+            onClick={clearBuild}
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Clear Build
+          </Button>
+        )}
       </CardFooter>
     </Card>
   )
