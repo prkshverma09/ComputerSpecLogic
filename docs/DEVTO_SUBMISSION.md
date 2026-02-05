@@ -54,34 +54,25 @@ Spec-Logic combines Algolia's lightning-fast structured search with AI-powered e
 
 ### Screenshots
 
-<!-- TODO: Add screenshots of your application -->
-<!-- Suggested screenshots:
-1. Homepage showing the clean UI
-2. Build page with component search and compatibility badges
-3. Component selection dialog with filter/sort toolbar
-4. Chat widget with combobox input showing suggested queries
-5. Build summary sidebar with case image and power meter
-6. Export page
--->
-
 **Homepage**
-![Homepage](<!-- TODO: Add screenshot URL -->)
+![Homepage](./assets/Homepage.png)
 
 **Build Configuration with Compatibility Checking**
-![Build Page](<!-- TODO: Add screenshot URL -->)
+![Build Page](./assets/build_page.png)
 
-![Component Selection Modal](<!-- TODO: Add screenshot URL -->)
+**Component Selection Modal**
+![Component Selection Modal](./assets/Component_Selection_Modal.png)
 
 **Filter & Sort Toolbar**
-![Filter Sort Toolbar](<!-- TODO: Add screenshot URL showing brand/price filters -->)
+![Filter Sort Toolbar](./assets/Filter_Sort_Toolbar.png)
 
 **Build Summary with Case Image**
-![Build Summary Sidebar](<!-- TODO: Add screenshot URL showing case image in sidebar -->)
+![Build Summary Sidebar](./assets/Build_Summary_Sidebar.png)
 
 **AI Chat Assistant with Combobox Input**
-![Empty Chat Widget](<!-- TODO: Add screenshot URL showing chat widget -->)
+![Empty Chat Widget](./assets/Empty_Chat_Box.png)
 
-![Chat Widget with Query and Response](<!-- TODO: Add screenshot URL showing combobox with suggestions -->)
+![Chat Widget with Query and Response](./assets/Chat_Widget_With_Query.png)
 
 ## How I Used Algolia Agent Studio
 
