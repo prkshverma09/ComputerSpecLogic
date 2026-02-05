@@ -9,17 +9,19 @@ Hi, I'm presenting Spec-Logic, an AI-powered PC building assistant tool. This pr
 
 The challenge asked us to build smart enhancements that proactively assist users within existing workflows. The key requirement was to inject intelligence without requiring explicit back-and-forth conversation. One of the specific examples mentioned in the challenge was PC building with knowledge of compatibility of different components. That's exactly what Spec-Logic delivers.
 
-Let me start by explaining the problem we're solving. Building a custom PC is notoriously difficult because of the complex web of compatibility requirements. For example, an AM5 socket CPU will only work with an AM5 motherboard. DDR5 memory is completely incompatible with DDR4 motherboards. A graphics card might be physically too long to fit inside your chosen case. High-end GPUs like the RTX 4090 can spike to twice their rated power draw, requiring careful PSU selection.
+Let me start by explaining the problem we're solving. Building a custom PC is notoriously difficult because of the complex web of compatibility requirements. For example, an AM4 socket CPU will only work with an AM4 motherboard. DDR4 memory is completely incompatible with DDR5 motherboards. A graphics card might be physically too long to fit inside your chosen case. High-end GPUs like the RTX 4090 can spike to twice their rated power draw, requiring careful PSU selection.
 
 Current solutions like generic AI chatbots lack the structured data needed to enforce hard compatibility rules. Spec-Logic solves this by automatically filtering out incompatible options and displaying visual compatibility badges, all without requiring the user to ask any questions.
 
 Now let me walk you through the core user experience. When you land on the build page, you see seven component categories: CPU, Motherboard, Graphics Card, Memory, Power Supply, Case, and CPU Cooler.
 
-The magic happens when you make your first selection. Let's say I choose an AMD Ryzen 7 9700X processor. This is an AM5 socket CPU that only supports DDR5 memory. The moment I add it to my build, something powerful happens behind the scenes. I call this the Lock-In moment.
+The magic happens when you make your first selection. Let's say I choose an AMD Ryzen 5 5600X processor. This is an AM4 socket CPU that only supports DDR4 memory. The moment I add it to my build, something powerful happens behind the scenes. I call this the Lock-In moment.
 
-When I now open the motherboard selection, Spec-Logic has automatically filtered the results to show only AM5 socket motherboards. I didn't ask for this. I didn't type any filters. The system proactively applied compatibility constraints based on my CPU selection. You'll notice a message at the top saying how many incompatible components are being hidden. Every visible component displays a compatibility badge. Green means fully compatible. Yellow indicates a warning that needs attention.
+When I now open the motherboard selection, Spec-Logic has automatically filtered the results to show only AM4 socket motherboards. I didn't ask for this. I didn't type any filters. The system proactively applied compatibility constraints based on my CPU selection. You'll notice a message at the top saying how many incompatible components are being hidden. Every visible component displays a compatibility badge. Green means fully compatible. Yellow indicates a warning that needs attention.
 
-The same intelligence applies throughout the build process. When I select memory, only DDR5 options appear because that's what my CPU and motherboard support. When I browse cases, the system checks GPU clearance and cooler height limits. The build summary sidebar updates in real-time, showing selected components, total price, and a power analysis meter that calculates whether my chosen PSU has enough headroom.
+When I select a case, the build summary sidebar immediately displays the actual product image of that case, giving users a visual preview of what their build will look like.
+
+The same intelligence applies throughout the build process. When I select memory, only DDR4 options appear because that's what my CPU and motherboard support. When I browse cases, the system checks GPU clearance and cooler height limits. The build summary sidebar updates in real-time, showing selected components, total price, and a power analysis meter that calculates whether my chosen PSU has enough headroom.
 
 One feature I'm particularly proud of is the visual case preview. When you select a PC case, the build summary sidebar displays the actual product image of that case. This required enriching the component data with high-quality product imagery.
 
@@ -27,7 +29,7 @@ I sourced case images by cross-referencing the PCPartPicker dataset with manufac
 
 Spec-Logic also includes an AI chat assistant powered by Algolia Agent Studio. The chat widget features a combobox-style input with suggested queries to help users get started without having to think of what to ask.
 
-You can ask questions like "What CPU should I get for gaming?" or "Is my current PSU sufficient?" The AI uses Algolia's search tool to find relevant components and provide contextual recommendations. Importantly, the assistant is aware of your current build state. It won't recommend a DDR4 memory kit if you've already selected an AM5 motherboard that only supports DDR5. The same compatibility rules that drive the proactive filtering also constrain the AI's recommendations.
+You can ask questions like "What CPU should I get for gaming?" or "Is my current PSU sufficient?" The AI uses Algolia's search tool to find relevant components and provide contextual recommendations. Importantly, the assistant is aware of your current build state. It won't recommend a DDR5 memory kit if you've already selected an AM4 motherboard that only supports DDR4. The same compatibility rules that drive the proactive filtering also constrain the AI's recommendations.
 
 Let me highlight the specific Algolia features powering this experience.
 
@@ -35,7 +37,7 @@ InstantSearch provides real-time search with sub-200 millisecond latency. This s
 
 Faceted Filtering enables filtering by socket type, memory type, brand, form factor, and price range. These facets update dynamically based on the current result set.
 
-Query Rules automatically detect component patterns. When someone searches for Ryzen 9900X, the system recognizes it's an AM5 CPU and applies the appropriate socket filter without any user intervention.
+Query Rules automatically detect component patterns. When someone searches for Ryzen 5600X, the system recognizes it's an AM4 CPU and applies the appropriate socket filter without any user intervention.
 
 Agent Studio powers the AI chat assistant. The system prompt enforces hard compatibility rules and instructs the AI to always explain why a recommendation fits or doesn't fit the current build.
 
@@ -55,7 +57,7 @@ Build state is persisted with Zustand so users can return to their configuration
 
 The export feature generates PCPartPicker format and Reddit markdown, making it easy to share builds with friends or post them to enthusiast communities.
 
-The key insight of this project is that most of the intelligence happens without any conversation. When I selected that AM5 CPU, the system proactively updated all search filters, calculated power requirements, checked physical clearances, and applied compatibility badges to every visible component. This is contextual data retrieval enhancing user experience, exactly what the challenge asked for.
+The key insight of this project is that most of the intelligence happens without any conversation. When I selected that AM4 CPU, the system proactively updated all search filters, calculated power requirements, checked physical clearances, and applied compatibility badges to every visible component. This is contextual data retrieval enhancing user experience, exactly what the challenge asked for.
 
 The AI chat is available for users who want to ask questions, but the core value proposition works entirely through proactive assistance embedded in the browse and select workflow.
 
