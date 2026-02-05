@@ -492,10 +492,15 @@ export function FilterSortToolbar({ componentType }: FilterSortToolbarProps) {
     attribute: "price_usd",
   })
 
-  const hasActiveFilters =
-    brandFilter.items.some((i) => i.isRefined) ||
-    (priceRange.start[0] !== priceRange.range.min ||
-      priceRange.start[1] !== priceRange.range.max)
+  const hasBrandFilter = brandFilter.items.some((i) => i.isRefined)
+  const hasPriceFilter = 
+    Number.isFinite(priceRange.start[0]) && 
+    Number.isFinite(priceRange.start[1]) &&
+    Number.isFinite(priceRange.range.min) &&
+    Number.isFinite(priceRange.range.max) &&
+    (priceRange.start[0] !== priceRange.range.min || priceRange.start[1] !== priceRange.range.max)
+  
+  const hasActiveFilters = hasBrandFilter || hasPriceFilter
 
   const handleClearAll = () => {
     brandFilter.items.filter((i) => i.isRefined).forEach((i) => brandFilter.refine(i.value))
