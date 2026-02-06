@@ -5,6 +5,8 @@
 **Show at:** Script lines 53-73 (Algolia features section)
 > "Let me highlight the specific Algolia features powering this experience..."
 
+<div align="center">
+
 ```mermaid
 flowchart TB
     subgraph Features ["Algolia Features Used"]
@@ -23,12 +25,16 @@ flowchart TB
     Index --> Features
 ```
 
+</div>
+
 ---
 
 ## Diagram 2: System Architecture
 
 **Show at:** Script lines 77-101 (Technical architecture section)
 > "Now a quick overview of the technical architecture and how we built the data layer..."
+
+<div align="center">
 
 ```mermaid
 flowchart TB
@@ -67,6 +73,8 @@ flowchart TB
     PSU --> UI
     ZS --> EX
 ```
+
+</div>
 
 ---
 
