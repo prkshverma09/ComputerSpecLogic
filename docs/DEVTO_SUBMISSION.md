@@ -15,8 +15,8 @@ cover_image: https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/ma
 ### The Problem
 
 Building a PC involves navigating a complex web of interdependencies:
-- **Socket Compatibility**: AMD AM5 CPUs only work with AM5 motherboards
-- **Memory Standards**: DDR5 and DDR4 are incompatible and motherboard-dependent
+- **Socket Compatibility**: AMD AM4 CPUs only work with AM4 motherboards
+- **Memory Standards**: DDR4 and DDR5 are incompatible and motherboard-dependent
 - **Power Requirements**: High-end GPUs like the RTX 4090 can spike to 2x their rated power
 - **Physical Constraints**: GPU length and cooler height must fit within case clearances
 
@@ -43,14 +43,11 @@ Spec-Logic combines Algolia's lightning-fast structured search with AI-powered e
 
 ## Demo
 
-<!-- TODO: Add your live demo URL -->
 🔗 **Live Demo**: [https://computer-spec-logic.vercel.app/](https://computer-spec-logic.vercel.app/)
 
-<!-- TODO: Add your GitHub repo URL -->
 📦 **GitHub Repository**: [https://github.com/prkshverma09/ComputerSpecLogic](https://github.com/prkshverma09/ComputerSpecLogic)
 
-<!-- TODO: Add your demo video URL (YouTube, Loom, etc.) -->
-🎥 **Demo Video**: [Watch the demo](YOUR_VIDEO_LINK_HERE)
+🎥 **Demo Video**: [Watch the demo](https://youtu.be/GYVdIAYZSgI)
 
 ### Screenshots
 
@@ -69,10 +66,16 @@ Spec-Logic combines Algolia's lightning-fast structured search with AI-powered e
 **Build Summary with Case Image**
 ![Build Summary Sidebar](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/Build_Summary_Sidebar.png)
 
+**Compatibility Warnings (Tight Fit Alerts)**
+![Compatibility Warnings](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/compatibility_warnings.png)
+
 **AI Chat Assistant with Combobox Input**
 ![Empty Chat Widget](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/Empty_Chat_Box.png)
 
 ![Chat Widget with Query and Response](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/Chat_Widget_With_Query.png)
+
+**Export Build (PCPartPicker, Reddit, JSON, Share Link)**
+![Export Build Page](https://raw.githubusercontent.com/prkshverma09/ComputerSpecLogic/main/docs/assets/export_build.png)
 
 ## How I Used Algolia Agent Studio
 
@@ -82,19 +85,18 @@ I created a comprehensive PC components index containing 7 component types with 
 
 ```json
 {
-  "objectID": "cpu-amd-ryzen9-9900x",
+  "objectID": "cpu-amd-ryzen5-5600x",
   "component_type": "CPU",
   "brand": "AMD",
-  "model": "Ryzen 9 9900X",
-  "socket": "AM5",
-  "tdp_watts": 120,
-  "max_tdp_watts": 162,
-  "cores": 12,
-  "threads": 24,
-  "memory_type": ["DDR5"],
-  "price_usd": 499,
-  "performance_tier": "high-end",
-  "compatibility_tags": ["am5", "ddr5", "pcie5", "high-tdp"]
+  "model": "Ryzen 5 5600X",
+  "socket": "AM4",
+  "tdp_watts": 65,
+  "cores": 6,
+  "threads": 12,
+  "memory_type": ["DDR4"],
+  "price_usd": 199,
+  "performance_tier": "mid-range",
+  "compatibility_tags": ["am4", "ddr4", "pcie4"]
 }
 ```
 
@@ -111,8 +113,8 @@ The index includes:
 
 The magic happens through **proactive filtering based on build context**. Here's the flow:
 
-1. **User selects a CPU** (e.g., AMD Ryzen 7 9700X with AM5 socket)
-2. **Build state updates** with active filters: `socket: "AM5"`, `memory_type: "DDR5"`
+1. **User selects a CPU** (e.g., AMD Ryzen 5 5600X with AM4 socket)
+2. **Build state updates** with active filters: `socket: "AM4"`, `memory_type: "DDR4"`
 3. **Search results automatically filter** to show only compatible components
 4. **Compatibility badges appear** on every component showing fit status
 
@@ -124,19 +126,19 @@ I configured Algolia Query Rules to detect component patterns and apply automati
 
 ```json
 {
-  "pattern": "Ryzen 9 9|Ryzen 7 9|Ryzen 5 9|9900X|9700X|9600X",
+  "pattern": "Ryzen 5 5|Ryzen 7 5|Ryzen 9 5|5600X|5800X|5900X",
   "consequence": {
     "params": {
-      "filters": "socket:AM5",
-      "userData": { "detected_socket": "AM5", "compatibility_mode": true }
+      "filters": "socket:AM4",
+      "userData": { "detected_socket": "AM4", "compatibility_mode": true }
     }
   }
 }
 ```
 
-When a user searches for "Ryzen 9 9900X", the system automatically:
-- Detects it's an AM5 CPU
-- Filters subsequent motherboard searches to AM5 socket
+When a user searches for "Ryzen 5 5600X", the system automatically:
+- Detects it's an AM4 CPU
+- Filters subsequent motherboard searches to AM4 socket
 - Passes compatibility context to the AI assistant
 
 ### Targeted Prompting Approach
@@ -149,11 +151,11 @@ You are Spec-Logic, an expert PC building assistant.
 ## Core Rules (NEVER violate):
 
 1. **CPU ↔ Motherboard**: socket MUST match exactly
-   - AM5 CPUs → AM5 motherboards only
+   - AM4 CPUs → AM4 motherboards only
    - LGA1700 CPUs → LGA1700 motherboards only
 
 2. **Memory ↔ Motherboard**: memory_type MUST match
-   - DDR5 motherboards → DDR5 RAM only
+   - DDR4 motherboards → DDR4 RAM only
 
 3. **GPU ↔ Case**: gpu_length_mm MUST be < case.max_gpu_length_mm
 
@@ -185,11 +187,11 @@ Algolia's sub-200ms search latency makes this possible. Here's why speed is crit
 The core UX pattern is what I call the "Lock-In":
 
 ```
-User selects AMD Ryzen 7 9700X
+User selects AMD Ryzen 5 5600X
      ↓
-System locks: socket=AM5, memory=DDR5
+System locks: socket=AM4, memory=DDR4
      ↓
-Motherboard search instantly filters to ~50 compatible boards
+Motherboard search instantly filters to compatible AM4 boards
      ↓
 User sees only valid options with green badges
 ```
@@ -243,6 +245,3 @@ With Algolia's speed, this happens before the user even finishes processing the 
 ---
 
 Built with ❤️ for the Algolia Agent Studio Challenge 2026
-
-<!-- TODO: If this is a team submission, list teammate DEV usernames here -->
-<!-- Team Members: @username1, @username2 -->
